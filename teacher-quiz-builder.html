@@ -9,65 +9,19 @@
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/teacher.css" />
     <link rel="stylesheet" href="css/quiz-builder.css" />
-    <!-- NEW -->
 
-    <style>
-      main {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 16px;
-      }
-      .row {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        align-items: center;
-      }
-      .muted {
-        opacity: 0.7;
-        font-size: 0.9em;
-      }
-      .input,
-      select,
-      textarea {
-        width: 100%;
-        padding: 8px;
-      }
-      .seg {
-        display: inline-flex;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        overflow: hidden;
-      }
-      .seg button {
-        border: 0;
-        padding: 8px 14px;
-        background: #f6f6f6;
-        cursor: pointer;
-        color: #111;
-      }
-      .seg button.active {
-        background: #fff;
-        font-weight: 600;
-        color: #111;
-      }
-      .hide {
-        display: none;
-      }
-    </style>
   </head>
   <body>
     <div id="site-header"></div>
-    
-
-    <main>
-      <h2>Create a Quiz</h2>
+    <main class="container page-gutter">
+      <h1 class="page-title">Create a New Quiz</h1>
+      <div class="page-sub">Fill in the details below, then save or publish when you’re ready.</div>
       <p class="muted">
         Choose Timed to set a countdown. Choose Non-timed to allow unlimited
         time.
       </p>
 
-      <form id="quizForm" class="card">
+      <form id="quizForm" class="card ">
         <label>Title</label>
         <input id="title" class="input" placeholder="Quiz title" required />
 
@@ -124,10 +78,10 @@
         </div>
 
         <label>Status</label>
-        <select id="status" class="input">
-          <option value="Draft" selected>Draft</option>
-          <option value="Published">Published</option>
+        <select id="status" name="status" class="visually-hidden">
+            <option value="Draft" selected>Draft</option>
         </select>
+        <div class="status-pill" aria-hidden="true">Status: Draft</div>
 
         <div class="row">
           <button class="btn" type="submit">Create Quiz</button>
@@ -137,6 +91,8 @@
 
       <div class="card">
         <p class="muted">
+          <strong>Tips</strong>
+          <div class="meta">You can edit questions later from the Quiz Detail page after saving.</div>
           Tip: Non-timed quizzes set <code>time_limit = 0</code>. Timed quizzes
           set <code>time_limit</code> to the minutes you enter. Students will
           see a countdown only when <strong>time_limit &gt; 0</strong>.
@@ -213,5 +169,7 @@
     </script>
 
     <script src="js/site-shell.js"></script>
+
+    
   </body>
 </html>
