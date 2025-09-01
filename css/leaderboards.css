@@ -68,3 +68,291 @@ main, .container { max-width: 1100px; margin: 0 auto; }
 /* Reveal animation */
 .reveal { opacity: 0; transform: translateY(12px); transition: all .6s cubic-bezier(.2,.7,.2,1); }
 .reveal.visible { opacity: 1; transform: none; }
+
+/* =========================================================
+   Student Leaderboard — Carded rows + podium accents
+   (targets the <ol id="leaderboard"> that 14-leaderboard-modes.js writes)
+   ========================================================= */
+
+#leaderboard {
+  list-style: none;
+  padding: 0;
+  margin: clamp(10px, 2.4vw, 18px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(12px, 2.4vw, 18px);
+}
+
+/* Each row becomes a small card */
+#leaderboard .lb-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+
+  background: var(--panel, var(--bg-elev, #fff));
+  border: var(--border, 1px solid rgba(0,0,0,.12));
+  border-radius: var(--radius, 14px);
+  box-shadow: var(--shadow, 0 8px 20px rgba(0,0,0,.06));
+  padding: 12px 14px;
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+#leaderboard .lb-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0,0,0,.14);
+}
+
+/* Bits inside a row */
+#leaderboard .lb-row .rank {
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-align: center;
+  border: var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: var(--bg-elev);
+}
+#leaderboard .lb-row .name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+#leaderboard .lb-row .score strong {
+  font-size: 1.05rem;
+}
+#leaderboard .lb-row .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: var(--border);
+  background: var(--bg-elev);
+  font-size: .9rem;
+}
+
+/* Podium accents for top 3 */
+:root { --gold:#f59e0b; --silver:#9ca3af; --bronze:#b45309; }
+
+#leaderboard .lb-row.top1 .rank { border-color: color-mix(in srgb, var(--gold), #fff 40%); }
+#leaderboard .lb-row.top2 .rank { border-color: color-mix(in srgb, var(--silver), #fff 40%); }
+#leaderboard .lb-row.top3 .rank { border-color: color-mix(in srgb, var(--bronze), #fff 40%); }
+
+/* Mobile: stack neatly */
+@media (max-width: 640px) {
+  #leaderboard .lb-row {
+    grid-template-columns: 56px 1fr;
+    grid-auto-rows: auto;
+  }
+  #leaderboard .lb-row .score,
+  #leaderboard .lb-row .badge {
+    justify-self: start;
+  }
+}
+
+/* =========================================
+   Leaderboard — Toolbar position + theme-aware UI
+   ========================================= */
+
+/* 1) Position the toolbar that already exists in leaderboards.html */
+.toolbar {
+  max-width: 1120px;
+  margin: 0 auto 12px;
+  padding: 0 clamp(16px, 3vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;            /* right on desktop */
+  gap: 10px;
+}
+@media (max-width: 640px) {
+  .toolbar { justify-content: center; } /* center on phones */
+}
+
+/* Optional: make the toolbar stick while scrolling.
+   If you prefer non-sticky, delete this block. */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(6px);
+  background: color-mix(in srgb, var(--bg, #fff), transparent 10%);
+  border-bottom: var(--border, 1px solid rgba(0,0,0,.08));
+  padding-block: 6px;
+}
+
+/* 2) Segmented toggle (uses the existing .seg and buttons) */
+.toolbar .seg {
+  display: inline-flex;
+  gap: 0;
+  padding: 4px;
+  border-radius: 999px;
+  border: var(--border, 1px solid rgba(0,0,0,.12));
+  background: color-mix(in srgb, var(--bg, #fff), transparent 6%); /* theme-aware */
+  box-shadow: var(--shadow, 0 6px 16px rgba(0,0,0,.06));
+}
+.toolbar .seg button {
+  border: 0;
+  background: transparent;              /* theme-aware via parent bg */
+  color: var(--text, #111);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, transform .06s ease;
+  outline: none;
+}
+.toolbar .seg button:hover { transform: translateY(-1px); }
+
+/* Active state: uses brand tokens so it looks right in light & dark */
+.toolbar .seg button.active,
+.toolbar .seg button[aria-pressed="true"] {
+  background: linear-gradient(90deg, var(--brand-2, #60a5fa), var(--brand, #3b82f6));
+  color: #fff !important;
+}
+
+/* 3) Badge theme — works in both light and dark */
+#leaderboard .badge,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: var(--border, 1px solid rgba(0,0,0,.12));
+  background: var(--bg-elev, #fff);     /* theme-aware */
+  color: var(--text, #111);             /* theme-aware */
+  font-size: .9rem;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+
+/* Optional softer, branded badge variant if you use .badge.soft */
+#leaderboard .badge.soft,
+.badge.soft {
+  background: color-mix(in srgb, var(--brand, #3b82f6), transparent 92%);
+  border-color: color-mix(in srgb, var(--brand, #3b82f6), #fff 75%);
+}
+
+/* If your theme switch uses a .dark class or [data-theme="dark"] but tokens
+   don’t fully swap backgrounds, this safety block ensures contrast. */
+html.dark #leaderboard .badge,
+[data-theme="dark"] #leaderboard .badge {
+  background: color-mix(in srgb, var(--bg, #0b0b0d), transparent 0%);
+  color: var(--text, #e5e7eb);
+}
+
+/* =========================================================
+   STUDENT LEADERBOARD — RESPONSIVE PACK (final)
+   Paste at END of css/leaderboards.css
+   - Page container + sticky toolbar
+   - Grid/list that adapts from 1 → many columns
+   - Card rows with top-3 accents
+   - Mobile stacking, no horizontal scroll
+   ========================================================= */
+
+/* ---- Page container (works even if page lacks .container) ---- */
+#leaderboardBody, #leaderboardContainer, .leaderboard-page, body > main {
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: clamp(14px, 3vw, 24px);
+}
+
+/* ---- Toolbar: right on desktop, centered on mobile, sticky & theme-aware ---- */
+.toolbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  padding: 6px clamp(14px, 3vw, 24px);
+  margin: -6px calc(clamp(14px, 3vw, 24px) * -1) 10px; /* edge-to-edge sticky feel */
+  backdrop-filter: blur(6px);
+  background: color-mix(in srgb, var(--bg, #fff), transparent 10%);
+  border-bottom: var(--border, 1px solid rgba(0,0,0,.08));
+}
+@media (max-width: 640px) { .toolbar { justify-content: center; } }
+
+/* Segmented toggle (uses existing .seg + buttons) */
+.toolbar .seg {
+  display: inline-flex; gap: 0; padding: 4px;
+  border-radius: 999px;
+  border: var(--border, 1px solid rgba(0,0,0,.12));
+  background: color-mix(in srgb, var(--bg, #fff), transparent 6%);
+  box-shadow: var(--shadow, 0 6px 16px rgba(0,0,0,.06));
+}
+.toolbar .seg button {
+  border: 0; background: transparent; color: var(--text, #111);
+  padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  transition: background .15s ease, color .15s ease, transform .06s ease;
+  outline: none;
+}
+.toolbar .seg button:hover { transform: translateY(-1px); }
+.toolbar .seg button.active,
+.toolbar .seg button[aria-pressed="true"] {
+  background: linear-gradient(90deg, var(--brand-2, #60a5fa), var(--brand, #3b82f6));
+  color: #fff !important; font-weight: 600;
+}
+
+/* ---- List: responsive grid (auto-fit cards) ---- */
+#leaderboard {
+  list-style: none; padding: 0;
+  margin: clamp(10px, 2.4vw, 18px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(12px, 2.4vw, 18px);
+}
+
+/* Card row (works with JS that outputs <li class="lb-row">… ) */
+#leaderboard .lb-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto auto;  /* rank | name | score | badge */
+  align-items: center; gap: 12px;
+  background: var(--panel, var(--bg-elev, #fff));
+  border: var(--border, 1px solid rgba(0,0,0,.12));
+  border-radius: var(--radius, 14px);
+  box-shadow: var(--shadow, 0 8px 20px rgba(0,0,0,.06));
+  padding: 12px 14px;
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+#leaderboard .lb-row:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(0,0,0,.14); }
+
+/* Bits inside a row */
+#leaderboard .lb-row .rank {
+  font-weight: 800; font-size: 1.05rem; text-align: center;
+  border: var(--border); border-radius: 999px; padding: 6px 10px;
+  background: var(--bg-elev);
+}
+#leaderboard .lb-row .name { font-weight: 600; overflow-wrap: anywhere; }
+#leaderboard .lb-row .score strong { font-size: 1.05rem; }
+#leaderboard .lb-row .badge,
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px; border-radius: 999px;
+  border: var(--border); background: var(--bg-elev); color: var(--text);
+  font-size: .9rem; transition: background .2s, color .2s, border-color .2s;
+}
+
+/* Top-3 accents */
+:root { --gold:#f59e0b; --silver:#9ca3af; --bronze:#b45309; }
+#leaderboard .lb-row.top1 .rank { border-color: color-mix(in srgb, var(--gold), #fff 40%); }
+#leaderboard .lb-row.top2 .rank { border-color: color-mix(in srgb, var(--silver), #fff 40%); }
+#leaderboard .lb-row.top3 .rank { border-color: color-mix(in srgb, var(--bronze), #fff 40%); }
+
+/* Highlight “me” if you add .me on the li (optional in JS) */
+#leaderboard .lb-row.me { background: color-mix(in srgb, var(--brand, #3b82f6), transparent 92%); }
+
+/* ---- Mobile stacking (clean, readable) ---- */
+@media (max-width: 640px) {
+  #leaderboard .lb-row { grid-template-columns: 56px 1fr; grid-auto-rows: auto; }
+  #leaderboard .lb-row .score, #leaderboard .lb-row .badge { justify-self: start; }
+}
+
+/* ---- Ultra-wide refinement (more columns, tighter gaps) ---- */
+@media (min-width: 1280px) {
+  #leaderboard {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(16px, 2vw, 22px);
+  }
+}
+
+/* ---- Safety: prevent any horizontal overflow ---- */
+#leaderboard, #leaderboard * { overflow-wrap: anywhere; word-break: break-word; }
+
+/* ---- Respect reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  #leaderboard .lb-row, .toolbar .seg button { transition: none !important; }
+}

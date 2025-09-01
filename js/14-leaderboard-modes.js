@@ -1,5 +1,6 @@
 // ===== Best/Latest leaderboard mode (graded only) =====
 
+
 async function loadLeaderboardWithMode(
   quizId,
   mode = "latest",
@@ -76,15 +77,20 @@ async function loadLeaderboardWithMode(
   });
 
   reduced.sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+   // Render: semantic rows with classes we can style
   list.innerHTML = reduced
-    .map(
-      (row, i) => `
-    <li>
-      #${i + 1} — ${escapeHtml(row.name)} — <strong>${row.score}%</strong>
-      <span class="badge">${escapeHtml(row.badge)}</span>
-    </li>
-  `
-    )
+    .map((row, i) => {
+      const topClass = i === 0 ? "top1" : i === 1 ? "top2" : i === 2 ? "top3" : "";
+      return `
+        <li class="lb-row ${topClass}" data-rank="${i + 1}">
+          <span class="rank">#${i + 1}</span>
+          <span class="name">${escapeHtml(row.name)}</span>
+          <span class="score"><strong>${row.score}%</strong></span>
+          <span class="badge">${escapeHtml(row.badge)}</span>
+        </li>
+      `;
+    })
     .join("");
 }
+
 
