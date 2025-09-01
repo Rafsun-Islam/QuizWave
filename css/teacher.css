@@ -1,1 +1,259 @@
-/* Teacher theme hooks (override if needed) */
+/* Teacher Home — responsive layout, gutters, uniform cards (uses base.css tokens) */
+
+/* ---------- Global overrides (beat base.css buttons) ---------- */
+button, .btn {
+  padding: 8px 14px !important;     /* slimmer default */
+  font-size: 0.95rem !important;
+  border-radius: 10px !important;
+}
+@media (max-width: 520px) {
+  .t-toolbar .btn,
+  .t-toolbar button,
+  .t-toolbar .input,
+  .t-toolbar .input-lg { width: 100%; max-width: none; }
+  #myQuizzes .card > div[style*="display:flex"] .btn {
+    flex: 1 1 100%;
+    padding: 10px 14px !important;
+    font-size: 1rem !important;
+  }
+}
+/* Ensure button text is centered even when full-width */
+button, .btn, .button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* ---------- Layout containers & gutters ---------- */
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.page-gutter { padding-left: 24px; padding-right: 24px; }
+
+/* Safety net if .container/.page-gutter weren’t added */
+@media (max-width: 768px) {
+  html, body { width: 100%; }
+  body { padding-left: 14px; padding-right: 14px; }
+  .container { padding-left: 18px; padding-right: 18px; }
+  .page-gutter { padding-left: 18px; padding-right: 18px; }
+}
+@media (max-width: 480px) {
+  body { padding-left: 12px; padding-right: 12px; }
+  .container { padding-left: 16px; padding-right: 16px; }
+  .page-gutter { padding-left: 16px; padding-right: 16px; }
+}
+
+/* ---------- Header / Greeting ---------- */
+.t-home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.t-home-header h1,
+#teacherGreeting {
+  color: var(--heading);
+  margin: 0 0 6px 0;
+  font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2.1rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;   /* long names never overflow */
+}
+.t-home-sub { color: var(--muted); margin-top: 6px; }
+@media (max-width: 720px) {
+  .t-home-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* ---------- Toolbar (search + actions) ---------- */
+.t-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0 8px;
+}
+.input,
+.input-lg {
+  width: 100%;
+  max-width: 420px;
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.input-lg { padding: 14px 16px; max-width: 520px; }
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--brand-2), var(--brand-2));
+  border-color: rgba(255,255,255,.14);
+}
+button:hover, .btn:hover { background: var(--card-hover-bg); }
+.btn-primary:hover { filter: brightness(1.05); }
+button:active, .btn:active { transform: translateY(1px); }
+
+/* ---------- Sections ---------- */
+.section { margin: 24px 0; }
+h2, h3 { color: var(--heading); margin: 0 0 12px 0; }
+
+/* ---------- My Quizzes (rendered by JS into #myQuizzes) ---------- */
+/* Responsive grid: 1–N columns with consistent gaps */
+#myQuizzes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+/* Card shell: consistent internal spacing + baseline min-height */
+#myQuizzes .card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  margin: 0;                            /* grid handles spacing */
+  min-height: 200px;                    /* <-- KEEP CARDS CONSISTENT */
+  display: flex;                        /* allow vertical layout inside */
+}
+/* The JS puts one wrapper div inside .card; make it a vertical layout */
+#myQuizzes .card > div {
+  display: flex !important;
+  flex-direction: column !important;    /* stack info + actions */
+  gap: 12px;
+  width: 100%;
+}
+/* First inner block = info (title/desc/meta) should grow */
+#myQuizzes .card > div > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* Last inner block = actions; anchor it to the bottom on small screens */
+#myQuizzes .card > div > div:last-child {
+  margin-top: auto;
+}
+/* On wider screens, allow side-by-side if you prefer that look */
+@media (min-width: 980px) {
+  #myQuizzes .card { min-height: 190px; }
+  #myQuizzes .card > div {
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
+  }
+  #myQuizzes .card > div > div:first-child { flex: 1 1 auto; }
+  #myQuizzes .card > div > div:last-child { margin-top: 0; }
+}
+
+/* Title/description: clamp so long text doesn’t make taller cards */
+#myQuizzes .card h3 {
+  margin: 0 0 6px 0;
+  color: var(--heading);
+  font-size: clamp(1.05rem, 1rem + .5vw, 1.25rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#myQuizzes .card .small { font-size: .92rem; color: var(--muted); }
+
+/* Description div in JS has inline style opacity:.7 — clamp to 2 lines */
+#myQuizzes .card .small[style*="opacity:.7"] {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;                /* show 2 lines max */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;                    /* reserve room for two lines */
+}
+
+/* Action row: JS sets display:flex; make it wrap neatly and align right on wide screens */
+#myQuizzes .card > div[style*="display:flex"] {
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+@media (min-width: 980px) {
+  #myQuizzes .card > div[style*="display:flex"] {
+    justify-content: flex-end;
+  }
+}
+
+/* Prevent long strings from breaking layouts */
+#myQuizzes .card, #myQuizzes .card * {
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Optional grids (if used elsewhere) ---------- */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 16px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 16px;
+}
+@media (max-width: 1024px) {
+  .grid-3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 720px) {
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ---------- Empty state ---------- */
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 24px 10px;
+  border: 1px dashed var(--card-border);
+  border-radius: var(--radius);
+  margin: 18px 0;
+}
+
+/* ---------- Utility margins ---------- */
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-20 { margin-bottom: 20px; }
+
+/* ===== Responsive Teacher Greeting ===== */
+/* Works whether it's <h1 id="teacherGreeting"> or <h2 id="teacherGreeting"> */
+#teacherGreeting {
+  /* Scale smoothly from phones to desktop */
+  font-size: clamp(1.15rem, 0.9rem + 1.6vw, 2.25rem);
+  line-height: 1.15;
+  margin: 0 0 10px 0;
+  color: var(--heading);
+
+  /* Never overflow on long names/emails */
+  overflow-wrap: anywhere;     /* modern wrap for long tokens */
+  word-break: break-word;      /* fallback */
+  text-wrap: balance;          /* nicer multi-line headings (supported in modern browsers) */
+
+  /* Keep within layout on very narrow screens */
+  max-width: 100%;
+}
+
+/* If you’re keeping the header wrapper from earlier */
+.t-home-header #teacherGreeting {
+  margin-bottom: 6px;
+}
+
+/* Fine-tune for breakpoints */
+@media (max-width: 720px) {
+  #teacherGreeting {
+    font-size: clamp(1.2rem, 1rem + 1.2vw, 1.6rem);
+  }
+}
+@media (max-width: 480px) {
+  #teacherGreeting {
+    font-size: clamp(1.1rem, 0.95rem + 1vw, 1.45rem);
+  }
+}
+
+.t-name { font-weight: 600; }
