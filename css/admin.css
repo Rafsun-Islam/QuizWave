@@ -1,1 +1,749 @@
-/* admin.css overrides */
+/* =========================================================
+   QuizWave — ADMIN DASHBOARD (theme-aware & responsive)
+   File: css/admin.css
+   ========================================================= */
+
+/* ---------- 0) Tokens (fallbacks if theme vars missing) ---------- */
+:root {
+  --bg: #ffffff;
+  --bg-elev: #ffffff;
+  --panel: var(--bg-elev);
+  --text: #111827;
+  --heading: #0f172a;
+  --muted: #6b7280;
+  --border-color: #e5e7eb;
+  --brand: #3b82f6;
+  --brand-2: #60a5fa;
+  --radius: 14px;
+  --shadow: 0 10px 24px rgba(0,0,0,.06);
+}
+:root.dark,
+:root[data-theme="dark"] {
+  --bg: #0b0b0d;
+  --bg-elev: #0f1115;
+  --panel: var(--bg-elev);
+  --text: #e5e7eb;
+  --heading: #f3f4f6;
+  --muted: #9ca3af;
+  --border-color: #374151;
+}
+
+/* ---------- 1) Page shell ---------- */
+main.container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: clamp(14px, 3vw, 24px);
+  color: var(--text);
+}
+h1, h2, h3 { color: var(--heading); }
+
+/* ---------- 2) Layout with sidebar ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: clamp(12px, 2vw, 18px);
+}
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+/* Sidebar */
+.sidebar {
+  position: sticky; top: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  color: var(--text);
+}
+.sidebar .nav-list {
+  display: grid; gap: 8px;
+}
+.sidebar .nav-list a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: background .15s ease, border-color .15s ease, transform .06s ease;
+}
+.sidebar .nav-list a:hover {
+  background: color-mix(in srgb, var(--bg), transparent 90%);
+  border-color: color-mix(in srgb, var(--border-color), transparent 20%);
+  transform: translateY(-1px);
+}
+.sidebar .nav-list a.active,
+.sidebar .nav-list a[aria-current="page"] {
+  background: color-mix(in srgb, var(--brand), transparent 90%);
+  border-color: color-mix(in srgb, var(--brand), #fff 75%);
+}
+
+/* ---------- 3) Cards / sections / stats ---------- */
+.section { margin: clamp(10px, 2vw, 16px) 0; }
+.cards { display: grid; gap: clamp(10px, 2vw, 14px); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.card > .container { padding: clamp(12px, 2vw, 18px); }
+.kpi .value { font-size: clamp(22px, 2vw, 30px); font-weight: 800; }
+
+/* ---------- 4) Add Admin block ---------- */
+.row-soft, #addAdmin, #addAdminContainer, .add-admin, .admin-add, .add-admin-card {
+  background: var(--panel);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(12px, 2vw, 18px);
+  color: var(--text);
+}
+.row-soft input, .row-soft select, .row-soft textarea,
+#addAdmin :is(input, select, textarea),
+#addAdminContainer :is(input, select, textarea),
+.add-admin :is(input, select, textarea),
+.admin-add :is(input, select, textarea),
+.add-admin-card :is(input, select, textarea) {
+  width: 100%;
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.row-soft .btn,
+#addAdmin :is(.btn, button),
+#addAdminContainer :is(.btn, button),
+.add-admin :is(.btn, button),
+.admin-add :is(.btn, button),
+.add-admin-card :is(.btn, button) {
+  border-radius: 10px;
+}
+
+/* ---------- 5) Chips / badges / pills ---------- */
+.chip, .badge, .pill, .role-badge, .role {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: .92rem; line-height: 1.2;
+}
+.chip.soft, .badge.soft { background: color-mix(in srgb, var(--brand), transparent 92%); }
+
+/* Optional role colors (still theme-friendly) */
+.role.admin    { background: color-mix(in srgb, var(--brand), transparent 90%); }
+.role.teacher  { background: color-mix(in srgb, #10b981,   transparent 88%); }
+.role.student  { background: color-mix(in srgb, #f59e0b,   transparent 88%); }
+
+/* ---------- 6) Buttons (light touch) ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border-color);
+  color: var(--text); background: var(--bg-elev);
+  transition: transform .06s ease, background .15s ease, border-color .15s ease;
+}
+.btn:hover { transform: translateY(-1px); background: color-mix(in srgb, var(--bg), transparent 90%); }
+.btn.primary {
+  border-color: color-mix(in srgb, var(--brand), #fff 70%);
+  background: linear-gradient(90deg, var(--brand-2), var(--brand));
+  color: #fff;
+}
+
+/* ---------- 7) Tables (theme-aware, no overlap) ---------- */
+.table,
+#adminsTable, #usersTable, #quizzesTable, #liveTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;                 /* ensures wrapping, prevents overlap */
+  background: transparent;
+}
+.table thead th,
+#adminsTable thead th,
+#usersTable thead th,
+#quizzesTable thead th,
+#liveTable thead th {
+  text-align: left;
+  font-weight: 700;
+  color: var(--heading);
+  background: color-mix(in srgb, var(--bg), transparent 6%);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 14px;
+  position: sticky; top: 0; z-index: 1;
+}
+.table tbody td,
+#adminsTable tbody td,
+#usersTable tbody td,
+#quizzesTable tbody td,
+#liveTable tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color), transparent 20%);
+  vertical-align: top;
+  color: var(--text);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.table tbody tr:hover td,
+#adminsTable tbody tr:hover td,
+#usersTable tbody tr:hover td,
+#quizzesTable tbody tr:hover td,
+#liveTable tbody tr:hover td {
+  background: color-mix(in srgb, var(--brand), transparent 94%);
+}
+.table td.num, .table th.num { text-align: right; }
+
+/* ---------- 8) Mobile tables → stacked cards (≤760px) ---------- */
+@media (max-width: 760px) {
+  .table thead,
+  #adminsTable thead, #usersTable thead, #quizzesTable thead, #liveTable thead {
+    display: none;
+  }
+  .table, .table tbody, .table tr, .table td,
+  #adminsTable, #adminsTable tbody, #adminsTable tr, #adminsTable td,
+  #usersTable, #usersTable tbody, #usersTable tr, #usersTable td,
+  #quizzesTable, #quizzesTable tbody, #quizzesTable tr, #quizzesTable td,
+  #liveTable, #liveTable tbody, #liveTable tr, #liveTable td {
+    display: block; width: 100%;
+  }
+  .table tr,
+  #adminsTable tr, #usersTable tr, #quizzesTable tr, #liveTable tr {
+    background: var(--panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-block: 8px;
+    box-shadow: 0 8px 18px rgba(0,0,0,.06);
+  }
+  .table td,
+  #adminsTable td, #usersTable td, #quizzesTable td, #liveTable td {
+    display: grid;
+    grid-template-columns: minmax(120px, 40%) 1fr; /* label | value */
+    gap: 8px;
+    padding: 8px 0;
+    border: 0;
+    background: transparent;
+  }
+  /* Prefer TD data-label if your JS adds it */
+  .table td::before,
+  #adminsTable td::before, #usersTable td::before, #quizzesTable td::before, #liveTable td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-size: .92rem;
+  }
+
+  /* Fallback labels by table id (if data-label is not present) */
+  /* Admins: Name | Email | Added | Actions */
+  #adminsTable td:nth-child(1)::before { content: "Name"; }
+  #adminsTable td:nth-child(2)::before { content: "Email"; }
+  #adminsTable td:nth-child(3)::before { content: "Added"; }
+  #adminsTable td:nth-child(4)::before { content: "Actions"; }
+
+  /* Users: Name | Role | Email | Created */
+  #usersTable td:nth-child(1)::before { content: "Name"; }
+  #usersTable td:nth-child(2)::before { content: "Role"; }
+  #usersTable td:nth-child(3)::before { content: "Email"; }
+  #usersTable td:nth-child(4)::before { content: "Created"; }
+
+  /* Quizzes: Title | Teacher | Created | (Status optional) */
+  #quizzesTable td:nth-child(1)::before { content: "Title"; }
+  #quizzesTable td:nth-child(2)::before { content: "Teacher"; }
+  #quizzesTable td:nth-child(3)::before { content: "Created"; }
+  #quizzesTable td:nth-child(4)::before { content: "Status"; }
+
+  /* Live: Session | Quiz | Status | Participants | Started */
+  #liveTable td:nth-child(1)::before { content: "Session"; }
+  #liveTable td:nth-child(2)::before { content: "Quiz"; }
+  #liveTable td:nth-child(3)::before { content: "Status"; }
+  #liveTable td:nth-child(4)::before { content: "Participants"; }
+  #liveTable td:nth-child(5)::before { content: "Started"; }
+
+  /* Numeric cells right-aligned even when stacked */
+  #usersTable td:nth-child(4),
+  #liveTable td:nth-child(4) { text-align: right; }
+}
+
+/* ---------- 9) Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+/* =========================================================
+   Admin — Section polish + scrollable tables (CSS-only)
+   - Fixes spacing in the Admins block you pasted
+   - Caps table height with vertical scroll + sticky header
+   - Adds horizontal scroll safety for narrow screens
+   ========================================================= */
+
+/* Tweakable cap for table area height */
+:root { --tbl-max-h: clamp(320px, 56vh, 720px); }
+
+/* 1) Admins section padding/margins/layout */
+#admins .row-soft {
+  /* inner breathing room (row-soft already has theming from earlier) */
+  padding: clamp(14px, 2.4vw, 20px) !important;
+  border-radius: var(--radius, 14px);
+  display: grid;
+  gap: clamp(10px, 1.8vw, 16px);   /* consistent vertical rhythm */
+}
+
+#admins .row-soft h3 {
+  margin: 0;                      /* remove default top gap */
+  line-height: 1.2;
+}
+
+/* the “form + you chip” row */
+#admins .row-soft .two {
+  display: grid;
+  grid-template-columns: 1fr auto; /* form grows, chip hugs right */
+  align-items: center;
+  gap: 12px;
+}
+@media (max-width: 640px) {
+  #admins .row-soft .two { grid-template-columns: 1fr; }
+}
+
+/* the add-admin form itself */
+#admins .row-soft form.actions {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(160px, 1fr) auto;
+  gap: 10px;
+}
+#admins .row-soft form.actions .input { width: 100%; }
+#admins .row-soft form.actions .btn { min-height: 38px; border-radius: 10px; }
+
+/* make the muted note sit nicely under the table */
+#admins .row-soft > p.muted {
+  margin: 0;                      /* reset */
+  padding-top: 6px;               /* small separation from table */
+}
+
+/* 2) Make tables scrollable without layout shifts */
+
+/* (a) General table styling safety */
+:is(#adminBody, #adminContainer, .admin-page, main#admin) .table {
+  width: 100%;
+  table-layout: fixed;            /* forces wrapping, prevents overlap */
+}
+:is(#adminBody, #adminContainer, .admin-page, main#admin) .table th,
+:is(#adminBody, #adminContainer, .admin-page, main#admin) .table td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* (b) Create a scroll container around any immediate div that holds a table
+       (covers your <div style="margin-top:10px;"><table …></table></div>) */
+@supports selector(div:has(> table)) {
+  :is(#adminBody, #adminContainer, .admin-page, main#admin)
+    :is(section, .row-soft, .card, .container) > div:has(> table) {
+    max-height: var(--tbl-max-h);   /* cap height */
+    overflow: auto;                 /* vertical + horizontal scroll as needed */
+    border-radius: 12px;            /* tidy corners for sticky header mask */
+  }
+}
+
+/* Fallback if :has() isn’t available: allow horizontal scroll at least */
+:is(#adminBody, #adminContainer, .admin-page, main#admin) .table {
+  display: block;        /* enables overflow on the element itself */
+  overflow-x: auto;      /* horizontal scroll when columns overflow */
+}
+
+/* Keep headers visible while scrolling the div */
+:is(#adminBody, #adminContainer, .admin-page, main#admin) .table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: color-mix(in srgb, var(--bg, #fff), transparent 6%); /* theme-aware */
+}
+
+/* Optional: slightly denser body cells inside the scroller */
+:is(#adminBody, #adminContainer, .admin-page, main#admin) .table tbody td {
+  padding-block: 10px;
+}
+
+/* 3) Small-screen refinement (still scrollable if long) */
+@media (max-width: 760px) {
+  /* You already convert tables to stacked cards elsewhere; keep scroll cap too */
+  @supports selector(div:has(> table)) {
+    :is(#adminBody, #adminContainer, .admin-page, main#admin)
+      :is(section, .row-soft, .card, .container) > div:has(> table) {
+      max-height: var(--tbl-max-h);
+      overflow: auto;
+    }
+  }
+  /* when stacked, ensure “label | value” columns don’t collide */
+  :is(#adminBody, #adminContainer, .admin-page, main#admin) .table td {
+    display: grid;
+    grid-template-columns: minmax(120px, 40%) 1fr;
+    gap: 8px;
+  }
+  :is(#adminBody, #adminContainer, .admin-page, main#admin) .table td::before {
+    content: attr(data-label);
+    color: var(--muted, #6b7280);
+    font-size: .92rem;
+  }
+}
+
+/* =========================================================
+   Admin — Section spacing + "max 5 rows" scroll + responsive tables
+   ========================================================= */
+
+/* --- Controls for scrollable body rows --- */
+:root {
+  /* How many body rows should be visible before vertical scroll */
+  --rows-visible: 5;
+  /* Approx row height on desktop/tablet (adjust if your rows are taller/denser) */
+  --row-h: 56px;
+}
+
+/* 1) Admins section spacing (your exact HTML id/classes) */
+#admins .row-soft {
+  padding: clamp(14px, 2.4vw, 20px) !important;
+  border-radius: var(--radius, 14px);
+  display: grid;
+  gap: clamp(10px, 1.8vw, 16px);
+}
+#admins .row-soft h3 { margin: 0; line-height: 1.2; }
+
+/* form + "You: —" row */
+#admins .row-soft .two {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 12px;
+}
+@media (max-width: 640px) { #admins .row-soft .two { grid-template-columns: 1fr; } }
+
+/* inputs + button */
+#admins .row-soft form.actions {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(160px, 1fr) auto;
+  gap: 10px;
+}
+#admins .row-soft form.actions .input { width: 100%; }
+#admins .row-soft form.actions .btn { min-height: 38px; border-radius: 10px; }
+
+/* note under the table */
+#admins .row-soft > p.muted { margin: 0; padding-top: 6px; }
+
+/* 2) DESKTOP/TABLET: make every .table show max 5 body rows, then scroll
+      (keeps header aligned and visible) */
+@media (min-width: 761px) {
+  /* Keep header and rows width-aligned */
+  .table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+  .table thead,
+  .table tbody tr { display: table; width: 100%; table-layout: fixed; }
+
+  /* Scroll only the tbody; header stays put above it */
+  .table tbody {
+    display: block;
+    max-height: calc(var(--rows-visible) * var(--row-h));
+    overflow-y: auto;
+  }
+
+  /* Prevent overlap; wrap long text safely */
+  .table th, .table td {
+    padding: 12px 14px;
+    vertical-align: top;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Optional: a slight densify for body when it scrolls */
+  .table tbody td { padding-block: 10px; }
+
+  /* Header styling + stays visible naturally (since only tbody scrolls) */
+  .table thead th {
+    position: sticky; /* safe even if the parent becomes a scroller */
+    top: 0;
+    z-index: 1;
+    background: color-mix(in srgb, var(--bg, #fff), transparent 6%);
+    font-weight: 700; color: var(--heading, #0f172a);
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+  }
+
+  /* Row hover */
+  .table tbody tr:hover td {
+    background: color-mix(in srgb, var(--brand, #3b82f6), transparent 94%);
+  }
+
+  /* Horizontal safety if many columns */
+  .table { overflow-x: auto; }
+}
+
+/* 3) MOBILE (≤760px): turn tables into labeled cards (no overlap) */
+@media (max-width: 760px) {
+  .table thead { display: none; }
+  .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
+
+  .table tr {
+    background: var(--panel, var(--bg-elev, #fff));
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-block: 8px;
+    box-shadow: 0 8px 18px rgba(0,0,0,.06);
+  }
+  .table td {
+    display: grid;
+    grid-template-columns: minmax(120px, 42%) 1fr; /* label | value */
+    gap: 8px;
+    padding: 8px 0;
+    border: 0;
+    background: transparent;
+    white-space: normal; overflow-wrap: anywhere; word-break: break-word;
+  }
+  .table td::before {
+    content: attr(data-label);
+    color: var(--muted, #6b7280);
+    font-size: .92rem;
+  }
+
+  /* Fallback labels for your known tables (if JS didn't set data-label) */
+  /* Admins: Name | Email | Added | Actions */
+  #adminsTable td:nth-child(1)::before { content: "Name"; }
+  #adminsTable td:nth-child(2)::before { content: "Email"; }
+  #adminsTable td:nth-child(3)::before { content: "Added"; }
+  #adminsTable td:nth-child(4)::before { content: "Actions"; }
+
+  /* Users: Name | Role | Email | Created */
+  #usersTable td:nth-child(1)::before { content: "Name"; }
+  #usersTable td:nth-child(2)::before { content: "Role"; }
+  #usersTable td:nth-child(3)::before { content: "Email"; }
+  #usersTable td:nth-child(4)::before { content: "Created"; }
+
+  /* Quizzes: Title | Teacher | Created | Status */
+  #quizzesTable td:nth-child(1)::before { content: "Title"; }
+  #quizzesTable td:nth-child(2)::before { content: "Teacher"; }
+  #quizzesTable td:nth-child(3)::before { content: "Created"; }
+  #quizzesTable td:nth-child(4)::before { content: "Status"; }
+
+  /* Live: Session | Quiz | Status | Participants | Started */
+  #liveTable td:nth-child(1)::before { content: "Session"; }
+  #liveTable td:nth-child(2)::before { content: "Quiz"; }
+  #liveTable td:nth-child(3)::before { content: "Status"; }
+  #liveTable td:nth-child(4)::before { content: "Participants"; }
+  #liveTable td:nth-child(5)::before { content: "Started"; }
+
+  /* Still allow vertical scroll if many "card" rows */
+  .table { max-height: none; overflow: visible; }
+}
+
+/* 4) Theme-safe text & borders in all cases */
+.table th, .table td { color: var(--text, #111) }
+:root.dark .table th, :root.dark .table td,
+:root[data-theme="dark"] .table th, :root[data-theme="dark"] .table td {
+  color: var(--text, #e5e7eb);
+  border-color: color-mix(in srgb, var(--border-color, #374151), transparent 0%);
+}
+
+/* =========================================================
+   Admin — FULL RESPONSIVE & SCROLLABLE TABLES (CSS-only)
+   Drop-in: put at END of css/admin.css
+   ========================================================= */
+
+/* ---------- Global safety: prevent sideways scroll ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+html, body { overflow-x: hidden; }
+img, video, canvas, svg { max-width: 100%; height: auto; display: block; }
+
+/* ---------- Layout: sidebar + content hardening ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: clamp(12px, 2vw, 18px);
+}
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+}
+.sidebar { min-width: 0; }             /* allow shrink within grid */
+.layout > * { min-width: 0; }          /* avoid overflow from long text */
+
+/* ---------- Forms / controls wrap cleanly on small screens ---------- */
+.actions, .filters, .toolbar, .two {
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 10px;
+}
+@media (min-width: 641px) {
+  .actions { grid-template-columns: repeat(12, minmax(0,1fr)); }
+  /* Common pattern: email(6) name(4) button(2) */
+  #admins .actions { grid-template-columns: 6fr 4fr 2fr; }
+}
+.input, input, select, textarea, .btn { min-width: 0; }
+
+/* =========================================================
+   1) Admins section — exact block you pasted (spacing polish)
+   ========================================================= */
+#admins .row-soft {
+  padding: clamp(14px, 2.4vw, 20px) !important;
+  border-radius: var(--radius, 14px);
+  display: grid;
+  gap: clamp(10px, 1.8vw, 16px);
+}
+#admins .row-soft h3 { margin: 0; line-height: 1.2; }
+
+/* form + "You: —" row */
+#admins .row-soft .two {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  #admins .row-soft .two { grid-template-columns: 1fr; }
+}
+
+/* inputs + button */
+#admins .row-soft form.actions .input { width: 100%; }
+#admins .row-soft form.actions .btn { min-height: 38px; border-radius: 10px; }
+
+/* tidy note under table */
+#admins .row-soft > p.muted { margin: 0; padding-top: 6px; }
+
+/* =========================================================
+   2) Desktop/Tablet: show MAX 5 rows per table, then scroll
+   - keeps header aligned & visible
+   - no overlap (fixed layout + wrapping)
+   ========================================================= */
+
+/* Tweak row count / height here */
+:root { --rows-visible: 5; --row-h: 56px; }
+
+/* Base table safety */
+.table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.table th, .table td {
+  padding: 12px 14px;
+  vertical-align: top;
+  white-space: normal; overflow-wrap: anywhere; word-break: break-word;
+}
+
+/* Prefer making the table's immediate wrapper the scroller, when present.
+   Your markup uses: <div style="margin-top:10px;"><table class="table">… */
+@supports selector(div:has(> table.table)) {
+  section :is(.row-soft, .card, .container) > div:has(> table.table),
+  main :is(.row-soft, .card, .container) > div:has(> table.table) {
+    max-height: calc(var(--rows-visible) * var(--row-h));
+    overflow: auto;                         /* vertical + horizontal scroll */
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;                    /* mask sticky header corners */
+  }
+}
+
+/* Fallback: if there isn't a wrapper (or :has isn't supported),
+   let the table itself be the scroll area */
+.table {
+  display: block;                 /* enables overflow */
+  overflow: auto;                 /* both directions if needed */
+  max-height: calc(var(--rows-visible) * var(--row-h));
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keep header visible in either approach */
+.table thead th {
+  position: sticky; top: 0; z-index: 1;
+  background: color-mix(in srgb, var(--bg, #fff), transparent 6%); /* theme-aware */
+  font-weight: 700; color: var(--heading, #0f172a);
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+/* Row hover */
+.table tbody tr:hover td {
+  background: color-mix(in srgb, var(--brand, #3b82f6), transparent 94%);
+}
+
+/* =========================================================
+   3) Mobile (≤760px): tables → labeled cards (no overlap)
+   - uses data-label if your JS sets it
+   - includes nth-child fallbacks for known tables
+   ========================================================= */
+@media (max-width: 760px) {
+  .table { max-height: none; }               /* natural page height on mobile */
+  .table thead { display: none; }
+  .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
+
+  .table tr {
+    background: var(--panel, var(--bg-elev, #fff));
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-block: 8px;
+    box-shadow: 0 8px 18px rgba(0,0,0,.06);
+  }
+  .table td {
+    display: grid;
+    grid-template-columns: minmax(120px, 42%) 1fr;  /* label | value */
+    gap: 8px;
+    padding: 8px 0;
+    border: 0;
+    background: transparent;
+  }
+  .table td::before {
+    content: attr(data-label);
+    color: var(--muted, #6b7280);
+    font-size: .92rem;
+  }
+
+  /* Fallback labels (if data-label is missing) — adjust if your columns differ */
+  /* Admins: Name | Email | Added | Actions */
+  #adminsTable td:nth-child(1)::before { content: "Name"; }
+  #adminsTable td:nth-child(2)::before { content: "Email"; }
+  #adminsTable td:nth-child(3)::before { content: "Added"; }
+  #adminsTable td:nth-child(4)::before { content: "Actions"; }
+
+  /* Users: Name | Role | Email | Created */
+  #usersTable td:nth-child(1)::before { content: "Name"; }
+  #usersTable td:nth-child(2)::before { content: "Role"; }
+  #usersTable td:nth-child(3)::before { content: "Email"; }
+  #usersTable td:nth-child(4)::before { content: "Created"; }
+
+  /* Quizzes: Title | Teacher | Created | Status (if present) */
+  #quizzesTable td:nth-child(1)::before { content: "Title"; }
+  #quizzesTable td:nth-child(2)::before { content: "Teacher"; }
+  #quizzesTable td:nth-child(3)::before { content: "Created"; }
+  #quizzesTable td:nth-child(4)::before { content: "Status"; }
+
+  /* Live: Session | Quiz | Status | Participants | Started */
+  #liveTable td:nth-child(1)::before { content: "Session"; }
+  #liveTable td:nth-child(2)::before { content: "Quiz"; }
+  #liveTable td:nth-child(3)::before { content: "Status"; }
+  #liveTable td:nth-child(4)::before { content: "Participants"; }
+  #liveTable td:nth-child(5)::before { content: "Started"; }
+}
+
+/* =========================================================
+   4) Theme safety for table text/borders (light & dark)
+   ========================================================= */
+.table th, .table td { color: var(--text, #111); }
+:root.dark .table th, :root.dark .table td,
+:root[data-theme="dark"] .table th, :root[data-theme="dark"] .table td {
+  color: var(--text, #e5e7eb);
+  border-color: color-mix(in srgb, var(--border-color, #374151), transparent 0%);
+}
+
+/* Disable sticky sidebar on small screens so it scrolls with the page */
+@media (max-width: 980px) {
+  .sidebar {
+    position: static !important;   /* was: sticky */
+    top: auto !important;
+    z-index: auto !important;
+    overflow: visible !important;
+    height: auto !important;
+    margin-bottom: 12px;            /* small gap before main content */
+  }
+
+  /* If anything inside the sidebar was made sticky inline, neutralize it */
+  .sidebar .sticky,
+  .sidebar [style*="position: sticky"] {
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* Ensure the grid collapses cleanly to one column and allows shrinking */
+  .layout { grid-template-columns: 1fr !important; }
+  .layout > * { min-width: 0; }     /* prevent horizontal overflow */
+}
