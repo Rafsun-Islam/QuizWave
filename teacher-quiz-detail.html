@@ -6,23 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/teacher.css" />
+    <!-- <link rel="stylesheet" href="css/teacher.css" /> -->
     <link rel="stylesheet" href="css/quiz-detail.css" />
-    <style>
-      .muted { opacity: 0.7; font-size: 0.9em; }
-      main { max-width: 900px; margin: 0 auto; padding: 16px; }
-      .input { width: 100%; padding: 8px; }
-      .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-      .hidden { display: none !important; }
-      .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-      .option-item { display: flex; gap: 8px; align-items: center; }
-    </style>
+    
   </head>
   <body>
     <div id="site-header"></div>
     
 
-    <main>
+    <main class="detail-wrap">
       <!-- Quiz header / status / controls -->
       <div id="quizHeader" class="card">Loading quiz…</div>
       <a class="btn" id="goLiveBtn">Start Live</a>
@@ -59,7 +51,7 @@
         <textarea id="questionText" class="input" rows="3" placeholder="Enter the question text..."></textarea>
 
         <!-- MCQ options (letters only saved as correct: A/B/C/D) -->
-        <div id="mcqBlock" class="hidden" style="margin-top: 10px">
+        <div id="mcqBlock" class="hidden" >
           <label>Options (pick the correct one)</label>
           <div class="options-grid">
             <div class="option-item">
@@ -79,7 +71,7 @@
               <input type="text" id="opt3" class="input" placeholder="Option D" />
             </div>
           </div>
-          <div class="muted" style="margin-top: 6px">All four options are required for MCQ.</div>
+          <div class="muted" >All four options are required for MCQ.</div>
         </div>
 
         <label>Correct Answer (MCQ/TF)</label>
@@ -248,5 +240,168 @@
     </script>
 
     <script src="js/site-shell.js"></script>
+
+    <script>
+/* Enhance native selects on Quiz Detail to guaranteed-dark custom dropdowns.
+   - Keeps original <select> in DOM (same id/name) for your JS and form submits.
+   - Auto-applies to selects inside body > main (skip multi-selects). */
+(function () {
+  const scope = document.querySelector('body > main') || document.body;
+  const selects = scope.querySelectorAll('select:not([multiple]):not([data-enhanced])');
+
+  selects.forEach((sel) => {
+    // Wrap
+    const wrap = document.createElement('div');
+    wrap.className = 'qd-select';
+    sel.parentNode.insertBefore(wrap, sel);
+    wrap.appendChild(sel);
+
+    // Reflect disabled state
+    if (sel.disabled) wrap.classList.add('qd-select--disabled');
+
+    // Trigger
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'qd-select__trigger';
+    trigger.setAttribute('aria-haspopup', 'listbox');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.textContent = sel.options[sel.selectedIndex]?.text || sel.getAttribute('placeholder') || 'Select';
+    wrap.appendChild(trigger);
+
+    // List
+    const list = document.createElement('ul');
+    list.className = 'qd-select__list';
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-hidden', 'true');
+    wrap.appendChild(list);
+
+    // Options
+    Array.from(sel.options).forEach((opt, i) => {
+      const li = document.createElement('li');
+      li.className = 'qd-select__option';
+      li.setAttribute('role', 'option');
+      li.dataset.value = opt.value;
+      li.textContent = opt.text;
+      if (opt.selected) li.setAttribute('aria-selected', 'true');
+      if (opt.disabled) { li.style.opacity = .6; li.style.cursor = 'not-allowed'; }
+      list.appendChild(li);
+    });
+
+    sel.dataset.enhanced = '1';
+
+    let activeIndex = sel.selectedIndex;
+
+    function openList() {
+      if (sel.disabled) return;
+      trigger.setAttribute('aria-expanded', 'true');
+      list.setAttribute('aria-hidden', 'false');
+      setActive(activeIndex >= 0 ? activeIndex : 0);
+      list.focus({ preventScroll: true });
+      document.addEventListener('click', onDocClick, true);
+    }
+    function closeList() {
+      trigger.setAttribute('aria-expanded', 'false');
+      list.setAttribute('aria-hidden', 'true');
+      clearActive();
+      document.removeEventListener('click', onDocClick, true);
+      trigger.focus({ preventScroll: true });
+    }
+    function onDocClick(e) { if (!wrap.contains(e.target)) closeList(); }
+
+    function setActive(idx) {
+      const items = list.querySelectorAll('.qd-select__option');
+      items.forEach((el, i) => el.toggleAttribute('data-active', i === idx));
+      activeIndex = idx;
+      ensureVisible(items[idx]);
+    }
+    function clearActive() {
+      list.querySelectorAll('.qd-select__option').forEach(el => el.removeAttribute('data-active'));
+    }
+    function ensureVisible(el) {
+      if (!el) return;
+      const eb = el.getBoundingClientRect();
+      const lb = list.getBoundingClientRect();
+      if (eb.top < lb.top || eb.bottom > lb.bottom) el.scrollIntoView({ block: 'nearest' });
+    }
+
+    function selectIndex(idx, dispatch = true) {
+      const items = list.querySelectorAll('.qd-select__option');
+      const target = items[idx];
+      if (!target || target.style.cursor === 'not-allowed') return;
+
+      items.forEach(el => el.removeAttribute('aria-selected'));
+      target.setAttribute('aria-selected', 'true');
+      const value = target.dataset.value;
+
+      // Update native select (keeps your JS and form submit happy)
+      sel.value = value;
+      trigger.textContent = target.textContent;
+
+      if (dispatch) {
+        sel.dispatchEvent(new Event('input', { bubbles: true }));
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+
+    // Mouse
+    trigger.addEventListener('click', () => {
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      expanded ? closeList() : openList();
+    });
+    list.addEventListener('click', (e) => {
+      const li = e.target.closest('.qd-select__option');
+      if (!li) return;
+      const idx = Array.from(list.children).indexOf(li);
+      selectIndex(idx);
+      closeList();
+    });
+
+    // Keyboard (accessible)
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault(); openList();
+      }
+    });
+    list.addEventListener('keydown', (e) => {
+      const count = list.children.length;
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(Math.min(activeIndex + 1, count - 1)); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); setActive(Math.max(activeIndex - 1, 0)); }
+      if (e.key === 'Home')      { e.preventDefault(); setActive(0); }
+      if (e.key === 'End')       { e.preventDefault(); setActive(count - 1); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectIndex(activeIndex); closeList(); }
+      if (e.key === 'Escape') { e.preventDefault(); closeList(); }
+    });
+
+    // Reflect external changes to the native select (if your JS updates it)
+    sel.addEventListener('change', () => {
+      const idx = sel.selectedIndex;
+      if (idx >= 0) {
+        activeIndex = idx;
+        selectIndex(idx, false);
+      }
+    });
+
+    // If options are added/removed dynamically later, refresh list
+    const mo = new MutationObserver(() => {
+      list.innerHTML = '';
+      Array.from(sel.options).forEach((opt) => {
+        const li = document.createElement('li');
+        li.className = 'qd-select__option';
+        li.setAttribute('role', 'option');
+        li.dataset.value = opt.value;
+        li.textContent = opt.text;
+        if (opt.selected) li.setAttribute('aria-selected', 'true');
+        if (opt.disabled) { li.style.opacity = .6; li.style.cursor = 'not-allowed'; }
+        list.appendChild(li);
+      });
+      activeIndex = sel.selectedIndex;
+      trigger.textContent = sel.options[activeIndex]?.text || trigger.textContent;
+    });
+    mo.observe(sel, { childList: true, subtree: true, attributes: true });
+
+  });
+})();
+</script>
+
   </body>
 </html>

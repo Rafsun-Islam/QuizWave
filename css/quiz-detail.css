@@ -1,77 +1,346 @@
-/* ====================================
-   Teacher Quiz Detail — Pro Styling
-   ==================================== */
+/* =========================================
+   Teacher Quiz Detail — Responsive & Scoped
+   (targets your real IDs/classes)
+   ========================================= */
 
-main, .container { max-width: 1100px; margin: 0 auto; }
+/* ---- Page container (beats inline <style>) ---- */
+body > main {
+  max-width: 1120px !important;
+  margin: 0 auto !important;
+  padding: clamp(16px, 3vw, 24px) !important;
+}
 
-.qd-header.card {
-  background: var(--panel);
-  border: var(--border);
+/* ---- Buttons (only inside this page) ---- */
+body > main .btn,
+body > main button {
+  padding: 8px 14px !important;
+  font-size: 0.95rem !important;
+  border-radius: 10px !important;
+  display: inline-flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+body > main .btn.primary {
+  background: linear-gradient(180deg, var(--brand-2), var(--brand-2));
+  color: #fff; border: 0;
+}
+body > main .btn.ghost {
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+}
+@media (max-width: 560px) {
+  body > main .btn { width: 100%; }
+}
+
+/* ---- Card shell (match your theme tokens) ---- */
+body > main .card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 18px;
-  margin: 14px 0;
 }
 
-.qd-title { margin: 0 0 8px; color: var(--heading); font-size: 24px; font-weight: 800; }
-.qd-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; color: var(--muted); }
-.qd-badge {
-  display: inline-block; padding: 4px 8px; border-radius: 12px;
-  background: rgba(96,165,250,.18); color: #cfe6ff; font-size: 12px;
+/* =======================
+   Header / Meta section
+   ======================= */
+#quizHeader.card h2 {
+  margin-top: 0;
+  color: var(--heading);
+  font-size: clamp(1.3rem, 1.1rem + 1.6vw, 2.1rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
-.qd-actions { margin-left: auto; display: flex; gap: 8px; }
+#quizHeader.card p.small,
+#quizHeader.card .small,
+#quizHeader.card .muted { color: var(--muted); }
 
-.qd-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+/* Place the live/results buttons nicely if inline style isn't present */
+#quizHeader.card .actions {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;
+}
 
-.qd-card {
-  background: var(--panel);
-  border: var(--border);
+/* =======================
+   Quiz Meta (summary card)
+   ======================= */
+#quizMeta.card h3 { margin: 0 0 10px; color: var(--heading); }
+#quizMeta.card .muted { color: var(--muted); }
+
+/* Optional “chip” style for quick facts if you render them */
+.qd-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--card-border);
+  background: var(--bg-elev);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.92rem;
+  margin-right: 8px; margin-top: 8px;
+}
+
+/* =======================
+   Questions list
+   ======================= */
+#questionList {
+  display: grid;
+  gap: 12px;
+}
+
+/* Each question your JS injects is a .card — make it a tidy row */
+#questionList > .card {
+  display: grid;
+  grid-template-columns: 1fr auto;  /* content | actions */
+  gap: 10px;
+}
+@media (max-width: 640px) {
+  #questionList > .card { grid-template-columns: 1fr; }
+}
+
+/* Heuristics to style question pieces even if no special classes */
+#questionList > .card :is(strong, h4, h5) {
+  color: var(--heading);
+  line-height: 1.3;
+}
+#questionList > .card .small,
+#questionList > .card .muted { color: var(--muted); }
+
+/* If options are rendered as an <ol> */
+#questionList > .card ol { margin: 6px 0 0 18px; }
+
+/* Right-side actions (edit/delete) */
+#questionList > .card .q-actions,
+#questionList > .card > :last-child {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+@media (max-width: 560px) {
+  #questionList > .card .q-actions .btn,
+  #questionList > .card > :last-child .btn { width: 100%; }
+}
+
+/* Empty state when no questions */
+#questionList:empty::before {
+  content: "No questions yet.";
+  display: block;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--card-border);
   border-radius: var(--radius);
+  padding: 24px 10px;
+}
+
+/* =======================
+   Add Question box
+   ======================= */
+#addBox.card h3 { margin: 0 0 10px; color: var(--heading); }
+
+#addBox .row {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+#addBox .input,
+#addBox select,
+#addBox textarea {
+  width: 100%;
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  line-height: 1.2;
+}
+#addBox textarea { min-height: 110px; resize: vertical; }
+#addBox label { color: var(--muted); font-size: .95rem; margin: 0 0 6px; }
+
+/* MCQ options grid */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 560px) { .options-grid { grid-template-columns: 1fr; } }
+.option-item {
+  display: flex; gap: 8px; align-items: center;
+}
+.option-item input[type="text"] { flex: 1 1 auto; }
+
+/* Add button row */
+#addBox .row .btn { justify-self: end; }
+@media (max-width: 560px) { #addBox .row .btn { justify-self: stretch; } }
+
+/* =======================
+   Results / Leaderboard
+   ======================= */
+#resultsPanel.card h3 { margin: 0 0 10px; color: var(--heading); }
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-elev);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.table th, .table td {
+  padding: 10px 12px;
+  border-bottom: var(--border);
+  text-align: left;
+  color: var(--text);
+}
+.table th {
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  background: var(--panel);
+}
+
+/* Charts scale fluidly */
+#optDistChart, #top5Chart {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* =======================
+   Utilities
+   ======================= */
+.break-anywhere, #shareLink, code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Standalone action buttons on Quiz Detail */
+body > main :is(#goLiveBtn, #showResultsBtn) {
+  display: inline-flex;                 /* keep button look */
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;                    /* consistent sizing */
+  border-radius: 10px;
+  margin: 14px 0;                       /* top/bottom space vs sections */
+}
+
+/* Space between the two buttons when adjacent */
+body > main :is(#goLiveBtn, #showResultsBtn)
+ + :is(#goLiveBtn, #showResultsBtn) {
+  margin-left: 10px;
+}
+
+/* If a card sits before/after these buttons, add separation */
+body > main .card + :is(#goLiveBtn, #showResultsBtn),
+body > main :is(#goLiveBtn, #showResultsBtn) + .card {
+  margin-top: 14px;
+}
+
+/* Mobile: make them full-width and stacked with nice gaps */
+@media (max-width: 560px) {
+  body > main :is(#goLiveBtn, #showResultsBtn) {
+    display: flex;
+    width: 100%;
+    margin: 10px 0;
+  }
+  body > main :is(#goLiveBtn, #showResultsBtn)
+   + :is(#goLiveBtn, #showResultsBtn) {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+/* ====== Dark, accessible custom select for Quiz Detail ====== */
+/* Scope: only inside body > main so we don't affect other pages */
+body > main .qd-select { position: relative; width: 100%; }
+
+/* Keep your original <select> for JS/submit, but hide visually */
+body > main .qd-select select {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+/* The dark trigger button */
+body > main .qd-select__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  line-height: 1.2;
+  cursor: pointer;
+  user-select: none;
+}
+body > main .qd-select__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-color: var(--brand-2);
+}
+body > main .qd-select__trigger::after {
+  content: "";
+  border-style: solid;
+  border-width: 6px 5px 0 5px; /* caret */
+  border-color: currentColor transparent transparent transparent;
+}
+
+/* Dropdown list (dark) */
+body > main .qd-select__list {
+  position: absolute;
+  left: 0; right: 0; top: calc(100% + 6px);
+  max-height: 260px;
+  overflow: auto;
+  background: var(--bg-elev);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 6px;
   box-shadow: var(--shadow);
-  padding: 18px;
-  margin: 14px 0;
+  display: none;
+  z-index: 1000;
 }
-.qd-card h3 { margin: 0 0 10px; color: var(--heading); }
+body > main .qd-select__list[aria-hidden="false"] { display: block; }
 
-.qd-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.qd-kpi {
-  background: var(--bg-elev);
-  border: var(--border);
-  border-radius: 12px;
-  padding: 12px;
+body > main .qd-select__option {
+  list-style: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
 }
-.qd-kpi .v { font-size: 24px; font-weight: 800; }
-.qd-kpi .l { color: var(--muted); font-size: 12px; }
-
-.qd-list { display: grid; gap: 12px; }
-.qd-item {
-  background: var(--bg-elev);
-  border: var(--border);
-  border-radius: 12px;
-  padding: 12px;
+body > main .qd-select__option:hover { background: var(--panel); }
+body > main .qd-select__option[aria-selected="true"] {
+  background: rgba(96,165,250,0.15);
+  color: var(--heading);
 }
-.qd-item h4 { margin: 0 0 6px; color: var(--heading); font-size: 16px; }
-.qd-item .meta { color: var(--muted); font-size: 12px; }
-
-.table { width: 100%; border-collapse: collapse; }
-.table th, .table td { padding: 10px 12px; border-bottom: var(--border); text-align: left; }
-.table th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 12px; }
-
-.btn {
-  --bg: var(--brand-2); --fg: #fff;
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 14px; border-radius: 12px; border: 0; cursor: pointer;
-  background: var(--bg); color: var(--fg);
-  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
-  box-shadow: 0 4px 10px rgba(0,0,0,.18);
+body > main .qd-select__option[data-active="true"] {
+  outline: 2px solid var(--brand-2);
+  outline-offset: 1px;
 }
-.btn:hover { transform: translateY(-1px); box-shadow: 0 10px 16px rgba(0,0,0,.25); }
-.btn.ghost { --bg: transparent; --fg: var(--text); border: var(--border); box-shadow: none; }
-.btn.secondary { --bg: #1b2540; }
-.btn.success { --bg: var(--success); }
-.btn.warn { --bg: var(--warning); }
-.btn.danger { --bg: var(--danger); }
 
-/* Reveal animation */
-.reveal { opacity: 0; transform: translateY(12px); transition: all .6s cubic-bezier(.2,.7,.2,1); }
-.reveal.visible { opacity: 1; transform: none; }
+/* Disabled state mirrors native */
+body > main .qd-select--disabled .qd-select__trigger {
+  opacity: .6; cursor: not-allowed;
+}
+
+/* Mobile tap targets a bit larger */
+@media (max-width: 520px) {
+  body > main .qd-select__trigger { padding: 12px 16px; }
+  body > main .qd-select__option { padding: 12px 14px; }
+}

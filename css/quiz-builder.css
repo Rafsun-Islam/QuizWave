@@ -1,32 +1,32 @@
-/* Quiz Builder — Responsive & Polished
-   (keeps original HTML IDs & classes for JS) */
+/* Quiz Builder — responsive, keeps original HTML classes used by your JS */
 
-/* ---- Override base.css buttons (slimmer, centered) ---- */
+/* ---------- Buttons: slimmer + wrap nicely ---------- */
 button, .btn {
   padding: 8px 14px !important;
   font-size: 0.95rem !important;
   border-radius: 10px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
+  display: inline-flex; align-items: center; justify-content: center;
+  text-align: center;
 }
 button:hover, .btn:hover { background: var(--card-hover-bg); }
 button:active, .btn:active { transform: translateY(1px); }
 
-@media (max-width: 520px) {
-  .row .btn,
-  form .btn { width: 100%; }
+/* Make action buttons comfortable on phones */
+@media (max-width: 560px) {
+  form.card .row .btn,
+  form.card .btn { width: 100%; }
 }
 
-/* ---- Main container ---- */
+/* ---------- Page gutters so nothing hugs edges ---------- */
 main {
-  max-width: 900px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
 }
+@media (max-width: 768px) { main { padding: 18px; } }
+@media (max-width: 480px) { main { padding: 14px; } }
 
-/* ---- Form card ---- */
+/* ---------- The builder "card" ---------- */
 form.card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -39,26 +39,38 @@ form.card {
   gap: 16px;
 }
 
-/* ---- Labels & inputs ---- */
+/* ---------- Labels & Inputs (keep your IDs/classes) ---------- */
 label {
   display: block;
   color: var(--muted);
-  margin-bottom: 6px;
+  margin: 0 0 6px;
   font-size: 0.95rem;
 }
+
 .input,
 select,
-textarea {
+textarea,
+input[type="text"],
+input[type="number"] {
   width: 100%;
   background: var(--input-bg);
   color: var(--text);
   border: 1px solid var(--input-border);
   border-radius: 12px;
   padding: 12px 14px;
+  line-height: 1.2;
 }
-textarea { resize: vertical; min-height: 100px; }
+textarea { resize: vertical; min-height: 110px; }
 
-/* ---- Rows ---- */
+/* Prevent long words/URLs from breaking layout */
+form.card, form.card * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* ---------- Rows: flexible & responsive ---------- */
+/* Your HTML already uses .row extensively; keep it flexible */
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -66,55 +78,74 @@ textarea { resize: vertical; min-height: 100px; }
   align-items: flex-start;
 }
 
-/* ---- Segmented toggle (timed / non-timed) ---- */
+/* Common two-up fields (time/points etc.) */
+.inline-nums {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 680px) { .inline-nums { grid-template-columns: 1fr; } }
+
+/* If you already put multiple inputs inside a .row, make children grow evenly */
+.row > div { flex: 1 1 260px; min-width: 240px; }
+@media (max-width: 560px) { .row > div { min-width: 100%; } }
+
+/* ---------- Segmented toggle (your .seg) ---------- */
 .seg {
   display: inline-flex;
   border: 1px solid var(--card-border);
   border-radius: 10px;
   overflow: hidden;
+  background: var(--bg-elev);
 }
 .seg button {
   border: 0;
-  background: var(--bg-elev);
+  background: transparent;
   color: var(--text);
   padding: 8px 14px;
   cursor: pointer;
+  white-space: nowrap;
 }
 .seg button.active {
   background: var(--card-bg);
-  font-weight: 600;
   color: var(--heading);
+  font-weight: 600;
 }
 
-/* ---- Hide utility ---- */
-.hide { display: none; }
+/* ---------- Muted/help text ---------- */
+.muted, .help { color: var(--muted); font-size: .92rem; }
 
-/* ---- Muted / help text ---- */
-.muted, .help {
-  color: var(--muted);
-  font-size: 0.9rem;
+/* ---------- Utility: hide ---------- */
+.hide { display: none !important; }
+
+/* ---------- Actions row (submit/reset) ---------- */
+.form-actions, .row.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 560px) {
+  .form-actions .btn, .row.actions .btn { flex: 1 1 100%; }
 }
 
-/* ---- Actions row (submit/cancel) ---- */
-.row .btn {
-  flex: 0 0 auto;
-}
-@media (max-width: 600px) {
-  .row .btn { flex: 1 1 100%; }
-}
-
-/* ---- Info tip card ---- */
-main > .card {
-  background: var(--bg-elev);
+/* ---------- Optional: status pill when you show read-only status ---------- */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
   border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  padding: 14px;
-  margin-top: 12px;
-  font-size: 0.92rem;
-  color: var(--muted);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.status-pill::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted);
 }
 
-/* Hide the select but keep it in the accessibility tree & form submission */
+/* ---------- Mobile polish ---------- */
+@media (max-width: 480px) {
+  .seg { width: 100%; }
+  .seg button { flex: 1 1 50%; text-align: center; }
+}
+
+/* ---------- If you kept #status as hidden Draft (from earlier) ---------- */
+/* (no need to see the select; keep it functional for JS/DB) */
 .visually-hidden {
   position: absolute !important;
   width: 1px !important;
@@ -128,20 +159,91 @@ main > .card {
   white-space: nowrap !important;
 }
 
-/* Optional: nice read-only badge so teachers see it's Draft */
-.status-pill {
+/* ===== QUIZ BUILDER: robust responsiveness across all devices ===== */
+
+/* 1) Fix gutters even if base.css sets main.container { padding: 0 } */
+main.container,
+main {
+  padding-left: clamp(14px, 3vw, 24px) !important;
+  padding-right: clamp(14px, 3vw, 24px) !important;
+}
+
+/* 2) Make every builder row a responsive grid (no more one-size breakpoint) */
+form.card .row {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+/* Very narrow devices: allow smaller columns before stacking */
+@media (max-width: 420px) {
+  form.card .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Neutralize old flex/min-width rules that caused overflow on some widths */
+form.card .row > * {
+  min-width: 0 !important;   /* allow shrinking */
+  flex: initial !important;   /* ignore old flex-basis */
+}
+
+/* 3) Number fields (time/points) stay two-up until space is tight */
+.inline-nums {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(160px, 1fr));
+  gap: 12px;
+}
+@media (max-width: 640px) {
+  .inline-nums { grid-template-columns: 1fr; }
+}
+
+/* 4) Inputs are fluid; no accidental fixed widths */
+form.card input,
+form.card select,
+form.card textarea {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 5) Buttons: centered label, wrap to full width only when necessary */
+button, .btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 14px !important;
+  font-size: 0.95rem !important;
+  border-radius: 10px !important;
+  text-align: center !important;
+}
+@media (max-width: 560px) {
+  form.card .row .btn,
+  form.card .btn { width: 100%; }
+}
+
+/* 6) Segmented toggle adapts across widths */
+.seg {
   display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
   border: 1px solid var(--card-border);
+  border-radius: 10px;
+  overflow: hidden;
   background: var(--bg-elev);
+}
+.seg button {
+  border: 0;
+  background: transparent;
   color: var(--text);
-  font-size: 0.95rem;
+  padding: 8px 14px;
+  cursor: pointer;
+  white-space: nowrap;
 }
-.status-pill::before {
-  content: "";
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--muted);
+.seg button.active { background: var(--card-bg); color: var(--heading); font-weight: 600; }
+@media (max-width: 680px) {
+  .seg { width: 100%; }
+  .seg button { flex: 1 1 50%; text-align: center; }
 }
+
+/* 7) Safety: prevent any horizontal scroll from stray elements */
+html, body { overflow-x: hidden; }
