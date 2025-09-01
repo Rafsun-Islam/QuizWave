@@ -1,7 +1,107 @@
-
 /* Component-specific polish */
-.nav-student a.active, .nav-teacher a.active { border-bottom:2px solid var(--brand) }
-.avatar{ width:32px; height:32px; border-radius:50%; background:linear-gradient(45deg,var(--brand),var(--brand-2)) }
-.banner{ background:linear-gradient(90deg, rgba(110,231,183,.15), transparent 60%); padding:10px 14px; border-radius:12px; border:1px dashed rgba(110,231,183,.35)}
-.kpi{ display:flex; align-items:center; gap:12px }
-.kpi .value{ font-size:34px; font-weight:800 }
+.nav-student a.active,
+.nav-teacher a.active {
+  border-bottom: 2px solid var(--brand);
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, var(--brand), var(--brand-2));
+}
+.banner {
+  background: linear-gradient(
+    90deg,
+    rgba(110, 231, 183, 0.15),
+    transparent 60%
+  );
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px dashed rgba(110, 231, 183, 0.35);
+}
+.kpi {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.kpi .value {
+  font-size: 34px;
+  font-weight: 800;
+}
+
+/* ==== Auth Page Layout (added) ==== */
+.auth-shell {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* header / main / (optional) footer */
+}
+
+.auth-main {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* Constrain the auth card */
+.login-card {
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+/* Vertical stacking for form fields */
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-stack .field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-stack .field label {
+  font-weight: 600;
+  color: var(--heading);
+}
+
+/* Password eye toggle layout */
+.password-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+  flex: 1;
+}
+
+.eye-icon {
+  cursor: pointer;
+  user-select: none;
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* Responsive actions row */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.form-actions .btn {
+  flex: 1 1 180px;
+}
+
+@media (max-width: 480px) {
+  .form-actions .btn {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+}

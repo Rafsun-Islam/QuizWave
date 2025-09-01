@@ -4,47 +4,18 @@
     <meta charset="utf-8" />
     <title>Join Live Quiz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/live.css" />
+    <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/theme-transitions.css">
+<link rel="stylesheet" href="css/live.css">
 
-    <style>
-      body {
-        background: #f6f7fb;
-      }
-      main {
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 16px;
-      }
-      .card {
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 16px;
-        background: #fff;
-      }
-      .input {
-        width: 100%;
-        padding: 10px;
-      }
-      .muted {
-        color: #6b7280;
-      }
-      .choices label {
-        display: block;
-        margin: 6px 0;
-      }
-      .num {
-        font-variant-numeric: tabular-nums;
-      }
-    </style>
   </head>
   <body>
-    <main>
+    <main class="container">
       <div id="joinCard" class="card">
         <h1>Join Live Quiz</h1>
         <p class="muted">Enter the PIN from your teacher and your nickname.</p>
-        <div style="display: grid; gap: 8px; grid-template-columns: 1fr 1fr">
+        <div>
           <div>
             <label class="muted">PIN</label>
             <input
@@ -64,28 +35,36 @@
             />
           </div>
         </div>
-        <div style="margin-top: 10px; display: flex; gap: 8px">
+        <div>
           <button id="joinBtn">Join</button>
           <button id="leaveBtn" disabled>Leave</button>
         </div>
-        <div id="joinMsg" class="muted" style="margin-top: 8px"></div>
+        <div id="joinMsg" class="muted"></div>
       </div>
 
-      <div id="lobby" class="card" style="display: none">
+      <div id="lobby" class="card" >
         <h2 id="lobbyTitle">Lobby</h2>
         <div class="muted">Waiting for host to start…</div>
       </div>
 
-      <div id="play" class="card" style="display: none">
+      <div id="play" class="live-card" >
         <h2 id="qPrompt">Question</h2>
-        <div id="qChoices" class="choices" style="margin-top: 8px"></div>
+        <div id="qChoices" class="choices two-col"></div>
         <button id="submitBtn" disabled>Submit</button>
-        <div id="after" class="muted" style="margin-top: 8px"></div>
+        <div id="after" class="muted" ></div>
       </div>
     </main>
+
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/01-supabase-connection.js"></script>
     <script src="js/21-live-join.js"></script>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
   </body>
 </html>

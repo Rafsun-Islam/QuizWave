@@ -6,120 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/theme-transitions.css" />
     <link rel="stylesheet" href="css/live.css" />
-
-    <style>
-      :root {
-        --muted: #6b7280;
-      }
-      body {
-        background: #f6f7fb;
-      }
-      main {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 16px;
-      }
-      .grid {
-        display: grid;
-        gap: 12px;
-        grid-template-columns: 2fr 1fr;
-        align-items: start;
-      }
-      .card {
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 16px;
-        background: #fff;
-      }
-      .muted {
-        color: var(--muted);
-      }
-      #qr {
-        width: 200px;
-        height: 200px;
-        border: 1px dashed #ddd;
-        background: #fafafa;
-      }
-      ol {
-        margin-left: 20px;
-      }
-      .btn-row {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-      .num {
-        font-variant-numeric: tabular-nums;
-      }
-      .pill {
-        display: inline-block;
-        padding: 4px 10px;
-        border-radius: 999px;
-        background: #eef2ff;
-        border: 1px solid #e5e7eb;
-      }
-      .flex {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-      .choices {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-      }
-      .choice {
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 10px;
-        background: #f9fafb;
-      }
-      table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 6px;
-      }
-      th {
-        text-align: left;
-        font-weight: 600;
-      }
-      td,
-      th {
-        padding: 6px 8px;
-      }
-      .row {
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-      }
-      .row td {
-        border-top: 1px solid #e5e7eb;
-      }
-      .row td:first-child {
-        border-left: 1px solid #e5e7eb;
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-      }
-      .row td:last-child {
-        border-right: 1px solid #e5e7eb;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-      }
-      @media (max-width: 900px) {
-        .grid {
-          grid-template-columns: 1fr;
-        }
-        #qr {
-          width: 160px;
-          height: 160px;
-        }
-      }
-    </style>
   </head>
   <body>
-    <main>
-      <header class="flex" style="justify-content: space-between">
+    <main class="container">
+      <header class="live-header">
         <div>
           <h1 id="sessionTitle">Live Host</h1>
           <div class="muted" id="quizMeta"></div>
@@ -129,9 +21,9 @@
         </div>
       </header>
 
-      <section class="grid" style="margin-top: 12px">
+      <section class="grid">
         <section class="card">
-          <div class="btn-row" style="margin-bottom: 10px">
+          <div class="btn-row">
             <button id="createBtn">Create Session</button>
             <button id="startBtn" disabled>Start Game</button>
             <button id="nextBtn" disabled>Next Question</button>
@@ -141,30 +33,18 @@
               title="Seconds per question (host-paced timer)"
             >
               <span>Sec/Q:</span>
-              <input
-                id="qSec"
-                type="number"
-                value="20"
-                min="5"
-                max="120"
-                style="width: 70px; margin-left: 6px"
-              />
+              <input id="qSec" type="number" value="20" min="5" max="120" />
             </label>
             <label
               class="flex muted"
               title="Allow guests without accounts to join"
             >
-              <input
-                id="allowGuests"
-                type="checkbox"
-                checked
-                style="margin-right: 6px"
-              />
+              <input id="allowGuests" type="checkbox" checked />
               Allow guests
             </label>
           </div>
 
-          <div class="flex" style="gap: 18px">
+          <div class="flex">
             <canvas id="qr"></canvas>
             <div>
               <div class="muted">Join URL</div>
@@ -175,27 +55,36 @@
             </div>
           </div>
 
-          <hr style="margin: 16px 0" />
+          <hr />
 
           <h2 id="currentQ">No question yet</h2>
           <div class="muted" id="timer"></div>
-          <div id="qChoices" class="choices" style="margin-top: 8px"></div>
-          <div id="ansStats" class="muted" style="margin-top: 8px"></div>
+          <div id="qChoices" class="choices"></div>
+          <div id="ansStats" class="muted"></div>
         </section>
 
         <aside class="card">
           <h3>Participants <span id="pcount" class="num">0</span></h3>
           <ol id="plist"></ol>
-          <hr style="margin: 12px 0" />
+          <hr />
           <h3>Scoreboard</h3>
           <div id="board"></div>
         </aside>
       </section>
     </main>
-
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
     <script src="js/01-supabase-connection.js"></script>
+
     <script src="js/20-live-host.js"></script>
+
+    <script src="js/04-auth.js"></script>
+    <script src="js/site-shell.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
   </body>
 </html>

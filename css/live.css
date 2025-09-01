@@ -1,51 +1,220 @@
-:root {
-  --border: #e5e7eb;
-  --bg: #fff;
-  --bg-soft: #f9fafb;
-  --text-muted: #6b7280;
-  --accent: #6366f1;      /* indigo-500 */
-  --accent-soft: #eef2ff; /* indigo-50 */
+/* Live session UI — tokenized to base.css theme, roomy, and fully responsive */
+
+/* ---------- Layout utilities ---------- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
 }
+.flex { display: flex; align-items: center; gap: 12px; }
+.flex-wrap { flex-wrap: wrap; }
+.justify-between { justify-content: space-between; }
 
-.live-muted { color: var(--text-muted); }
-
-.choices {
-  display: grid;
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+.pill {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-weight: 500;
 }
-.choices label {
-  display: flex; align-items: center; gap: 10px;
-  border: 1px solid var(--border);
-  background: var(--bg-soft);
-  border-radius: 12px;
-  padding: 10px 12px;
-  cursor: pointer; user-select: none;
-  transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Gutters (fix “suffocating” edges on small screens) ---------- */
+/* Applies even if you didn't add .container around <main> */
+.page-gutter { padding-left: 24px; padding-right: 24px; }
+
+@media (max-width: 1024px) {
+  .container { padding: 20px; }
+  .page-gutter { padding-left: 20px; padding-right: 20px; }
 }
-.choices label:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+@media (max-width: 768px) {
+  /* Global safety net: ensure some breathing room even without classes */
+  body { padding-left: 14px; padding-right: 14px; }
+  .container { padding-left: 18px; padding-right: 18px; }
+  .page-gutter { padding-left: 18px; padding-right: 18px; }
 }
-.choices input[type="radio"] { inline-size: 16px; block-size: 16px; }
-.choices label:has(input[type="radio"]:checked) {
-  background: var(--accent-soft); border-color: var(--accent);
+@media (max-width: 480px) {
+  body { padding-left: 12px; padding-right: 12px; }
+  .container { padding-left: 16px; padding-right: 16px; }
+  .page-gutter { padding-left: 16px; padding-right: 16px; }
 }
 
-.answer-locked .choices label { opacity: .7; cursor: default; }
-.answer-locked .choices input[type="radio"] { pointer-events: none; }
-
-.leaderboard {
-  margin-top: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  border-radius: 12px;
-  padding: 10px;
+/* ---------- Base blocks ---------- */
+.live-card, .leaderboard, .choices, #play, #waiting, #prepare {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin: 20px 0;
 }
-.leaderboard h4 { margin: 0 0 8px 0; }
-.leaderboard table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
-.leaderboard th, .leaderboard td { text-align: left; padding: 6px 8px; }
+
+.live-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.live-section {
+  display: grid;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.muted, .live-muted { color: var(--muted); }
+
+/* ---------- Typography ---------- */
+h1 {
+  color: var(--heading);
+  margin: 0 0 6px 0;
+  font-size: clamp(1.25rem, 1.1rem + 1.2vw, 2rem);
+  line-height: 1.2;
+}
+h2 {
+  color: var(--heading);
+  margin: 0 0 10px 0;
+  font-size: clamp(1.1rem, 1rem + 0.7vw, 1.5rem);
+}
+#qPrompt {
+  margin: 0 0 12px 0;
+  color: var(--heading);
+  font-size: clamp(1.1rem, 1rem + 0.7vw, 1.4rem);
+  font-weight: 600;
+}
+
+/* ---------- Buttons ---------- */
+button, .button {
+  appearance: none;
+  border: 1px solid var(--card-border);
+  background: var(--bg-elev);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+button:hover, .button:hover { background: var(--card-hover-bg); }
+button:active, .button:active { transform: translateY(1px); }
+button[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+/* ---------- Choices ---------- */
+.choices { display: grid; gap: 14px; margin-top: 16px; }
+.choices.two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.choices label { display: block; }
+.choice {
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: var(--bg-elev);
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+/* ---------- Leaderboard ---------- */
+.leaderboard { padding: 16px; margin-top: 20px; }
+.leaderboard h4 { margin: 0 0 10px; color: var(--heading); font-size: 1.1rem; }
+
+/* Table: keep simple & readable; scroll on small */
+.live-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  display: block;            /* allow overflow on small */
+  overflow-x: auto;
+}
+.live-table th, .live-table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--card-border);
+  white-space: nowrap;       /* prevent awkward wraps when scrolling */
+}
+.live-table tr:last-child td { border-bottom: none; }
+
+/* Row “cards” when used outside table context */
 .leaderboard .row {
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: var(--bg-elev);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 6px;
+}
+
+/* ---------- Small stats chips ---------- */
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: var(--bg-elev);
+  margin-top: 10px;
+}
+
+/* ---------- URL handling (fix broken/wrapping) ---------- */
+/* Use this when the URL is inside a <div>/<span>/<a>/<code> etc. */
+.break-anywhere,
+.session-url,
+.session-url a,
+.session-url code,
+#sessionUrl,
+#liveUrl,
+#joinUrl {
+  overflow-wrap: anywhere;   /* modern, best for long URLs */
+  word-break: break-word;    /* fallback */
+}
+
+/* If you show the URL inside an <input>, apply .url-input to it */
+.url-input {
+  display: block;
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  overflow-x: auto;
+  white-space: nowrap;       /* keep it on one line and let it scroll */
+  text-overflow: clip;       /* no ellipsis: we want to see the whole URL on scroll */
+}
+
+/* Make the URL look like a nice block with copy button next to it (optional) */
+.session-url {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: var(--bg-elev);
+}
+
+/* ---------- Responsive ---------- */
+
+/* Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+  .live-section { gap: 18px; }
+  .btn-row { gap: 10px; }
+}
+
+/* Phablet (≤ 768px) */
+@media (max-width: 768px) {
+  .live-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .choices.two-col { grid-template-columns: 1fr; }
+  .btn-row { gap: 10px; margin-bottom: 14px; }
+  .pill { padding: 8px 12px; }
+  .live-card, .leaderboard, .choices, #play, #waiting, #prepare { margin: 16px 0; padding: 18px; }
+  button, .button { width: 100%; }
+}
+
+/* Small phones (≤ 480px) */
+@media (max-width: 480px) {
+  .live-header { gap: 8px; }
+  .btn-row { gap: 8px; margin-bottom: 12px; }
+  .choice { padding: 12px 14px; min-height: 48px; }
+  .live-card, .leaderboard, .choices, #play, #waiting, #prepare { padding: 16px; margin: 14px 0; }
+  .live-table { font-size: 0.95rem; }
 }
