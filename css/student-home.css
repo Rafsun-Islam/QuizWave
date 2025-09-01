@@ -1,0 +1,140 @@
+/* ==============================================================
+   STUDENT HOME — Mirror Teacher Quiz Card Style (JS-proof)
+   ============================================================== */
+
+/* 0) Page gutters (keeps breathing room around everything) */
+body > main.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 24px) !important;
+}
+
+/* 1) The lists: same responsive grid/spacing the teacher page uses */
+#availableQuizzesList,
+#inProgressList {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: clamp(20px, 3vw, 28px) !important;     /* matches teacher spacing */
+  margin-top: clamp(12px, 2vw, 20px) !important;
+}
+
+/* 2) Each item styled as a Teacher card (works for .card/.quiz-card/any child) */
+#availableQuizzesList > *,
+#inProgressList > *,
+#availableQuizzesList .quiz-card,
+#inProgressList .quiz-card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  border-radius: 16px !important;             /* teacher radius */
+  box-shadow: var(--shadow) !important;
+  padding: 18px !important;                    /* teacher inner padding */
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  min-height: 210px;                           /* consistent visual height */
+  text-align: left !important;                 /* teacher cards are left-aligned */
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+/* Hover pop (same feel as teacher cards) */
+#availableQuizzesList > *:hover,
+#inProgressList > *:hover,
+#availableQuizzesList .quiz-card:hover,
+#inProgressList .quiz-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px rgba(0,0,0,.28);
+}
+
+/* 3) Titles, meta, and clamping like teacher */
+#availableQuizzesList h3,
+#inProgressList h3,
+#availableQuizzesList .title,
+#inProgressList .title {
+  margin: 0 0 2px !important;
+  color: var(--heading) !important;
+  font-size: 1.08rem !important;
+  line-height: 1.2 !important;
+  overflow-wrap: anywhere;
+  display: -webkit-box;              /* clamp long titles to 2 lines */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+#availableQuizzesList .muted,
+#inProgressList .muted {
+  color: var(--muted) !important;
+  margin: 0 !important;
+}
+
+/* 4) Subject/status chips — same pill style as teacher */
+#availableQuizzesList .meta-chips,
+#inProgressList .meta-chips {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 6px !important;
+}
+#availableQuizzesList .meta-chips .chip,
+#inProgressList .meta-chips .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: .92rem;
+}
+#availableQuizzesList .meta-chips .chip.soft,
+#inProgressList .meta-chips .chip.soft {
+  background: rgba(96,165,250,.12);
+  color: var(--heading);
+}
+
+/* 5) Actions pinned to bottom so rows align, gradient buttons from base.css */
+#availableQuizzesList .actions,
+#inProgressList .actions {
+  margin-top: auto !important;
+  display: flex !important;
+  gap: 10px !important;
+  justify-content: flex-end !important;
+  flex-wrap: wrap !important;
+}
+#availableQuizzesList .actions .btn,
+#inProgressList .actions .btn {
+  /* gradient/hover already defined in base.css under `.card .btn` */
+  padding: 10px 14px;
+  border-radius: 10px;
+  min-height: 36px;
+}
+
+/* Desktop/tablet: keep compact buttons side-by-side; phones: full width */
+@media (min-width: 561px) {
+  #availableQuizzesList .actions .btn,
+  #inProgressList .actions .btn {
+    width: auto !important;
+    flex: 0 0 auto !important;
+  }
+}
+@media (max-width: 560px) {
+  #availableQuizzesList .actions .btn,
+  #inProgressList .actions .btn { width: 100% !important; }
+}
+
+/* 6) Safety: kill any cramped inline spacing your JS might set */
+#availableQuizzesList > *[style],
+#inProgressList > *[style] {
+  margin: 0 !important; /* never stack margins between cards */
+}
+
+/* 7) Extra breathing room between sections on this page */
+.section { margin: clamp(24px, 4vw, 40px) 0; }
+
+/* 8) Prevent horizontal overflow from long words/URLs */
+#availableQuizzesList, #inProgressList,
+#availableQuizzesList *:where(h3, p, .chip, .muted),
+#inProgressList *:where(h3, p, .chip, .muted) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
