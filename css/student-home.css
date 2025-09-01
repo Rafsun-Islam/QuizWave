@@ -1,81 +1,82 @@
-/* ==============================================================
-   STUDENT HOME — Mirror Teacher Quiz Card Style (JS-proof)
-   ============================================================== */
+/* =========================================
+   Student Home — Quiz containers spacing & responsiveness
+   ========================================= */
 
-/* 0) Page gutters (keeps breathing room around everything) */
+/* Ensure page gutters even if something zeroed main.container elsewhere */
 body > main.container {
   max-width: 1120px;
   margin: 0 auto;
   padding: clamp(16px, 3vw, 24px) !important;
 }
 
-/* 1) The lists: same responsive grid/spacing the teacher page uses */
+/* Sections breathe */
+.section { margin: 20px 0; }
+
+/* === Lists: consistent grid + outer spacing === */
 #availableQuizzesList,
 #inProgressList {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
-  gap: clamp(20px, 3vw, 28px) !important;     /* matches teacher spacing */
-  margin-top: clamp(12px, 2vw, 20px) !important;
+  display: grid;
+  gap: 18px;                                   /* space between cards */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 12px;                             /* space from heading/filters */
 }
 
-/* 2) Each item styled as a Teacher card (works for .card/.quiz-card/any child) */
-#availableQuizzesList > *,
-#inProgressList > *,
-#availableQuizzesList .quiz-card,
-#inProgressList .quiz-card {
-  background: var(--card-bg) !important;
-  border: 1px solid var(--card-border) !important;
-  border-radius: 16px !important;             /* teacher radius */
-  box-shadow: var(--shadow) !important;
-  padding: 18px !important;                    /* teacher inner padding */
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-  min-height: 210px;                           /* consistent visual height */
-  text-align: left !important;                 /* teacher cards are left-aligned */
+/* === Cards: inner padding + uniform look, no center text === */
+#availableQuizzesList .card,
+#availableQuizzesList article,
+#inProgressList .card,
+#inProgressList article,
+.quiz-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;                                /* <-- inner padding fix */
+  text-align: left;                             /* override base card center text */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 190px;                            /* consistent height feel */
   transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
-
-/* Hover pop (same feel as teacher cards) */
-#availableQuizzesList > *:hover,
-#inProgressList > *:hover,
-#availableQuizzesList .quiz-card:hover,
-#inProgressList .quiz-card:hover {
+#availableQuizzesList .card:hover,
+#availableQuizzesList article:hover,
+#inProgressList .card:hover,
+#inProgressList article:hover,
+.quiz-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 30px rgba(0,0,0,.28);
+  box-shadow: 0 14px 28px rgba(0,0,0,.28);
 }
 
-/* 3) Titles, meta, and clamping like teacher */
-#availableQuizzesList h3,
-#inProgressList h3,
-#availableQuizzesList .title,
-#inProgressList .title {
-  margin: 0 0 2px !important;
-  color: var(--heading) !important;
-  font-size: 1.08rem !important;
-  line-height: 1.2 !important;
+/* Headings & meta inside cards */
+#availableQuizzesList .card h3,
+#inProgressList .card h3,
+.quiz-card .title {
+  margin: 0 0 2px;
+  font-size: 1.08rem;
+  line-height: 1.2;
+  color: var(--heading);
   overflow-wrap: anywhere;
-  display: -webkit-box;              /* clamp long titles to 2 lines */
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
-#availableQuizzesList .muted,
-#inProgressList .muted {
-  color: var(--muted) !important;
-  margin: 0 !important;
+#availableQuizzesList .card .muted,
+#inProgressList .card .muted,
+.quiz-card .muted {
+  color: var(--muted);
+  margin: 0;
 }
 
-/* 4) Subject/status chips — same pill style as teacher */
-#availableQuizzesList .meta-chips,
-#inProgressList .meta-chips {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
-  margin-top: 6px !important;
+/* Subject/status chips row */
+#availableQuizzesList .card .meta-chips,
+#inProgressList .card .meta-chips,
+.quiz-card .meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
 }
-#availableQuizzesList .meta-chips .chip,
-#inProgressList .meta-chips .chip {
+#availableQuizzesList .card .meta-chips .chip,
+#inProgressList .card .meta-chips .chip,
+.quiz-card .meta-chips .chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -86,52 +87,163 @@ body > main.container {
   color: var(--text);
   font-size: .92rem;
 }
-#availableQuizzesList .meta-chips .chip.soft,
-#inProgressList .meta-chips .chip.soft {
+#availableQuizzesList .card .meta-chips .chip.soft,
+#inProgressList .card .meta-chips .chip.soft,
+.quiz-card .meta-chips .chip.soft {
   background: rgba(96,165,250,.12);
   color: var(--heading);
 }
 
-/* 5) Actions pinned to bottom so rows align, gradient buttons from base.css */
-#availableQuizzesList .actions,
-#inProgressList .actions {
+/* Actions pinned to bottom so all cards align nicely */
+#availableQuizzesList .card .actions,
+#inProgressList .card .actions,
+.quiz-card .actions {
+  margin-top: auto;                             /* pushes to bottom */
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* Button sizing (desktop/tablet = auto width; phones = full width) */
+#availableQuizzesList .card .actions .btn,
+#inProgressList .card .actions .btn,
+.quiz-card .actions .btn {
+  padding: 8px 12px;
+  font-size: .95rem;
+  border-radius: 10px;
+  min-height: 36px;
+}
+@media (max-width: 560px) {
+  #availableQuizzesList .card .actions .btn,
+  #inProgressList .card .actions .btn,
+  .quiz-card .actions .btn { width: 100%; }
+}
+
+/* Optional: tighten grid at very narrow widths */
+@media (max-width: 400px) {
+  #availableQuizzesList, #inProgressList { gap: 14px; }
+  #availableQuizzesList .card, #inProgressList .card, .quiz-card { padding: 14px; }
+}
+
+/* Prevent any horizontal overflow from long titles/meta */
+#availableQuizzesList, #inProgressList,
+#availableQuizzesList *:where(h3, p, .chip, .muted),
+#inProgressList *:where(h3, p, .chip, .muted),
+.quiz-card *:where(h3, p, .chip, .muted) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* ==========================================================
+   STUDENT HOME — FORCE BIG GAPS + ROOMY CARDS (JS-proof)
+   ========================================================== */
+
+/* 1) Force the lists to be a responsive grid with large gaps */
+#availableQuizzesList,
+#inProgressList {
+  /* responsive tokens */
+  --gap-x: clamp(28px, 4.2vw, 48px);
+  --gap-y: clamp(28px, 3.6vw, 44px);
+  --card-pad: clamp(18px, 2.2vw, 28px);
+
+  /* enforce layout even if JS sets something else */
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  column-gap: var(--gap-x) !important;
+  row-gap: var(--gap-y) !important;
+
+  /* space above the grid */
+  margin-top: clamp(16px, 2.4vw, 28px) !important;
+}
+
+/* 2) Make every injected child a proper “card” with roomy padding */
+#availableQuizzesList > *,
+#inProgressList > * {
+  /* blow away any inline spacing JS might add */
+  margin: 0 !important;
+  padding: var(--card-pad) !important;
+
+  /* consistent card styling even if the child lacks .card */
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  min-height: 200px; /* keep rows visually even */
+  text-align: left !important; /* avoid center text from base card */
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+#availableQuizzesList > *:hover,
+#inProgressList > *:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px rgba(0,0,0,.28);
+}
+
+/* 3) Inside each item: title, meta, actions spacing */
+#availableQuizzesList > * h3,
+#inProgressList > * h3 {
+  margin: 0 0 4px !important;
+  font-size: 1.08rem !important;
+  line-height: 1.2 !important;
+  color: var(--heading) !important;
+  overflow-wrap: anywhere;
+}
+
+#availableQuizzesList > * .muted,
+#inProgressList > * .muted {
+  color: var(--muted) !important;
+  margin: 0 !important;
+}
+
+/* chips row */
+#availableQuizzesList > * .meta-chips,
+#inProgressList > * .meta-chips {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 6px !important;
+}
+
+/* action row pinned to bottom so rows align */
+#availableQuizzesList > * .actions,
+#inProgressList > * .actions {
   margin-top: auto !important;
   display: flex !important;
   gap: 10px !important;
   justify-content: flex-end !important;
   flex-wrap: wrap !important;
 }
-#availableQuizzesList .actions .btn,
-#inProgressList .actions .btn {
-  /* gradient/hover already defined in base.css under `.card .btn` */
-  padding: 10px 14px;
-  border-radius: 10px;
-  min-height: 36px;
-}
 
-/* Desktop/tablet: keep compact buttons side-by-side; phones: full width */
-@media (min-width: 561px) {
-  #availableQuizzesList .actions .btn,
-  #inProgressList .actions .btn {
-    width: auto !important;
-    flex: 0 0 auto !important;
-  }
+/* buttons: desktop/tablet = auto width, phones = full width */
+#availableQuizzesList > * .actions .btn,
+#inProgressList > * .actions .btn {
+  padding: 8px 12px !important;
+  font-size: .95rem !important;
+  border-radius: 10px !important;
+  min-height: 36px !important;
 }
 @media (max-width: 560px) {
-  #availableQuizzesList .actions .btn,
-  #inProgressList .actions .btn { width: 100% !important; }
+  #availableQuizzesList > * .actions .btn,
+  #inProgressList > * .actions .btn {
+    width: 100% !important;
+  }
 }
 
-/* 6) Safety: kill any cramped inline spacing your JS might set */
-#availableQuizzesList > *[style],
-#inProgressList > *[style] {
-  margin: 0 !important; /* never stack margins between cards */
+/* 4) Fallback boost if your JS forces a non-grid layout on tiny screens:
+      add vertical spacing between stacked items */
+@media (max-width: 560px) {
+  #availableQuizzesList > * + *,
+  #inProgressList > * + * {
+    margin-top: 16px !important;
+  }
 }
 
-/* 7) Extra breathing room between sections on this page */
-.section { margin: clamp(24px, 4vw, 40px) 0; }
-
-/* 8) Prevent horizontal overflow from long words/URLs */
+/* 5) Safety: prevent horizontal overflow from long text */
 #availableQuizzesList, #inProgressList,
 #availableQuizzesList *:where(h3, p, .chip, .muted),
 #inProgressList *:where(h3, p, .chip, .muted) {

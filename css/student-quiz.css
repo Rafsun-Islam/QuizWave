@@ -1,0 +1,527 @@
+/* =========================================================
+   QuizWave — Student Quiz Responsive & Polish (drop-in)
+   Paste at the END of css/student-quiz.css
+   - No HTML changes required
+   - Works against common containers/ids/classes
+   ========================================================= */
+
+/* ---------- 0) sensible container targets (pick what's present) ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) {
+  --qw-gap: clamp(12px, 2vw, 18px);
+  --qw-card-radius: 16px;
+  --qw-border: 1px solid color-mix(in srgb, var(--text, #222), transparent 85%);
+  --qw-muted: color-mix(in srgb, var(--text, #222), transparent 40%);
+}
+
+/* ---------- 1) layout: main + aside (timer/progress) ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .quiz-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--qw-gap);
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+    .quiz-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* If you don't have .quiz-layout, apply to main container cards gracefully */
+@media (max-width: 1024px) {
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) {
+    display: block;
+  }
+}
+
+/* ---------- 2) cards & sections ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .card,
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-card,
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  section.quiz-card {
+  border: var(--qw-border);
+  border-radius: var(--qw-card-radius);
+  background: var(--bg-elev, var(--panel, #fff));
+  overflow: hidden;
+}
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .card
+  > .container,
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-card
+  > .container,
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  section.quiz-card
+  > .container {
+  padding: clamp(14px, 2.4vw, 22px);
+}
+
+/* ---------- 3) sticky bits (timer/progress) ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.quiz-aside, .aside, .right-rail) {
+  position: sticky;
+  top: 12px;
+  display: grid;
+  gap: var(--qw-gap);
+}
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(#timer, .timer, #quiz-timer) {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+  background: color-mix(in srgb, var(--bg, #fff), transparent 12%);
+  border: var(--qw-border);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+/* ---------- 4) question header ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-meta {
+  color: var(--qw-muted);
+  font-size: 0.95rem;
+}
+
+/* ---------- 5) media in question stems ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-stem
+  img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 8px 0;
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-stem
+  table {
+  width: 100%;
+  border-collapse: collapse;
+  display: block; /* allow scroll */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 8px 0;
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-stem
+  pre,
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-stem
+  code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ---------- 6) options: big, tappable, accessible ---------- */
+/* Targets any label that contains an input (radio/checkbox) */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list)
+  li {
+  list-style: none;
+}
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list)
+  label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: var(--qw-border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--bg-elev, #fff), transparent 0%);
+  line-height: 1.35;
+  cursor: pointer;
+  transition: transform 0.06s ease, background 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list)
+  label:hover {
+  transform: translateY(-1px);
+}
+
+/* input sizing */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list)
+  input[type="radio"],
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list)
+  input[type="checkbox"] {
+  transform: scale(1.15);
+  margin-top: 2px;
+}
+
+/* highlight when selected (uses :has — widely supported in modern browsers) */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list)
+  label:has(input:checked) {
+  border-color: color-mix(in srgb, var(--brand, #3b82f6), white 40%);
+  background: color-mix(in srgb, var(--brand, #3b82f6), transparent 92%);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--brand, #3b82f6), transparent 85%);
+}
+
+/* correctness states (if you add classes in JS after grading) */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  label.correct {
+  border-color: color-mix(in srgb, #16a34a, white 40%);
+  background: color-mix(in srgb, #16a34a, transparent 92%);
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  label.incorrect {
+  border-color: color-mix(in srgb, #ef4444, white 40%);
+  background: color-mix(in srgb, #ef4444, transparent 92%);
+}
+
+/* ---------- 7) nav/actions (Prev / Next / Submit) ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .quiz-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .quiz-actions
+  .btn {
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+/* small screens: keep submit reachable */
+@media (max-width: 768px) {
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+    .quiz-actions {
+    position: sticky;
+    bottom: 0;
+    background: color-mix(in srgb, var(--bg, #fff), transparent 10%);
+    backdrop-filter: blur(6px);
+    padding-bottom: 10px;
+    border-top: var(--qw-border);
+    margin-top: 14px;
+  }
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+    .quiz-actions
+    .btn.primary {
+    flex: 1 1 100%;
+  }
+}
+
+/* ---------- 8) progress bar (generic) ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .quiz-progress {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: var(--qw-border);
+  background: color-mix(in srgb, var(--bg-elev, #fff), transparent 0%);
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .quiz-progress
+  .fill {
+  height: 100%;
+  width: var(--progress, 0%);
+  background: linear-gradient(
+    90deg,
+    var(--brand-2, #60a5fa),
+    var(--brand, #3b82f6)
+  );
+  transition: width 0.3s ease;
+}
+
+/* ---------- 9) typography tweaks ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-stem {
+  font-size: clamp(1rem, 0.96rem + 0.4vw, 1.15rem);
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .question-index {
+  font-weight: 700;
+  color: var(--heading, #111);
+}
+
+/* ---------- 10) mobile spacing ---------- */
+@media (max-width: 768px) {
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .card,
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+    .question-card,
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+    section.quiz-card {
+    border-radius: 14px;
+  }
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+    .question-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* ---------- 11) focus visibility (keyboard) ---------- */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list)
+  label:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--brand, #3b82f6), transparent 75%);
+}
+
+/* =========================================================
+   Student Quiz — Fix Pack
+   - Constrain page width (no more edge-to-edge)
+   - Tight, aligned option rows (radio near text)
+   - Gentle spacing tweaks
+   ========================================================= */
+
+/* 1) Constrain the main quiz area and center it */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) {
+  /* page gutters on small screens, centered on large */
+  padding-inline: clamp(12px, 4vw, 24px);
+}
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) > :is(.container, .quiz-layout, .inner, .wrapper),
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) section > :is(.container, .inner, .wrapper),
+main.container {
+  max-width: 980px;             /* <- adjust if you prefer narrower/wider */
+  margin-inline: auto;           /* center it */
+  width: 100%;
+}
+
+/* If you’re using a right rail (.quiz-layout), keep total width reasonable */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .quiz-layout {
+  max-width: 1140px;             /* main + aside combined */
+  margin-inline: auto;
+}
+
+/* 2) Option rows: bring inputs closer to text and align neatly */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label {
+  display: flex;                  /* switch from grid → flex for tight rows */
+  align-items: flex-start;        /* align bullet with first text line */
+  column-gap: 8px;                /* <<< tighter gap between radio & text */
+  row-gap: 0;
+  padding: 10px 12px;             /* slightly slimmer padding */
+}
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) input[type="radio"],
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) input[type="checkbox"] {
+  transform: scale(1.05);         /* smaller than before, still tap-friendly */
+  margin: 2px 0 0 0;              /* nudge down to align with first line */
+  flex: 0 0 auto;                 /* don’t stretch */
+}
+
+/* Ensure long option text wraps nicely right next to the control */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label > :not(input) {
+  min-width: 0;                   /* allow wrapping */
+  overflow-wrap: anywhere;
+}
+
+/* 3) Card & section breathing room (less “full-bleed” feel) */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.card, .question-card, section.quiz-card) > .container {
+  padding: clamp(14px, 2vw, 20px);
+}
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.card, .question-card, section.quiz-card) {
+  margin-block: 10px;
+}
+
+/* 4) Actions: keep them tidy; avoid overly wide sticky bar look */
+@media (max-width: 768px) {
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .quiz-actions {
+    position: static;             /* no sticky if it felt heavy */
+    padding-bottom: 0;
+    border-top: 0;
+    background: transparent;
+  }
+  /* Make primary call-to-action fill line but not the whole viewport */
+  :is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .quiz-actions .btn.primary {
+    flex: 1 1 auto;
+  }
+}
+
+/* 5) Optional: cap images so they don’t force the page to look wide */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .question-stem img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 8px 0;
+}
+/* =========================================================
+   Student Quiz — Fix Pack v2
+   - Add real inner padding so content isn't edge-to-edge
+   - Force radio/checkbox to appear at the beginning of options
+   - Keep gaps tight and aligned
+   ========================================================= */
+
+/* 1) If cards lack an inner .container, give them padding directly */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.question-card, section.quiz-card, .card):not(:has(> .container)) {
+  padding: clamp(16px, 2.2vw, 24px);
+  border-radius: 14px; /* safe polish */
+}
+
+/* 2) If there IS a .container, ensure it actually breathes */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.question-card > .container, section.quiz-card > .container, .card > .container) {
+  padding: clamp(16px, 2.2vw, 24px);
+}
+
+/* 3) Core quiz content should never touch card edges */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.question-header, .question-stem, .question-body, .options, .answers, .choice-list) {
+  padding-inline: clamp(10px, 2vw, 16px);
+}
+
+/* 4) Option rows: input FIRST, tight gap, clean alignment */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label {
+  display: flex;               /* flex so we can reorder without HTML changes */
+  align-items: flex-start;
+  gap: 8px;                    /* keep radio close to text */
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+
+/* Move radio/checkbox to the very beginning of the row */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label input[type="radio"],
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label input[type="checkbox"] {
+  order: -1;                   /* <-- forces input to render first */
+  transform: scale(1.05);
+  margin: 2px 0 0 0;           /* nudge to align with first line of text */
+  flex: 0 0 auto;
+}
+
+/* Make sure long option text wraps right next to the control */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label > :not(input) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* 5) Question header/stem spacing so nothing hugs edges */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .question-header {
+  margin-bottom: 8px;
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .question-stem > :first-child {
+  margin-top: 0;
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .question-stem > :last-child {
+  margin-bottom: 0;
+}
+
+/* 6) Media inside questions shouldn’t force edge contact */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .question-stem img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 8px 0;
+}
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer) .question-stem table {
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 8px 0;
+}
+/* =========================================================
+   Student Quiz — Radio/Checkbox Visual Reorder
+   Forces input to appear at the start of each option row,
+   even if the markup puts it at the end.
+   ========================================================= */
+
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label {
+  position: relative;
+  display: block;          /* block so we can position child elements */
+  padding: 10px 12px 10px 40px;  /* left padding leaves room for input */
+  border-radius: 12px;
+  line-height: 1.35;
+}
+
+/* visually pull the input into the left margin */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label input[type="radio"],
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  :is(.options, .answers, .choice-list) label input[type="checkbox"] {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%) scale(1.1);
+  margin: 0;
+}
+
+/* =========================================================
+   Student Quiz — Remove focus/selection box on options
+   Keep background highlight; remove outline/box-shadow ring
+   ========================================================= */
+
+/* 1) Kill the focus outline/ring on the option row */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  label.option {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* If your CSS uses :focus or :focus-within to add a ring, neutralize it */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  label.option:focus,
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  label.option:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 2) Keep selected highlight but remove any selection ring */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  label.option:has(input:checked) {
+  /* keep your background/border change if you had one */
+  box-shadow: none !important;   /* <- remove the rectangle */
+}
+
+/* 3) Also remove the browser default focus outline from the radio itself */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .options input[type="radio"],
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  .answers input[type="radio"] {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* (Optional) Slight hover without any ring/box) */
+:is(#studentQuiz, .student-quiz, .quiz-page, #quizBody, #quizContainer)
+  label.option:hover {
+  transform: translateY(-1px);
+  box-shadow: none !important;
+}
