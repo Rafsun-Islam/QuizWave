@@ -1,0 +1,333 @@
+/* =========================================
+   View Profile — Fully Responsive, Tokenized
+   Works with common IDs/classes without
+   requiring HTML/JS changes.
+   ========================================= */
+
+/* Page gutters (even if global container padding is zeroed) */
+body > main.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 24px) !important;
+}
+
+/* ---------- Header / Hero (avatar + name + actions) ---------- */
+.profile-hero,
+#profileHeader,
+.profile-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  margin-bottom: 18px;
+}
+@media (max-width: 760px) {
+  .profile-hero,
+  #profileHeader,
+  .profile-head {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* Avatar (supports multiple selectors you might already use) */
+.profile-avatar,
+#profileAvatar,
+.avatar-xl,
+.profile-hero img[alt*="avatar" i],
+#profileHeader img {
+  width: clamp(72px, 12vw, 120px);
+  height: clamp(72px, 12vw, 120px);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--card-border);
+  box-shadow: var(--shadow);
+  justify-self: center;
+}
+
+/* Name + meta */
+.profile-name,
+#profileName,
+.profile-hero h1,
+#profileHeader h1,
+.profile-hero h2,
+#profileHeader h2 {
+  margin: 0;
+  color: var(--heading);
+  font-size: clamp(1.3rem, 1.1rem + 1.4vw, 2rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.profile-meta,
+#profileMeta,
+.profile-hero .muted,
+#profileHeader .muted,
+.profile-hero p,
+#profileHeader p {
+  color: var(--muted);
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+
+/* Actions on the right (Edit, Change Password, etc.) */
+.profile-actions,
+#profileActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+@media (max-width: 760px) {
+  .profile-actions,
+  #profileActions {
+    justify-content: center;
+  }
+}
+.profile-actions .btn,
+#profileActions .btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+}
+@media (max-width: 560px) {
+  .profile-actions .btn,
+  #profileActions .btn {
+    width: 100%;
+  }
+}
+
+/* ---------- Main 2-column layout → 1 column on small ---------- */
+.profile-layout,
+#profileLayout,
+.profile-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 980px) {
+  .profile-layout,
+  #profileLayout,
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards / panels */
+.profile-card,
+#profileCard,
+.profile-layout .card,
+.profile-grid .card,
+#profileSidebar .card,
+#profileMain .card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+.profile-card h3,
+#profileCard h3,
+.profile-layout .card h3 {
+  margin: 0 0 10px;
+  color: var(--heading);
+}
+
+/* ---------- Sidebar blocks (About, Contacts, etc.) ---------- */
+.profile-aside,
+#profileSidebar {
+  display: grid;
+  gap: 12px;
+}
+.profile-field {
+  display: grid;
+  gap: 4px;
+}
+.profile-field .k {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.profile-field .v {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Form area (Edit profile) ---------- */
+#profileForm,
+.profile-form {
+  display: grid;
+  gap: 14px;
+}
+.form-row,
+.profile-form .row {
+  display: grid !important;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+}
+@media (max-width: 760px) {
+  .form-row,
+  .profile-form .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Labels & controls */
+#profileForm label,
+.profile-form label {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0 0 6px;
+}
+#profileForm input,
+#profileForm select,
+#profileForm textarea,
+.profile-form input,
+.profile-form select,
+.profile-form textarea {
+  width: 100%;
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  line-height: 1.2;
+}
+#profileForm textarea,
+.profile-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* “Full width” fields */
+.form-row .full,
+.profile-form .row .full {
+  grid-column: 1 / -1;
+}
+
+/* Submit row */
+#profileForm .form-actions,
+.profile-form .form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+@media (max-width: 560px) {
+  #profileForm .form-actions .btn,
+  .profile-form .form-actions .btn {
+    width: 100%;
+  }
+}
+
+/* ---------- Security / Password section ---------- */
+#securitySection,
+.profile-security {
+  display: grid;
+  gap: 12px;
+}
+#securitySection .card h4,
+.profile-security .card h4 {
+  margin: 0 0 8px;
+  color: var(--heading);
+}
+
+/* ---------- Activity / Devices table ---------- */
+#activityTable,
+#devicesTable,
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-elev);
+  border-radius: 12px;
+  overflow: hidden;
+}
+#activityTable th,
+#activityTable td,
+#devicesTable th,
+#devicesTable td,
+.profile-table th,
+.profile-table td {
+  padding: 10px 12px;
+  border-bottom: var(--border);
+  text-align: left;
+  color: var(--text);
+  vertical-align: top;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+#activityTable th,
+#devicesTable th,
+.profile-table th {
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  background: var(--panel);
+}
+
+/* Hide less-critical columns on narrow phones (adjust nth-child to your table) */
+@media (max-width: 480px) {
+  /* Example: hide “IP” (4) and “UA” (5) */
+  #activityTable th:nth-child(4),
+  #activityTable td:nth-child(4),
+  #activityTable th:nth-child(5),
+  #activityTable td:nth-child(5) {
+    display: none;
+  }
+}
+
+/* ---------- File input / avatar uploader polish ---------- */
+.input-file,
+.profile-file {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+@media (max-width: 560px) {
+  .input-file,
+  .profile-file {
+    grid-template-columns: 1fr;
+  }
+}
+.input-file input[type="file"],
+.profile-file input[type="file"] {
+  width: 100%;
+}
+.input-file .btn,
+.profile-file .btn {
+  justify-self: end;
+}
+@media (max-width: 560px) {
+  .input-file .btn,
+  .profile-file .btn {
+    justify-self: stretch;
+  }
+}
+
+/* ---------- Chips for quick info (role, status) ---------- */
+.profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--card-border);
+  background: var(--bg-elev);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.92rem;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+
+/* ---------- Safety: prevent any horizontal scroll ---------- */
+html,
+body {
+  overflow-x: hidden;
+}
+
