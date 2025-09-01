@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verify Email • QuizWave</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <section class="card section reveal">
+      <div class="container">
+        <h1>Verify your email</h1>
+        <p>We sent a verification link/code to your email. Click the link or paste the code below.</p>
+        <form id="verifyForm" class="mt-3">
+          <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:16px">
+            <div><label>Email</label><input id="vEmail" type="email" required></div>
+            <div><label>Code (optional)</label><input id="vCode" placeholder="Paste code if provided"></div>
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit">Verify</button>
+            <button class="btn secondary" id="resend" type="button">Resend Email</button>
+            <button class="btn ghost" id="check" type="button">I'm Verified</button>
+          </div>
+          <div id="vMsg" class="mt-3"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get('email');
+    if(emailParam) document.getElementById('vEmail').value = emailParam;
+
+    document.getElementById('verifyForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const email = document.getElementById('vEmail').value.trim();
+      const token = document.getElementById('vCode').value.trim();
+      const msg = document.getElementById('vMsg');
+      try {
+        if(token){
+          const { data, error } = await client.auth.verifyOtp({ email, token, type: 'signup' });
+          if(error) throw error;
+        }
+        // confirm user verified
+        const { data: { user } } = await client.auth.getUser();
+        if(user && user.email_confirmed_at){
+          msg.textContent = 'Email verified! Redirecting...';
+          msg.style.color = 'limegreen';
+          // fetch profile for redirect role
+          const { data: prof } = await client.from('profiles').select('*').eq('id', user.id).single();
+          const role = (prof?.role||'student').toLowerCase();
+          setTimeout(()=> window.location.href = (role==='admin')?'admin-dashboard.html':(role==='teacher')?'teacher-dashboard.html':'student-home.html', 800);
+        } else {
+          msg.textContent = 'Not verified yet. Click the link in your email or use Resend.';
+          msg.style.color = 'orange';
+        }
+      } catch(err) {
+        msg.textContent = err.message || 'Verification failed';
+        msg.style.color = 'tomato';
+      }
+    });
+
+    document.getElementById('resend').addEventListener('click', async ()=>{
+      const email = document.getElementById('vEmail').value.trim();
+      const msg = document.getElementById('vMsg');
+      try {
+        const { data, error } = await client.auth.resend({ type: 'signup', email });
+        if(error) throw error;
+        msg.textContent = 'Verification email resent.';
+        msg.style.color = 'limegreen';
+      } catch(err) {
+        msg.textContent = err.message || 'Resend failed';
+        msg.style.color = 'tomato';
+      }
+    });
+
+    document.getElementById('check').addEventListener('click', async ()=>{
+      const msg = document.getElementById('vMsg');
+      const { data: { user } } = await client.auth.getUser();
+      if(user && user.email_confirmed_at){ msg.textContent='Verified! You can log in.'; msg.style.color='limegreen'; }
+      else { msg.textContent='Still not verified.'; msg.style.color='orange'; }
+    });
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/01-supabase-connection.js"></script>
+  <script src="js/02-utils.js"></script>
+  <script src="js/04-auth.js"></script>
+
+  <script src="js/site-shell.js"></script>
+</body>
+</html>

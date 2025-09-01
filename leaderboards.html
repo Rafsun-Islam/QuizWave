@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Leaderboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link rel="stylesheet" href="styles.css" /> -->
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/student.css" />
+    <link rel="stylesheet" href="css/leaderboards.css" />
+    <!-- NEW -->
+
+    <style>
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .seg {
+        display: inline-flex;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .seg button {
+        border: 0;
+        padding: 8px 12px;
+        background: #f6f6f6;
+        cursor: pointer;
+        color: black !important; /* force black text */
+      }
+      .seg button.active {
+        background: #ddd !important;
+        color: black !important;
+        font-weight: 600;
+      }
+      .badge {
+        font-size: 0.8em;
+        padding: 2px 6px;
+        border-radius: 999px;
+        background: #eef;
+        margin-left: 8px;
+      }
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      ol {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+      li {
+        padding: 8px 0;
+        border-bottom: 1px dashed #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="site-header"></div>
+    <header>
+      <nav class="toolbar">
+        <div class="seg">
+          <button id="btnLatest" class="active">Latest</button>
+          <button id="btnBest">Best</button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <h2 id="lbTitle">Leaderboard</h2>
+      <p class="small" id="lbSubtitle">Showing Latest attempt per student</p>
+      <ol id="leaderboard">
+        Loading…
+      </ol>
+    </main>
+
+    <!-- Load your existing Supabase + script.js (which defines client and loadLeaderboardWithMode) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/01-supabase-connection.js"></script>
+    <script src="js/02-utils.js"></script>
+    <script src="js/14-leaderboard-modes.js"></script>
+
+    <script>
+      // Wire the toggle and initial load
+      (function () {
+        const params = new URLSearchParams(location.search);
+        const quizId = params.get("quiz");
+        if (!quizId) {
+          document.getElementById("leaderboard").innerHTML =
+            "<li>Missing ?quiz=&lt;id&gt; in URL.</li>";
+          return;
+        }
+
+        const btnLatest = document.getElementById("btnLatest");
+        const btnBest = document.getElementById("btnBest");
+        const setActive = (mode) => {
+          btnLatest.classList.toggle("active", mode === "latest");
+          btnBest.classList.toggle("active", mode === "best");
+          document.getElementById("lbSubtitle").textContent =
+            mode === "latest"
+              ? "Showing Latest attempt per student"
+              : "Showing Best attempt per student";
+        };
+
+        async function refresh(mode) {
+          setActive(mode);
+          // IMPORTANT FIX: invert the mode we pass to your (reversed) loader
+          await loadLeaderboardWithMode(
+            quizId,
+            mode === "latest" ? "best" : "latest",
+            "leaderboard"
+          );
+        }
+
+        btnLatest.addEventListener("click", () => refresh("latest"));
+        btnBest.addEventListener("click", () => refresh("best"));
+
+        // initial
+        refresh("latest");
+      })();
+    </script>
+
+    <script src="js/site-shell.js"></script>
+  </body>
+</html>

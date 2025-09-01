@@ -1,0 +1,1153 @@
+/* ---------- Base Theme ---------- */
+:root {
+  --bg: #0a0f1a;
+  --bg-elev: #0f1626;
+  --panel: #121b2f;
+  --muted: #9aa5b1;
+  --text: #e6e9ee;
+  --heading: #f3f5f7;
+  --brand: #6ee7b7;
+  --brand-2: #60a5fa;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --border: 1px solid rgba(255, 255, 255, 0.08);
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --ring: 0 0 0 3px rgba(96, 165, 250, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  color: var(--text);
+  background: radial-gradient(
+      1200px 600px at 20% -10%,
+      rgba(96, 165, 250, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 100% 0%,
+      rgba(110, 231, 183, 0.1),
+      transparent 40%
+    ),
+    linear-gradient(180deg, #0a0f1a 0%, #0b1220 100%);
+  font: 16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI,
+    Roboto, Arial;
+}
+
+a {
+  color: var(--brand-2);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1,
+h2,
+h3 {
+  color: var(--heading);
+  margin: 0 0 10px;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* ---------- Header / Nav ---------- */
+header.site {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: saturate(1.2) blur(8px);
+  background: rgba(13, 19, 33, 0.6);
+  border-bottom: var(--border);
+}
+nav.bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  font-size: 18px;
+}
+.spacer {
+  flex: 1;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  --bg: var(--brand-2);
+  --fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 0;
+  cursor: pointer;
+  background: var(--bg);
+  color: var(--fg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+  user-select: none;
+  text-decoration: none;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.25);
+}
+.btn:active {
+  transform: translateY(0) scale(0.99);
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.btn.ghost {
+  --bg: transparent;
+  --fg: var(--text);
+  border: var(--border);
+  box-shadow: none;
+}
+.btn.secondary {
+  --bg: #1b2540;
+}
+.btn.success {
+  --bg: var(--success);
+}
+.btn.warn {
+  --bg: var(--warning);
+}
+.btn.danger {
+  --bg: var(--danger);
+}
+.btn[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ---------- Cards / Panels ---------- */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+  background: var(--card-hover-bg);
+}
+
+:root[data-theme="light"] .card:hover {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+}
+
+.card .container {
+  padding: 20px;
+  text-align: center;
+}
+
+.card p {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 15px;
+}
+
+.card .muted {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--heading);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  border-radius: 5px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.card .btn:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+  transform: translateY(-3px);
+}
+
+.card .btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+}
+.section {
+  margin: 20px 0;
+}
+
+/* ---------- Grid ---------- */
+.grid {
+  display: grid;
+  gap: 18px;
+}
+.grid.cards {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* Tables with theme support */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-elev);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.table th,
+.table td {
+  padding: 10px 12px;
+  border-bottom: var(--border);
+  text-align: left;
+  color: var(--text);
+}
+.table th {
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  background: var(--panel);
+}
+.badge {
+  padding: 4px 8px;
+  border-radius: 10px;
+  background: rgba(96, 165, 250, 0.18);
+  color: var(--brand-2);
+  font-size: 12px;
+  display: inline-block;
+  border: 1px solid var(--card-border);
+}
+
+/* ---------- Forms ---------- */
+label {
+  display: block;
+  margin: 12px 0 6px;
+  color: var(--text);
+}
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text);
+  outline: none;
+  transition: all 0.3s ease;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: var(--ring);
+  border-color: var(--brand-2);
+}
+.form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+/* ---------- Hero & Slider ---------- */
+.hero {
+  padding: 72px 0 32px;
+}
+.hero p {
+  color: var(--muted);
+}
+.slider {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  height: 340px;
+  margin-top: 10px;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.slide.active {
+  opacity: 1;
+}
+.slide img {
+  width: 100%;
+  height: 150%;
+  object-fit: cover;
+}
+.dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+}
+.dot.active {
+  background: #fff;
+}
+
+/* ---------- Sidebar Layout (Dashboard) ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+}
+.sidebar {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 100px);
+  background: var(--bg-elev);
+  border: var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+.sidebar h4 {
+  margin: 6px 0 12px;
+  color: var(--heading);
+}
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.nav-list a.active,
+.nav-list a:hover {
+  background: var(--panel);
+  color: var(--heading);
+}
+
+/* ---------- Reveal on Scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Utilities ---------- */
+.mt-2 {
+  margin-top: 8px;
+}
+.mt-3 {
+  margin-top: 12px;
+}
+.mt-4 {
+  margin-top: 16px;
+}
+.mt-5 {
+  margin-top: 20px;
+}
+.pb-2 {
+  padding-bottom: 8px;
+}
+.pt-2 {
+  padding-top: 8px;
+}
+.hidden {
+  display: none;
+}
+
+/* Light/Dark Theme Support with Smooth Transitions */
+:root {
+  /* Default (Dark) Theme */
+  --bg: #0a0f1a;
+  --bg-elev: #0f1626;
+  --panel: #121b2f;
+  --muted: #9aa5b1;
+  --text: #e6e9ee;
+  --heading: #f3f5f7;
+  --brand: #6ee7b7;
+  --brand-2: #60a5fa;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --border: 1px solid rgba(255, 255, 255, 0.08);
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --ring: 0 0 0 3px rgba(96, 165, 250, 0.35);
+  
+  /* Card and Text specific variables */
+  --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05));
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-hover-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-border: rgba(255, 255, 255, 0.2);
+  --header-bg: rgba(13, 19, 33, 0.6);
+}
+
+:root[data-theme="dark"] {
+  --bg: #0a0f1a;
+  --bg-elev: #0f1626;
+  --panel: #121b2f;
+  --muted: #9aa5b1;
+  --text: #e6e9ee;
+  --heading: #f3f5f7;
+  --brand: #6ee7b7;
+  --brand-2: #60a5fa;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --border: 1px solid rgba(255, 255, 255, 0.08);
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --ring: 0 0 0 3px rgba(96, 165, 250, 0.35);
+  
+  --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05));
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-hover-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-border: rgba(255, 255, 255, 0.2);
+  --header-bg: rgba(13, 19, 33, 0.6);
+}
+
+:root[data-theme="light"] {
+  --bg: #f6f8fb;
+  --bg-elev: #ffffff;
+  --panel: #ffffff;
+  --muted: #5f6c7b;
+  --text: #1d2430;
+  --heading: #0b1220;
+  --brand: #10b981;
+  --brand-2: #2563eb;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --border: 1px solid rgba(15, 23, 42, 0.08);
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --ring: 0 0 0 3px rgba(37, 99, 235, 0.25);
+  
+  --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 245, 251, 0.8));
+  --card-border: rgba(15, 23, 42, 0.12);
+  --card-hover-bg: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(240, 245, 251, 0.9));
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --input-border: rgba(15, 23, 42, 0.15);
+  --header-bg: rgba(255, 255, 255, 0.85);
+}
+
+/* Smooth transitions for all theme-dependent elements */
+html,
+body,
+* {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease,
+              backdrop-filter 0.3s ease;
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  background: var(--bg);
+  background-image: radial-gradient(
+      1200px 600px at 20% -10%,
+      rgba(96, 165, 250, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 100% 0%,
+      rgba(110, 231, 183, 0.1),
+      transparent 40%
+    );
+}
+
+:root[data-theme="light"] body {
+  background: var(--bg);
+  background-image: radial-gradient(
+      1200px 600px at 20% -10%,
+      rgba(37, 99, 235, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 100% 0%,
+      rgba(16, 185, 129, 0.06),
+      transparent 40%
+    );
+}
+
+header.site {
+  background: var(--header-bg);
+}
+
+/* Navbar, Avatar & Dropdown */
+header.site {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: saturate(1.2) blur(8px);
+  border-bottom: var(--border);
+}
+nav.bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+}
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  font-size: 18px;
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, var(--brand), var(--brand-2));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+}
+.profile {
+  position: relative;
+}
+.dropdown {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  min-width: 200px;
+  background: var(--panel);
+  border: var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 8px;
+  display: none;
+  transition: all 0.3s ease;
+}
+.profile:hover .dropdown,
+.profile:focus-within .dropdown {
+  display: block;
+}
+.dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.dropdown a:hover {
+  background: rgba(96, 165, 250, 0.12);
+  color: var(--heading);
+}
+.theme-toggle {
+  border: var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: var(--bg-elev);
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+.theme-toggle:hover {
+  background: var(--panel);
+  transform: scale(1.1);
+}
+/* === Profile dropdown: robust hover + click === */
+.profile { position: relative; }
+.profile .dropdown {
+  position: absolute;
+  top: 100%;              /* sit directly under the avatar */
+  right: 0;
+  margin-top: 0;          /* no gap = no hover drop */
+  min-width: 220px;
+  background: var(--panel);
+  border: var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 8px;
+  display: none;
+  z-index: 1000;
+}
+
+/* When JS adds .open (for click/touch) */
+.profile.open .dropdown { display: block; }
+
+/* Desktop hover keeps it open */
+@media (hover:hover) {
+  .profile:hover .dropdown { display: block; }
+
+  /* Invisible "hover bridge" to prevent flicker between avatar and menu */
+  .profile::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 260px;     /* ≥ dropdown width */
+    height: 10px;     /* small buffer zone */
+    /* No background needed; keeps hover continuity */
+  }
+}
+
+.profile .dropdown a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px; border-radius: 10px; color: inherit; text-decoration: none;
+}
+.profile .dropdown a:hover { background: rgba(96,165,250,.12); }
+
+
+
+
+/* Login card style with theme support */
+.card.login-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Hover effect for the login card */
+.card.login-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow);
+  background: var(--card-hover-bg);
+}
+
+:root[data-theme="light"] .card.login-card:hover {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the login card container */
+.card.login-card .container {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Add a subtle border radius effect to the inputs */
+.card.login-card input {
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+  width: 100%;
+  margin-bottom: 15px;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+/* Focus effect for inputs */
+.card.login-card input:focus {
+  border-color: var(--brand-2);
+  outline: none;
+  background: var(--panel);
+}
+
+/* Fancy button style with gradient */
+.card.login-card .btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  border-radius: 25px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+/* Hover effect for Login button */
+.card.login-card .btn:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Active state for Login button */
+.card.login-card .btn:active {
+  transform: translateY(1px);
+}
+
+/* Hover effect for the forgotten password link */
+.card.login-card .btn.ghost {
+  display: inline-block;
+  padding: 8px 10px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Same as Login button */
+  border-radius: 25px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+  text-decoration: none; /* Remove underline */
+}
+
+/* Hover effect for Forgot Password button */
+.card.login-card .btn.ghost:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Active state for Forgot Password button */
+.card.login-card .btn.ghost:active {
+  transform: translateY(1px);
+}
+
+/* Remove the ripple effect */
+.card.login-card::before {
+  content: none; /* Removed the ripple effect */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-radius: 50%;
+}
+
+/* Keyframe for Fade-In Animation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Wrapper for the password field */
+.card.login-card .password-wrapper {
+  position: relative;
+}
+
+/* Styling for the eye icon */
+.card.login-card .eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #feb47b;
+}
+
+/* Make the input field wider so that the icon does not overlap */
+.card.login-card input[type="password"] {
+  padding-right: 35px; /* Create space for the eye icon */
+}
+
+
+@media (max-width: 768px) {
+  .card.login-card {
+    margin-bottom: 20px;
+  }
+
+  .card.login-card .container {
+    padding: 15px;
+  }
+}
+
+
+
+
+/* Login */
+/* Targeting only the login/signup form without affecting other components */
+section.card.login-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.1)); /* Gradient background */
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  position: relative;
+  padding: 40px 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Header for the signup section */
+section.card.login-card h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #feb47b; /* Light golden color */
+  text-transform: uppercase;
+}
+
+/* Subheading text for the signup section */
+section.card.login-card .muted {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Form Fields */
+section.card.login-card .grid div {
+  margin-bottom: 20px;
+}
+
+section.card.login-card input,
+section.card.login-card select {
+  width: 100%;
+  padding: 14px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+section.card.login-card input:focus,
+section.card.login-card select:focus {
+  border-color: var(--brand-2);
+  outline: none;
+  background: var(--panel);
+}
+
+/* Fancy button style with gradient */
+section.card.login-card .btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  border-radius: 25px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+section.card.login-card .btn:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+section.card.login-card .btn:active {
+  transform: translateY(1px);
+}
+
+/* Hover effect for the forgotten password link */
+section.card.login-card .btn.ghost {
+  display: inline-block;
+  padding: 8px 15px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Same as Login button */
+  border-radius: 25px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+  text-decoration: none; /* Remove underline */
+}
+
+/* Hover effect for Forgot Password button */
+section.card.login-card .btn.ghost:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Active state for Forgot Password button */
+section.card.login-card .btn.ghost:active {
+  transform: translateY(1px);
+}
+
+/* Adding a subtle hover effect on the select box */
+section.card.login-card select {
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 1rem;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--input-border);
+  width: 100%;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+section.card.login-card select:focus {
+  border-color: var(--brand-2);
+  background: var(--panel);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  section.card.login-card {
+    margin-bottom: 20px;
+    padding: 30px 15px;
+  }
+  
+  section.card.login-card .container {
+    padding: 20px;
+  }
+  
+  section.card.login-card h1 {
+    font-size: 2rem;
+  }
+
+  section.card.login-card .muted {
+    font-size: 1rem;
+  }
+}
+
+
+
+/* Signup */
+
+/* Target the signup section using its parent container for specific styling */
+main.container {
+  position: relative;
+  padding: 0px 0px;
+  /* background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); */
+}
+
+/* Add a border-radius and shadow effect to make the signup card stand out */
+.card.section {
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  padding: 30px 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+/* Create a background highlight effect for the signup card */
+.card.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--input-bg);
+  z-index: -1;
+  border-radius: 20px;
+  transform: scale(1.05);
+  animation: card-background 6s infinite alternate ease-in-out;
+}
+
+/* Keyframe animation for background highlight effect */
+@keyframes card-background {
+  0% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+/* Styling for the heading */
+.card.section h1 {
+  font-size: 2.5rem;
+  color: var(--brand-2);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Styling for the subheading (muted text) */
+.card.section .muted {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+
+/* Add spacing between form elements */
+.card.section .grid div {
+  margin-bottom: 15px;
+}
+
+/* Styling for input fields and select */
+.card.section input,
+.card.section select {
+  width: 100%;
+  padding: 14px;
+  background: var(--input-bg);
+  border-radius: 10px;
+  border: 1px solid var(--input-border);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+}
+
+/* Focus effect for inputs */
+.card.section input:focus,
+.card.section select:focus {
+  border-color: var(--brand-2);
+  outline: none;
+  background: var(--panel);
+  transform: scale(1.02);
+}
+
+/* Style the buttons */
+.card.section .btn {
+  display: inline-block;
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  border-radius: 30px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+/* Button hover effect */
+.card.section .btn:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Active button state */
+.card.section .btn:active {
+  transform: translateY(1px);
+}
+
+/* Styling for the ghost button */
+.card.section .btn.ghost {
+  color: white;
+  padding: 10px 30px;
+  border: 0px solid #feb47b;
+}
+
+/* Hover effect for the ghost button */
+.card.section .btn.ghost:hover {
+  color: #fff;
+  background: #feb47b;
+  border-color: #feb47b;
+}
+
+/* Add animation for input fields */
+.card.section input,
+.card.section select {
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.card.section input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
+}
+
+/* Adding subtle hover effects on the select box */
+.card.section select {
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 1rem;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--input-border);
+  width: 100%;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.card.section select:focus {
+  border-color: var(--brand-2);
+  background: var(--panel);
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .card.section {
+    padding: 30px 15px;
+    margin-bottom: 20px;
+  }
+
+  .card.section h1 {
+    font-size: 2rem;
+  }
+
+  .card.section .muted {
+    font-size: 1rem;
+  }
+}

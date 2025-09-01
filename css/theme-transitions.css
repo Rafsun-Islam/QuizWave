@@ -1,0 +1,221 @@
+/* Enhanced Theme Transition System */
+
+/* Theme transition for root element */
+:root {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth theme transitions for all elements */
+*,
+*::before,
+*::after {
+  transition: 
+    background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    fill 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Override faster transitions for interactive elements */
+.btn,
+button,
+input,
+select,
+textarea,
+.nav-list a {
+  transition: 
+    background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Enhanced theme toggle button */
+.theme-toggle {
+  position: relative;
+  overflow: hidden;
+  font-size: 18px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--brand-2);
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.theme-toggle:hover::before {
+  opacity: 0.1;
+  transform: scale(1);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Critical: Ensure all text is visible in light theme */
+:root[data-theme="light"] h1,
+:root[data-theme="light"] h2,
+:root[data-theme="light"] h3,
+:root[data-theme="light"] h4,
+:root[data-theme="light"] h5,
+:root[data-theme="light"] h6 {
+  color: var(--heading) !important;
+}
+
+:root[data-theme="light"] p,
+:root[data-theme="light"] span,
+:root[data-theme="light"] div,
+:root[data-theme="light"] label {
+  color: var(--text) !important;
+}
+
+:root[data-theme="light"] .muted {
+  color: var(--muted) !important;
+}
+
+/* Improved card visibility in light theme */
+:root[data-theme="light"] .card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
+}
+
+:root[data-theme="light"] .card h1,
+:root[data-theme="light"] .card h2,
+:root[data-theme="light"] .card h3,
+:root[data-theme="light"] .card h4,
+:root[data-theme="light"] .card h5,
+:root[data-theme="light"] .card h6 {
+  color: var(--heading) !important;
+}
+
+:root[data-theme="light"] .card p,
+:root[data-theme="light"] .card .muted,
+:root[data-theme="light"] .card div,
+:root[data-theme="light"] .card span,
+:root[data-theme="light"] .card label {
+  color: var(--text) !important;
+}
+
+/* Enhanced visibility for form elements in light theme */
+:root[data-theme="light"] input,
+:root[data-theme="light"] select,
+:root[data-theme="light"] textarea {
+  background: var(--input-bg) !important;
+  border: 1px solid var(--input-border) !important;
+  color: var(--text) !important;
+}
+
+:root[data-theme="light"] input::placeholder,
+:root[data-theme="light"] textarea::placeholder {
+  color: var(--muted) !important;
+}
+
+/* Better contrast for nav links in light theme */
+:root[data-theme="light"] .nav-list a {
+  color: var(--text) !important;
+}
+
+:root[data-theme="light"] .nav-list a.active,
+:root[data-theme="light"] .nav-list a:hover {
+  background: var(--panel) !important;
+  color: var(--heading) !important;
+  box-shadow: var(--shadow);
+}
+
+/* Loading state for theme transition with visual feedback */
+.theme-transitioning {
+  position: relative;
+}
+
+.theme-transitioning::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  z-index: 9999;
+  animation: themeProgress 0.6s ease-out;
+}
+
+@keyframes themeProgress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+.theme-transitioning * {
+  transition-duration: 0.6s !important;
+}
+
+/* Prevent flash during theme change */
+html[data-theme-changing] * {
+  transition: none !important;
+}
+
+/* Smooth background transitions */
+body {
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced dropdown visibility */
+:root[data-theme="light"] .dropdown {
+  background: var(--panel) !important;
+  border: var(--border);
+  box-shadow: var(--shadow);
+}
+
+:root[data-theme="light"] .dropdown a {
+  color: var(--text) !important;
+}
+
+:root[data-theme="light"] .dropdown a:hover {
+  background: rgba(37, 99, 235, 0.08) !important;
+  color: var(--heading) !important;
+}
+
+/* Table visibility in light theme */
+:root[data-theme="light"] .table th,
+:root[data-theme="light"] .table td {
+  color: var(--text) !important;
+}
+
+:root[data-theme="light"] .table th {
+  color: var(--muted) !important;
+}
+
+/* Ensure hero content is visible */
+:root[data-theme="light"] .hero h1,
+:root[data-theme="light"] .hero p {
+  color: #ffffff !important;
+}
+
+/* Fix sidebar text visibility */
+:root[data-theme="light"] .sidebar h4 {
+  color: var(--heading) !important;
+}
+
+/* Fix KPI values visibility */
+:root[data-theme="light"] .kpi .value {
+  color: var(--heading) !important;
+}
+
+:root[data-theme="light"] .kpi div:last-child {
+  color: var(--text) !important;
+}

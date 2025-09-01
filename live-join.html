@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Join Live Quiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/live.css" />
+
+    <style>
+      body {
+        background: #f6f7fb;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      .card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        background: #fff;
+      }
+      .input {
+        width: 100%;
+        padding: 10px;
+      }
+      .muted {
+        color: #6b7280;
+      }
+      .choices label {
+        display: block;
+        margin: 6px 0;
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="joinCard" class="card">
+        <h1>Join Live Quiz</h1>
+        <p class="muted">Enter the PIN from your teacher and your nickname.</p>
+        <div style="display: grid; gap: 8px; grid-template-columns: 1fr 1fr">
+          <div>
+            <label class="muted">PIN</label>
+            <input
+              id="pinInput"
+              class="input"
+              placeholder="123456"
+              maxlength="6"
+            />
+          </div>
+          <div>
+            <label class="muted">Nickname</label>
+            <input
+              id="nickInput"
+              class="input"
+              placeholder="e.g., Aisha"
+              maxlength="32"
+            />
+          </div>
+        </div>
+        <div style="margin-top: 10px; display: flex; gap: 8px">
+          <button id="joinBtn">Join</button>
+          <button id="leaveBtn" disabled>Leave</button>
+        </div>
+        <div id="joinMsg" class="muted" style="margin-top: 8px"></div>
+      </div>
+
+      <div id="lobby" class="card" style="display: none">
+        <h2 id="lobbyTitle">Lobby</h2>
+        <div class="muted">Waiting for host to start…</div>
+      </div>
+
+      <div id="play" class="card" style="display: none">
+        <h2 id="qPrompt">Question</h2>
+        <div id="qChoices" class="choices" style="margin-top: 8px"></div>
+        <button id="submitBtn" disabled>Submit</button>
+        <div id="after" class="muted" style="margin-top: 8px"></div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/01-supabase-connection.js"></script>
+    <script src="js/21-live-join.js"></script>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Teacher Dashboard • QuizWave</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/teacher.css">
+  <link rel="stylesheet" href="css/theme-transitions.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar">
+        <h4>Controls</h4>
+        <nav>
+          <ul class="nav-list">
+            <li><a href="teacher-dashboard.html" class="active">Overview</a></li>
+            <li><a href="teacher-home.html">My Quizzes</a></li>
+            <li><a href="teacher-quiz-builder.html">Build Quiz</a></li>
+            <li><a href="teacher-grade-attempt.html">Grade Attempts</a></li>
+            <li><a href="leaderboards.html">Leaderboards</a></li>
+          </ul>
+        </nav>
+        <div class="mt-4">
+          <a class="btn secondary" href="teacher-quiz-builder.html">+ New Quiz</a>
+        </div>
+      </aside>
+
+      <section>
+        <section class="hero reveal">
+          <h1>Welcome back, <span id="tName">Teacher</span> 👋</h1>
+          <p class="muted">Here’s a quick overview of your quizzes and student progress.</p>
+        </section>
+
+        <section class="grid cards section reveal">
+          <div class="card"><div class="container">
+            <div class="kpi"><div class="value" id="kpiQuizzes">–</div><div>Total Quizzes</div></div>
+          </div></div>
+          <div class="card"><div class="container">
+            <div class="kpi"><div class="value" id="kpiPending">–</div><div>Needs Grading</div></div>
+          </div></div>
+          <div class="card"><div class="container">
+            <div class="kpi"><div class="value" id="kpiStudents">–</div><div>Unique Students</div></div>
+          </div></div>
+        </section>
+
+        <section class="card section reveal">
+          <div class="container">
+            <h3>Recent Attempts</h3>
+            <table class="table" id="recentAttempts">
+              <thead><tr><th>Student</th><th>Quiz</th><th>Status</th><th>Score</th><th>When</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </div>
+  
+  <section class="container section reveal">
+    <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:18px">
+      <div class="card"><div class="container"><canvas id="tQuizzesOverTime"></canvas></div></div>
+      <div class="card"><div class="container"><canvas id="tAttemptStatus"></canvas></div></div>
+      <div class="card"><div class="container"><canvas id="tAvgScore"></canvas></div></div>
+    </div>
+  </section>
+</main>
+
+
+
+  <footer class="container">© <span id="year"></span> QuizWave</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/01-supabase-connection.js"></script>
+<script src="js/02-utils.js"></script>
+<script src="js/03-timer.js"></script>
+<script src="js/04-auth.js"></script>
+<script src="js/06-teacher-quizzes.js"></script>
+<script src="js/15-needing-grading.js"></script>
+<script src="js/site-shell.js"></script>
+
+<!-- Chart.js MUST come before teacher-dashboard.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  (function ensureChart() {
+    if (window.Chart) return;
+    var s = document.createElement('script');
+    s.src = "https://cdn.jsdelivr.net/npm/chart.js";
+    s.onload = function(){ console.log("Chart.js loaded dynamically"); };
+    document.head.appendChild(s);
+  })();
+</script>
+
+
+<!-- Your dashboard logic that uses Chart.js -->
+<script src="js/teacher-dashboard.js"></script>
+
+
+</body>
+</html>

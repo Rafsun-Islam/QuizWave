@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login • QuizWave</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/theme-transitions.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+  <section class="card section reveal login-card">
+    <div class="container">
+      <h1>Welcome back</h1>
+      <form id="loginForm" class="mt-4">
+        <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:16px">
+          <div>
+            <label>Email</label>
+            <input id="loginEmail" type="email" required>
+          </div>
+          <div>
+            <label>Password</label>
+            <div class="password-wrapper">
+              <input id="loginPassword" type="password" required>
+              <span id="togglePassword" class="eye-icon">👁️</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn" type="submit">Login</button>
+          <a class="btn ghost" href="forgot-password.html">Forgot Password?</a>
+        </div>
+        <div id="loginMsg" class="mt-3"></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+  <!-- Load Supabase + your auth helpers FIRST -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/01-supabase-connection.js"></script>
+  <script src="js/02-utils.js"></script>
+  <script src="js/04-auth.js"></script>
+
+  <!-- Login handler: admin precedence (uses routeAfterLogin / admin_am_i) -->
+  <script>
+    (function() {
+      const $ = (id) => document.getElementById(id);
+      const msg = $('loginMsg');
+
+      // optional: respect ?next= redirect target after login (for non-admins)
+      const next = new URLSearchParams(location.search).get('next');
+
+      $('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msg.textContent = '';
+
+        const email = $('loginEmail').value.trim();
+        const password = $('loginPassword').value;
+
+        try {
+          const { error } = await client.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+
+          // Prefer centralized router if present (ADMIN > TEACHER > STUDENT)
+          if (typeof routeAfterLogin === 'function') {
+            await routeAfterLogin();
+            return;
+          }
+
+          // Fallback: admin check first
+          const { data: isAdmin, error: aErr } = await client.rpc('admin_am_i');
+          if (aErr) throw aErr;
+          if (isAdmin) { window.location.href = 'admin-dashboard.html'; return; }
+
+          // Else route by profile.role (teacher/student)
+          const { data: user } = await client.auth.getUser();
+          const { data: prof, error: pErr } = await client
+            .from('profiles')
+            .select('role')
+            .eq('id', user.user.id)
+            .single();
+          if (pErr) throw pErr;
+
+          const role = String(prof?.role || 'student').toLowerCase();
+          if (next) { window.location.href = next; return; }
+          window.location.href = (role === 'teacher')
+            ? 'teacher-dashboard.html'
+            : 'student-home.html';
+        } catch (err) {
+          msg.textContent = err?.message || 'Login failed';
+          msg.style.color = 'tomato';
+        }
+      });
+    })();
+
+    // Get the toggle button and the password input field
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("loginPassword");
+
+// Add an event listener to the eye icon
+togglePassword.addEventListener("click", function() {
+  // Toggle the input type between 'password' and 'text'
+  const type = passwordInput.type === "password" ? "text" : "password";
+  passwordInput.type = type;
+
+  // Toggle the eye icon (optional, you can change the icon or use different ones)
+  togglePassword.textContent = type === "password" ? "👁️" : "🙈"; // Eye open or closed
+});
+
+  </script>
+
+  <script src="js/site-shell.js"></script>
+</body>
+</html>

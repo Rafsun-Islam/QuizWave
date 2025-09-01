@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Grade Attempt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="site-header"></div>
+<header>
+      <nav
+        class="row"
+       
+      >
+        <div class="row">
+          <a href="teacher-home.html">Teacher Home</a>
+        </div>
+        <div id="teacherGreeting" class="muted">Hello…</div>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Grade Attempt</h2>
+      <div id="gradeContainer" class="card">Loading…</div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/01-supabase-connection.js"></script>
+    <script src="js/02-utils.js"></script>
+    <script src="js/03-timer.js"></script>
+    <script src="js/04-auth.js"></script>
+    <script src="js/06-teacher-quizzes.js"></script>
+    <script src="js/07-teacher-quiz-detail.js"></script>
+    <script src="js/08-questions.js"></script>
+    <script src="js/09-student-list.js"></script>
+    <script src="js/15-needing-grading.js"></script>
+    <script src="js/16-grade-one-attempt.js"></script>
+    <script src="js/17-logout-guard.js"></script>
+
+    <script>
+      // Greeting
+      if (typeof showGreeting === "function")
+        showGreeting("teacherGreeting", "Teacher");
+
+      (async function () {
+        const params = new URLSearchParams(location.search);
+        const attemptId = params.get("attempt");
+        if (!attemptId) {
+          document.getElementById("gradeContainer").innerHTML =
+            "Missing ?attempt=<id> in URL.";
+          return;
+        }
+        if (typeof loadAttemptForGrading !== "function") {
+          document.getElementById("gradeContainer").innerHTML =
+            "Grading function not loaded.";
+          return;
+        }
+        await loadAttemptForGrading(attemptId);
+      })();
+    </script>
+  
+  <script src="js/site-shell.js"></script>
+</body>
+</html>

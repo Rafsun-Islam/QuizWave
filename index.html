@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuizWave — Learn. Compete. Grow.</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/theme-transitions.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <section class="hero reveal hero-style">
+      <h1>Interactive quizzes for modern classrooms</h1>
+      <p>Build, take, and grade quizzes with real‑time leaderboards and analytics.</p>
+      <div class="actions">
+        <a class="btn" href="signup.html">Get started</a>
+        
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="slider">
+        <div class="slide active"><img src="/image/slide show/1.jpg" alt="Classroom"/></div>
+        <div class="slide"><img src="/image/slide show/11.png" alt="Quiz"/></div>
+        <div class="slide"><img src="/image/slide show/2.jpg" alt="Teacher Dashboard"/></div>
+        <div class="dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid cards features reveal">
+      <div class="feature">
+        <h3>Create quizzes fast</h3>
+        <p>Build questions, set timers, and publish to students in a few clicks.</p>
+      </div>
+      <div class="feature">
+        <h3>Grade with ease</h3>
+        <p>Automatic scoring for MCQs and streamlined manual grading for essays.</p>
+      </div>
+      <div class="feature">
+        <h3>Compete & learn</h3>
+        <p>Leaderboards and results help students track progress and improve.</p>
+      </div>
+    </section>
+  
+    <section class="grid cards features reveal">
+      <div class="feature"><h3>Secure by design</h3><p>RLS policies protect data per user and role.</p></div>
+      <div class="feature"><h3>Fast analytics</h3><p>Real-time charts powered by Supabase.</p></div>
+      <div class="feature"><h3>Flexible roles</h3><p>Student, Teacher, and Admin dashboards.</p></div>
+    </section>
+
+    <section class="section reveal">
+      <h2>Testimonials</h2>
+      <div class="grid cards">
+        <div class="card"><div class="container"><p>“We switched to QuizWave and our grading time dropped by 60%.”</p><p class="muted">— A. Khan, Teacher</p></div></div>
+        <div class="card"><div class="container"><p>“Our students love the live leaderboards!”</p><p class="muted">— L. Das, School Admin</p></div></div>
+        <div class="card"><div class="container"><p>“Took my first quiz on mobile with no issues.”</p><p class="muted">— M. Roy, Student</p></div></div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <h2>Pricing</h2>
+      <div class="grid cards">
+        <div class="card"><div class="container"><h3>Basic</h3><p>Free for small classes</p><p class="muted">Up to 2 teachers</p><a class="btn" href="signup.html">Get Started</a></div></div>
+        <div class="card"><div class="container"><h3>Pro</h3><p>For schools</p><p class="muted">Unlimited teachers</p><a class="btn" href="signup.html">Try Pro</a></div></div>
+        <div class="card"><div class="container"><h3>Enterprise</h3><p>Custom SLAs and SSO</p><a class="btn" href="signup.html">Contact Us</a></div></div>
+      </div>
+    </section>
+  </main>
+
+
+  <footer class="container footer-style">© <span id="year"></span> QuizWave</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/01-supabase-connection.js"></script>
+  <script src="js/02-utils.js"></script>
+  <script src="js/04-auth.js"></script>
+  <script src="js/site-shell.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

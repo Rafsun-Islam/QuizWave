@@ -1,0 +1,70 @@
+/* ===========================
+   Leaderboards — Pro Styling
+   =========================== */
+
+main, .container { max-width: 1100px; margin: 0 auto; }
+
+/* Top bar / filters / tabs */
+.lb-controls {
+  display: flex; flex-wrap: wrap;
+  gap: 10px; align-items: center;
+  margin: 6px 0 14px;
+}
+.lb-tabs {
+  display: inline-flex; gap: 6px; border: var(--border); border-radius: 12px; padding: 4px;
+  background: var(--bg-elev);
+}
+.lb-tab {
+  border: 0; background: transparent; color: var(--text);
+  padding: 8px 12px; border-radius: 10px; cursor: pointer;
+  transition: background .12s ease;
+}
+.lb-tab:hover { background: rgba(255,255,255,.06); }
+.lb-tab.active { background: #1a2440; }
+
+.lb-filter {
+  padding: 8px 12px; border-radius: 10px; background: #0e1527;
+  border: 1px solid rgba(255,255,255,.14); color: var(--text);
+}
+
+/* Leaderboard card */
+.lb-card {
+  background: var(--panel);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  margin: 14px 0;
+}
+
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 10px 12px; border-bottom: var(--border); text-align: left; }
+.table th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 12px; }
+
+/* Podium highlights for top 3 */
+.table tr:nth-child(1) td { background: linear-gradient(90deg, rgba(250,204,21,.12), transparent); }
+.table tr:nth-child(2) td { background: linear-gradient(90deg, rgba(148,163,184,.12), transparent); }
+.table tr:nth-child(3) td { background: linear-gradient(90deg, rgba(244,114,182,.12), transparent); }
+
+/* Small badges for status/levels */
+.badge {
+  padding: 4px 8px; border-radius: 10px;
+  background: rgba(96,165,250,.18); color: #cfe6ff; font-size: 12px;
+  display: inline-block;
+}
+
+/* Buttons align with site buttons */
+.btn { 
+  --bg: var(--brand-2); --fg: #fff;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 12px; border: 0; cursor: pointer;
+  background: var(--bg); color: var(--fg);
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,.18);
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 10px 16px rgba(0,0,0,.25); }
+.btn.ghost { --bg: transparent; --fg: var(--text); border: var(--border); box-shadow: none; }
+
+/* Reveal animation */
+.reveal { opacity: 0; transform: translateY(12px); transition: all .6s cubic-bezier(.2,.7,.2,1); }
+.reveal.visible { opacity: 1; transform: none; }

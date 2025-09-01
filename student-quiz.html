@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Take Quiz</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/student.css">
+  <style>
+    .timer {background:#fff; padding:10px; border-radius:6px; margin:10px 0; display:inline-block;}
+  </style>
+</head>
+<body>
+<div id="site-header"></div>
+
+
+<main id="quizContainer">
+  <div class="timer" id="timer">Time: --:--</div>
+  <div id="quizBody">Loading…</div>
+</main>
+
+<!-- Supabase first -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/01-supabase-connection.js"></script>
+<script src="js/02-utils.js"></script>
+<script src="js/03-timer.js"></script>
+<script src="js/04-auth.js"></script>
+<script src="js/06-teacher-quizzes.js"></script>
+<script src="js/07-teacher-quiz-detail.js"></script>
+<script src="js/08-questions.js"></script>
+<script src="js/09-student-list.js"></script>
+<script src="js/10-student-quiz.js"></script>
+<script src="js/11-submit-quiz.js"></script>
+<script src="js/15-needing-grading.js"></script>
+<script src="js/17-logout-guard.js"></script>
+
+<!-- Your app code -->
+<script>
+(async function () {
+  const params = new URLSearchParams(location.search);
+  const quizId = params.get("quiz");
+  if (!quizId) {
+    document.getElementById("quizBody").innerHTML = `<div class="card">Missing ?quiz=<id> in URL.</div>`;
+    return;
+  }
+  await loadQuizForStudent(quizId); // will start timer if needed
+})();
+
+requireLogin("Student").then(() => {
+  initStudentHome();
+});
+
+</script>
+
+  <script src="js/site-shell.js"></script>
+</body>
+</html>

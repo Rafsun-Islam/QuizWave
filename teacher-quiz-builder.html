@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Create Quiz (Teacher)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link rel="stylesheet" href="styles.css" /> -->
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/teacher.css" />
+    <link rel="stylesheet" href="css/quiz-builder.css" />
+    <!-- NEW -->
+
+    <style>
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .muted {
+        opacity: 0.7;
+        font-size: 0.9em;
+      }
+      .input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+      }
+      .seg {
+        display: inline-flex;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .seg button {
+        border: 0;
+        padding: 8px 14px;
+        background: #f6f6f6;
+        cursor: pointer;
+        color: #111;
+      }
+      .seg button.active {
+        background: #fff;
+        font-weight: 600;
+        color: #111;
+      }
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="site-header"></div>
+    
+
+    <main>
+      <h2>Create a Quiz</h2>
+      <p class="muted">
+        Choose Timed to set a countdown. Choose Non-timed to allow unlimited
+        time.
+      </p>
+
+      <form id="quizForm" class="card">
+        <label>Title</label>
+        <input id="title" class="input" placeholder="Quiz title" required />
+
+        <label>Description (optional)</label>
+        <textarea
+          id="description"
+          class="input"
+          rows="3"
+          placeholder="Short description…"
+        ></textarea>
+
+        <!-- Total marks for the WHOLE quiz (script.js reads #totalPoints) -->
+        <label>Total Marks</label>
+        <input
+          id="totalPoints"
+          type="number"
+          min="1"
+          step="1"
+          class="input"
+          value="100"
+        />
+
+        <div>
+          <label class="muted">Time Mode</label>
+          <div class="seg" role="tablist" aria-label="Time Mode">
+            <button
+              id="btnNonTimed"
+              type="button"
+              class="active"
+              aria-pressed="true"
+            >
+              Non-timed
+            </button>
+            <button id="btnTimed" type="button" aria-pressed="false">
+              Timed
+            </button>
+          </div>
+        </div>
+
+        <!-- Time limit row (only visible if Timed) -->
+        <div id="timeRow" class="row hide">
+          <div>
+            <label>Time Limit (minutes)</label>
+            <input
+              id="timeLimit"
+              type="number"
+              min="1"
+              step="1"
+              class="input"
+              placeholder="e.g., 15"
+            />
+          </div>
+          <div class="muted">Minimum 1 minute when Timed.</div>
+        </div>
+
+        <label>Status</label>
+        <select id="status" class="input">
+          <option value="Draft" selected>Draft</option>
+          <option value="Published">Published</option>
+        </select>
+
+        <div class="row">
+          <button class="btn" type="submit">Create Quiz</button>
+          <a class="btn" href="teacher-home.html">Cancel</a>
+        </div>
+      </form>
+
+      <div class="card">
+        <p class="muted">
+          Tip: Non-timed quizzes set <code>time_limit = 0</code>. Timed quizzes
+          set <code>time_limit</code> to the minutes you enter. Students will
+          see a countdown only when <strong>time_limit &gt; 0</strong>.
+        </p>
+      </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/01-supabase-connection.js"></script>
+    <script src="js/02-utils.js"></script>
+    <script src="js/03-timer.js"></script>
+    <script src="js/04-auth.js"></script>
+
+    <!-- ✅ needed for creating a quiz -->
+    <script src="js/05-quiz-creation.js"></script>
+
+    <script src="js/06-teacher-quizzes.js"></script>
+    <script src="js/07-teacher-quiz-detail.js"></script>
+    <script src="js/08-questions.js"></script>
+    <script src="js/09-student-list.js"></script>
+    <script src="js/15-needing-grading.js"></script>
+
+    <script>
+      // Greeting
+      if (typeof showGreeting === "function")
+        showGreeting("teacherGreeting", "Teacher");
+
+      // Timed / Non-timed UI wiring
+      (function wireTimeMode() {
+        const btnNonTimed = document.getElementById("btnNonTimed");
+        const btnTimed = document.getElementById("btnTimed");
+        const timeRow = document.getElementById("timeRow");
+        const timeInput = document.getElementById("timeLimit");
+
+        function setMode(mode) {
+          const isTimed = mode === "timed";
+          btnTimed.classList.toggle("active", isTimed);
+          btnNonTimed.classList.toggle("active", !isTimed);
+          btnTimed.setAttribute("aria-pressed", String(isTimed));
+          btnNonTimed.setAttribute("aria-pressed", String(!isTimed));
+          timeRow.classList.toggle("hide", !isTimed);
+
+          if (!isTimed) {
+            // Non-timed → script.js treats 0 as "no timer"
+            timeInput.value = "";
+            timeInput.dataset.mode = "nontimed";
+          } else {
+            timeInput.dataset.mode = "timed";
+          }
+        }
+
+        btnNonTimed.addEventListener("click", () => setMode("nontimed"));
+        btnTimed.addEventListener("click", () => setMode("timed"));
+        setMode("nontimed"); // default
+
+        // Guard submit: ensure Non-timed passes 0, Timed >= 1
+        const form = document.getElementById("quizForm");
+        form.addEventListener("submit", (e) => {
+          const mode = timeInput.dataset.mode || "nontimed";
+          if (mode === "timed") {
+            const minutes = Number(timeInput.value || 0);
+            if (!minutes || minutes < 1) {
+              e.preventDefault();
+              alert(
+                "Enter a time limit of at least 1 minute for Timed quizzes."
+              );
+            }
+          } else {
+            document.getElementById("timeLimit").value = 0; // Non-timed
+          }
+        });
+      })();
+    </script>
+
+    <script src="js/site-shell.js"></script>
+  </body>
+</html>

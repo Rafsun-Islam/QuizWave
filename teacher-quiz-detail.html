@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Quiz Detail (Teacher)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/teacher.css" />
+    <link rel="stylesheet" href="css/quiz-detail.css" />
+    <style>
+      .muted { opacity: 0.7; font-size: 0.9em; }
+      main { max-width: 900px; margin: 0 auto; padding: 16px; }
+      .input { width: 100%; padding: 8px; }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+      .hidden { display: none !important; }
+      .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .option-item { display: flex; gap: 8px; align-items: center; }
+    </style>
+  </head>
+  <body>
+    <div id="site-header"></div>
+    
+
+    <main>
+      <!-- Quiz header / status / controls -->
+      <div id="quizHeader" class="card">Loading quiz…</div>
+      <a class="btn" id="goLiveBtn">Start Live</a>
+      <button class="btn ghost" id="showResultsBtn" type="button">Results</button>
+
+      <script>
+        (function () {
+          const p = new URLSearchParams(location.search);
+          const quizId = p.get("quiz") || p.get("id");
+          const btn = document.getElementById("goLiveBtn");
+          if (btn && quizId)
+            btn.href = `teacher-live-host.html?quiz=${encodeURIComponent(quizId)}`;
+        })();
+      </script>
+
+      <!-- Questions -->
+      <div class="card">
+        <h3>Questions</h3>
+        <div id="questionList">Loading…</div>
+      </div>
+
+      <!-- Add question (visible only when quiz is Draft) -->
+      <div id="addBox" class="card">
+        <h3>Add Question (Draft only)</h3>
+
+        <label>Type</label>
+        <select id="qType" class="input">
+          <option value="mcq">Multiple Choice</option>
+          <option value="tf">True/False</option>
+          <option value="essay">Essay</option>
+        </select>
+
+        <label>Question Text</label>
+        <textarea id="questionText" class="input" rows="3" placeholder="Enter the question text..."></textarea>
+
+        <!-- MCQ options (letters only saved as correct: A/B/C/D) -->
+        <div id="mcqBlock" class="hidden" style="margin-top: 10px">
+          <label>Options (pick the correct one)</label>
+          <div class="options-grid">
+            <div class="option-item">
+              <input type="radio" name="mcqCorrect" value="0" aria-label="Correct option A" />
+              <input type="text" id="opt0" class="input" placeholder="Option A" />
+            </div>
+            <div class="option-item">
+              <input type="radio" name="mcqCorrect" value="1" aria-label="Correct option B" />
+              <input type="text" id="opt1" class="input" placeholder="Option B" />
+            </div>
+            <div class="option-item">
+              <input type="radio" name="mcqCorrect" value="2" aria-label="Correct option C" />
+              <input type="text" id="opt2" class="input" placeholder="Option C" />
+            </div>
+            <div class="option-item">
+              <input type="radio" name="mcqCorrect" value="3" aria-label="Correct option D" />
+              <input type="text" id="opt3" class="input" placeholder="Option D" />
+            </div>
+          </div>
+          <div class="muted" style="margin-top: 6px">All four options are required for MCQ.</div>
+        </div>
+
+        <label>Correct Answer (MCQ/TF)</label>
+        <input id="correctAnswer" class="input" placeholder='For MCQ: A / B / C / D. For TF: "true" or "false"' />
+
+        <div class="row" style="margin-top: 10px">
+          <button class="btn" id="addBtn" type="button">Add Question</button>
+        </div>
+      </div>
+
+      <!-- Leaderboard (students only) -->
+      <div class="card">
+        <h3 id="leaderboard">Leaderboard (Students Only)</h3>
+        <ol id="teacherLeaderboard">Loading…</ol>
+      </div>
+
+      <!-- Results Panel -->
+      <section id="resultsPanel" class="card hidden">
+        <h3>Results</h3>
+        <div class="muted" style="margin-bottom:10px">Top 5 and option distribution</div>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:16px;">
+          <div>
+            <h4>Top 5 (text)</h4>
+            <ol id="top5List" style="margin-top:8px;"></ol>
+          </div>
+          <div>
+            <h4>Top 5 (chart)</h4>
+            <div style="height:240px"><canvas id="top5Chart"></canvas></div>
+          </div>
+        </div>
+
+        <hr style="margin:14px 0">
+
+        <div>
+          <div class="row" style="align-items:center; gap:8px;">
+            <label for="questionSelect" class="muted">Question:</label>
+            <select id="questionSelect" class="input" style="max-width:420px"></select>
+          </div>
+
+          <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:10px;">
+            <div>
+              <h4>Option Distribution</h4>
+              <div style="height:240px"><canvas id="optDistChart"></canvas></div>
+            </div>
+            <div>
+              <h4>Breakdown</h4>
+              <table class="table" id="optDistTable">
+                <thead><tr><th>Option</th><th>Count</th><th>%</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="card">
+        <h3>Needs Grading</h3>
+        <ul id="attemptsNeedingGrading">Loading…</ul>
+      </div>
+    </main>
+
+    <!-- Libs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Your app scripts -->
+    <script src="js/01-supabase-connection.js"></script>
+    <script src="js/02-utils.js"></script>
+    <script src="js/03-timer.js"></script>
+    <script src="js/04-auth.js"></script>
+    <script src="js/06-teacher-quizzes.js"></script>
+    <script src="js/07-teacher-quiz-detail.js"></script>
+    <script src="js/08-questions.js"></script>
+    <script src="js/09-student-list.js"></script>
+    <script src="js/13-leaderboard-teacher.js"></script>
+    <script src="js/15-needing-grading.js"></script>
+    <script src="js/17-logout-guard.js"></script>
+    <script src="js/teacher-results.js"></script>
+
+    <script>
+      // - showGreeting, loadQuizDetail, addQuestionFromDetail, loadTeacherLeaderboard
+      async function initQuizDetail() {
+        if (typeof showGreeting === "function") {
+          await showGreeting("teacherGreeting", "Teacher");
+        }
+
+        const params = new URLSearchParams(location.search);
+        const quizId = params.get("quiz");
+        if (!quizId) {
+          document.getElementById("quizHeader").textContent =
+            "Missing ?quiz=<id> in URL.";
+          document.getElementById("questionList").textContent = "";
+          document.getElementById("teacherLeaderboard").innerHTML =
+            "<li>No quiz selected.</li>";
+          return;
+        }
+
+        if (typeof loadQuizDetail === "function") {
+          await loadQuizDetail(quizId);
+        }
+        if (typeof loadTeacherLeaderboard === "function") {
+          await loadTeacherLeaderboard(quizId);
+        }
+
+        // ----- MCQ UI wiring (letter-based correct) -----
+        const qTypeSel = document.getElementById("qType");
+        const mcqBlock = document.getElementById("mcqBlock");
+        const correctInput = document.getElementById("correctAnswer");
+        const optEls = [0, 1, 2, 3].map((i) => document.getElementById("opt" + i));
+        const radios = Array.from(document.querySelectorAll('input[name="mcqCorrect"]'));
+        const letters = ["A", "B", "C", "D"];
+
+        function toggleBlocks() {
+          mcqBlock.classList.toggle("hidden", qTypeSel.value !== "mcq");
+          if (qTypeSel.value !== "mcq" && correctInput.value.match(/^[A-Da-d]$/)) {
+            correctInput.value = "";
+          }
+        }
+        function updateCorrectFromSelected() {
+          const sel = document.querySelector('input[name="mcqCorrect"]:checked');
+          if (!sel) return;
+          const idx = Number(sel.value);
+          correctInput.value = letters[idx]; // store letter ONLY
+        }
+        qTypeSel.addEventListener("change", toggleBlocks);
+        toggleBlocks();
+        radios.forEach((r) => r.addEventListener("change", updateCorrectFromSelected));
+        optEls.forEach((el, idx) =>
+          el.addEventListener("input", () => {
+            const sel = document.querySelector('input[name="mcqCorrect"]:checked');
+            if (sel && Number(sel.value) === idx) updateCorrectFromSelected();
+          })
+        );
+
+        const addBtn = document.getElementById("addBtn");
+        if (addBtn && typeof addQuestionFromDetail === "function") {
+          addBtn.addEventListener("click", async () => {
+            const type = document.getElementById("qType").value;
+            const text = (document.getElementById("questionText").value || "").trim();
+            let correct = (document.getElementById("correctAnswer").value || "").trim();
+            let options = null;
+            if (type === "mcq") {
+              options = [0, 1, 2, 3].map((i) =>
+                (document.getElementById("opt" + i)?.value || "").trim()
+              );
+            } else if (type === "tf") {
+              options = ["true", "false"];
+            }
+            await addQuestionFromDetail(quizId, type, text, correct, options);
+          });
+        }
+
+        // Results panel wiring
+        if (typeof wireResultsUI === "function") {
+          wireResultsUI(quizId);
+        }
+      }
+
+      requireLogin("Teacher").then(() => {
+        initTeacherHome();
+      });
+
+      // Run on page load
+      initQuizDetail();
+    </script>
+
+    <script src="js/site-shell.js"></script>
+  </body>
+</html>

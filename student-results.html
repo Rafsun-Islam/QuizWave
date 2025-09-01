@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Results</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/student.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container">
+  <div class="card">
+    <h2>Quiz Results</h2>
+    <p id="scoreLine">Score: --%</p>
+    <p id="timeLine" class="small">Time: --</p>
+    <div class="row">
+      <a class="btn" id="leaderboardLink">View Leaderboard</a>
+      <a class="btn" href="student-home.html">Back to Home</a>
+    </div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/01-supabase-connection.js"></script>
+<script src="js/02-utils.js"></script>
+<script src="js/03-timer.js"></script>
+<script src="js/04-auth.js"></script>
+<script src="js/06-teacher-quizzes.js"></script>
+<script src="js/07-teacher-quiz-detail.js"></script>
+<script src="js/08-questions.js"></script>
+<script src="js/09-student-list.js"></script>
+<script src="js/15-needing-grading.js"></script>
+<script src="js/17-logout-guard.js"></script>
+
+<script>
+  const p = new URLSearchParams(location.search);
+  const score = Number(p.get("score") || 0);
+  const time = Number(p.get("time") || 0);
+  const quiz = p.get("quiz");
+
+  document.getElementById("scoreLine").textContent = `Score: ${score}%`;
+  document.getElementById("timeLine").textContent = `Time: ${Math.floor(time/60)}:${String(time%60).padStart(2,"0")}`;
+  document.getElementById("leaderboardLink").href = `leaderboards.html?quiz=${encodeURIComponent(quiz||"")}`;
+
+  requireLogin("Student").then(() => {
+  initStudentHome();
+});
+
+</script>
+
+  <script src="js/site-shell.js"></script>
+</body>
+</html>

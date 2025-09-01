@@ -1,0 +1,7 @@
+
+/* Component-specific polish */
+.nav-student a.active, .nav-teacher a.active { border-bottom:2px solid var(--brand) }
+.avatar{ width:32px; height:32px; border-radius:50%; background:linear-gradient(45deg,var(--brand),var(--brand-2)) }
+.banner{ background:linear-gradient(90deg, rgba(110,231,183,.15), transparent 60%); padding:10px 14px; border-radius:12px; border:1px dashed rgba(110,231,183,.35)}
+.kpi{ display:flex; align-items:center; gap:12px }
+.kpi .value{ font-size:34px; font-weight:800 }

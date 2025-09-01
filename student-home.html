@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Home</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/student.css">
+  <link rel="stylesheet" href="css/theme-transitions.css">
+</head>
+<body onload="initStudentHome()">
+<div id="site-header"></div>
+
+<main>
+  <h2 id="studentGreeting">Hello…</h2>
+
+  <h3>Available Quizzes</h3>
+  <div id="quizList"></div>
+</main>
+
+<!-- order matters -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/01-supabase-connection.js"></script>
+<script src="js/02-utils.js"></script>
+<script src="js/03-timer.js"></script>
+<script src="js/04-auth.js"></script>
+<script src="js/06-teacher-quizzes.js"></script>
+<script src="js/07-teacher-quiz-detail.js"></script>
+<script src="js/08-questions.js"></script>
+<script src="js/09-student-list.js"></script>
+<script src="js/15-needing-grading.js"></script>
+<script src="js/17-logout-guard.js"></script>
+
+<script>
+  requireLogin("Student").then(() => {
+  initStudentHome();
+});
+
+</script>
+
+  <script src="js/site-shell.js"></script>
+</body>
+</html>

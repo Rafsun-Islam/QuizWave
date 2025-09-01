@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign Up • QuizWave</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/theme-transitions.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <section class="card section reveal">
+      <div class="container">
+        <h1>Create your account</h1>
+        <p class="muted">Join as Student or Teacher.</p>
+
+        <form id="signupForm" class="mt-4">
+          <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:16px">
+            <div><label>Full Name</label><input id="name" name="name" required></div>
+            <div><label>Email</label><input id="email" name="email" type="email" required></div>
+            <div><label>Role</label>
+              <select id="role" name="role">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+              </select>
+            </div>
+            <div><label>Password</label><input id="password" name="password" type="password" required></div>
+            <div><label>Confirm Password</label><input id="password2" name="password2" type="password" required></div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn" type="submit">Create Account</button>
+            <a class="btn ghost" href="login.html">Already have an account? Login</a>
+          </div>
+          <div id="signupMsg" class="mt-3"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- 1) Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 2) Global Supabase client -->
+  <script src="js/01-supabase-connection.js"></script>
+
+  <!-- 3) Signup logic -->
+  <script>
+  (function () {
+    const text = (id) => (document.getElementById(id)?.value || '').trim();
+    const msgEl = document.getElementById('signupMsg');
+    const showMsg = (t, ok=true) => { msgEl.textContent=t; msgEl.style.color = ok ? 'limegreen' : 'tomato'; };
+
+    async function handleSignup(e) {
+      e.preventDefault();
+
+      const name     = text('name');
+      const email    = text('email');
+      const role     = (document.getElementById('role')?.value || 'student').toLowerCase();
+      const password = document.getElementById('password')?.value || '';
+      const password2= document.getElementById('password2')?.value || '';
+
+      if (!email || !password) { showMsg('Email & password required', false); return; }
+      if (password !== password2) { showMsg('Passwords do not match', false); return; }
+
+      try {
+        // Send metadata with signup
+        const metadata = { name, role };
+        const { data, error } = await client.auth.signUp({
+          email, password,
+          options: { data: metadata }
+        });
+        if (error) throw error;
+
+        showMsg('Account created. Please verify your email to continue.', true);
+        setTimeout(() => {
+          window.location.href = 'verify-email.html?email=' + encodeURIComponent(email);
+        }, 1000);
+      } catch (err) {
+        console.error(err);
+        showMsg(err.message || 'Signup failed', false);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('signupForm');
+      if (form) form.addEventListener('submit', handleSignup);
+    });
+  })();
+  </script>
+
+  <!-- 4) Optional site scripts -->
+  <script src="js/02-utils.js"></script>
+  <script src="js/04-auth.js"></script>
+  <script src="js/site-shell.js"></script>
+</body>
+</html>

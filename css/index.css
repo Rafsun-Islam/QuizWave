@@ -1,0 +1,199 @@
+/* Index page extras (override if needed) */
+.hero .actions{display:flex; gap:10px; flex-wrap:wrap}
+.feature {
+  margin-top: 20px;
+  padding: 30px;
+  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.feature:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow);
+  background: var(--card-hover-bg);
+}
+
+:root[data-theme="light"] .feature:hover {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+}
+
+.feature h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--heading);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.feature p {
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.feature:first-child {
+  background: linear-gradient(135deg, var(--card-bg), rgba(87, 83, 255, 0.15));
+}
+
+.feature:nth-child(2) {
+  background: linear-gradient(135deg, var(--card-bg), rgba(255, 159, 67, 0.15));
+}
+
+.feature:nth-child(3) {
+  background: linear-gradient(135deg, var(--card-bg), rgba(78, 255, 166, 0.15));
+}
+
+@media (max-width: 768px) {
+  .feature {
+    margin-bottom: 20px;
+  }
+}
+
+
+
+
+/* Footer style with theme support */
+.footer-style {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.footer-style::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-radius: 50%;
+  animation: ripple 6s linear infinite;
+}
+
+.footer-style p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.footer-style #year {
+  font-weight: bold;
+}
+
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+
+
+/* Heading */
+/* Hero Section with theme support */
+.hero-style {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: var(--text);
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* Heading Styling */
+.hero-style h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.2;
+  animation: fadeInUp 1.5s ease-out;
+  color: #ffffff;
+}
+
+/* Paragraph Styling */
+.hero-style p {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 30px;
+  animation: fadeInUp 1.5s ease-out 0.5s;
+}
+
+/* Button Actions Section */
+.hero-style .actions {
+  animation: fadeInUp 1.5s ease-out 1s;
+}
+
+/* Button Styling */
+.hero-style .btn {
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b); 
+  border-radius: 5px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, background 0.3s ease; 
+}
+
+.hero-style .btn:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+  transform: scale(1.1); 
+}
+
+/* Background Ripple Animation */
+.hero-style::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-radius: 50%;
+  animation: ripple 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Keyframe for Ripple Animation */
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+/* Keyframe for Fade-In Animation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
