@@ -1152,3 +1152,180 @@ main.container {
   }
 }
 
+/* ===== Responsive Navbar + Hamburger (safe & minimal) ===== */
+.nav-toggle {
+  display: none;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  border: var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.nav-toggle .hamb {
+  display: block;
+  width: 22px; height: 2px;
+  background: currentColor;
+  margin: 3.5px 0;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+/* Mobile layout */
+@media (max-width: 960px) {
+  header.site nav.bar { flex-wrap: wrap; gap: 12px; }
+  header.site nav.bar .spacer { display: none; }
+
+  /* show hamburger */
+  header.site .nav-toggle { display: inline-flex; }
+
+  /* collapse menu (we add .nav-actions via JS if missing) */
+  header.site .nav-actions {
+    flex-basis: 100%;
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--bg-elev);
+    border: var(--border);
+    border-radius: 12px;
+    padding: 8px;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: max-height .25s ease, opacity .2s ease, visibility 0s linear .25s;
+  }
+  header.site.mobile-open .nav-actions {
+    max-height: 600px;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  /* make links/buttons comfy */
+  header.site .nav-actions a,
+  header.site .nav-actions button {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+}
+
+/* Turn hamburger into X */
+header.site.mobile-open .nav-toggle .hamb:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+header.site.mobile-open .nav-toggle .hamb:nth-child(2) { opacity: 0; }
+header.site.mobile-open .nav-toggle .hamb:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Show these only inside the hamburger on mobile */
+.nav-mobile-only { display: none; }
+@media (max-width: 960px) { .nav-mobile-only { display: block; } }
+
+/* === Navbar: force hamburger to the right on mobile === */
+@media (max-width: 960px) {
+  header.site nav.bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* already set, but safe to repeat */
+    gap: 12px;
+  }
+
+  /* Order the three pieces: brand (1), toggle (2 at far right), menu (3 below) */
+  header.site .brand       { order: 1; }
+  header.site .nav-toggle  { order: 2; margin-left: auto; } /* pushes to right */
+  header.site .nav-actions { order: 3; flex-basis: 100%; }  /* full width, second row */
+
+  /* Hide spacer on mobile so it doesn’t interfere */
+  header.site nav.bar .spacer { display: none; }
+}
+/* === Mobile hamburger: put profile first === */
+@media (max-width: 960px) {
+  /* ensure the panel is a column so order works */
+  header.site .nav-actions {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 1) profile block goes to the top */
+  header.site .nav-actions .profile { order: -20; }
+
+  /* 2) the cloned mobile links (View Profile, Logout) come right after */
+  header.site .nav-actions .nav-mobile-only { order: -19; }
+
+  /* 3) main nav links next */
+  header.site .nav-actions a[data-navlink] { order: 0; }
+
+  /* 4) theme toggle last */
+  header.site .nav-actions #themeToggle { order: 20; }
+
+  /* optional: add a little card look for the profile chunk */
+  header.site .nav-actions .profile {
+    background: var(--bg-elev);
+    border: var(--border);
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+}
+/* === Hamburger visibility & layout by breakpoint === */
+
+/* Hide by default (desktop-first) */
+.nav-toggle { display: none !important; }
+
+/* Desktop / large screens: show the full menu inline */
+@media (min-width: 961px) {
+  header.site nav.bar { flex-wrap: nowrap; }
+  header.site .nav-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+
+    /* undo mobile panel look */
+    max-height: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    border: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    flex-basis: auto !important;
+    order: initial !important;
+  }
+  header.site .nav-toggle { display: none !important; }   /* never show on desktop */
+  header.site nav.bar .spacer { display: inline-block; }  /* keep spacing on desktop */
+}
+
+/* Mobile / small screens: show hamburger, collapse menu */
+@media (max-width: 960px) {
+  header.site nav.bar { flex-wrap: wrap; gap: 12px; }
+  header.site nav.bar .spacer { display: none; }
+
+  /* show the toggle only on mobile */
+  header.site .nav-toggle { display: inline-flex !important; margin-left: auto; order: 2; }
+
+  /* collapsible panel */
+  header.site .nav-actions {
+    flex-basis: 100%;
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--bg-elev);
+    border: var(--border);
+    border-radius: 12px;
+    padding: 8px;
+
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: max-height .25s ease, opacity .2s ease, visibility 0s linear .25s;
+  }
+  header.site.mobile-open .nav-actions {
+    max-height: 600px;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}

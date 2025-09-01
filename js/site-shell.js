@@ -311,3 +311,147 @@
   }
 })();
 
+(function () {
+  function ensureHamburger() {
+    const header = document.querySelector("header.site");
+    const nav = header?.querySelector("nav.bar");
+    if (!header || !nav) return false;
+
+    const brand = nav.querySelector(".brand");
+    const spacer = nav.querySelector(".spacer");
+
+    // 1) Ensure a single .nav-actions wrapper that contains ALL nav items (links, theme toggle, profile)
+    let actions = nav.querySelector(".nav-actions");
+    if (!actions) {
+      actions = document.createElement("div");
+      actions.className = "nav-actions";
+
+      // Insert after spacer if present, else after brand
+      if (spacer && nav.contains(spacer)) spacer.after(actions);
+      else if (brand && nav.contains(brand)) brand.after(actions);
+      else nav.prepend(actions);
+
+      // Move every node except brand/spacer/toggle/wrapper into .nav-actions
+      Array.from(nav.children).forEach((node) => {
+        if (
+          node === brand ||
+          node === spacer ||
+          node === actions ||
+          node.id === "navToggle"
+        )
+          return;
+        actions.appendChild(node);
+      });
+    }
+
+    // 2) Create hamburger toggle if missing
+    let toggle = nav.querySelector("#navToggle");
+    if (!toggle) {
+      toggle = document.createElement("button");
+      toggle.id = "navToggle";
+      toggle.className = "nav-toggle";
+      toggle.type = "button";
+      toggle.setAttribute("aria-label", "Menu");
+      toggle.setAttribute("aria-controls", actions.id || "navMenu");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.innerHTML =
+        '<span class="hamb"></span><span class="hamb"></span><span class="hamb"></span>';
+
+      if (spacer && nav.contains(spacer)) spacer.after(toggle);
+      else if (brand && nav.contains(brand)) brand.after(toggle);
+      else nav.prepend(toggle);
+    }
+    if (!actions.id) actions.id = "navMenu";
+
+    // 3) Mobile-only: add "View Profile" + "Logout" inside the panel (cloned so desktop dropdown remains)
+    const profileDropdown =
+      actions.querySelector("#profileDropdown") ||
+      nav.querySelector("#profileDropdown");
+    if (profileDropdown && !actions.querySelector("#logoutLinkMobile")) {
+      const viewSrc = profileDropdown.querySelector('a[href="profile.html"]');
+      const logoutSrc = profileDropdown.querySelector("#logoutLink");
+
+      if (viewSrc) {
+        const viewClone = viewSrc.cloneNode(true);
+        viewClone.classList.add("nav-mobile-only");
+        // avoid duplicate IDs
+        if (viewClone.id) viewClone.id = viewClone.id + "Mobile";
+        actions.appendChild(viewClone);
+      }
+
+      if (logoutSrc) {
+        const logoutClone = logoutSrc.cloneNode(true);
+        logoutClone.classList.add("nav-mobile-only");
+        logoutClone.id = "logoutLinkMobile";
+        // wire to the same logout function
+        logoutClone.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (typeof window.logoutUser === "function") window.logoutUser();
+        });
+        actions.appendChild(logoutClone);
+      }
+    }
+
+    // 4) Toggle open/close
+    function setOpen(open) {
+      header.classList.toggle("mobile-open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    if (!toggle._bound) {
+      toggle.addEventListener("click", () =>
+        setOpen(!header.classList.contains("mobile-open"))
+      );
+      toggle._bound = true;
+    }
+
+    // Close on outside click (only on mobile)
+    if (!document._navOutsideBound) {
+      document.addEventListener("click", (e) => {
+        if (
+          window.matchMedia("(max-width: 960px)").matches &&
+          !header.contains(e.target)
+        )
+          setOpen(false);
+      });
+      document._navOutsideBound = true;
+    }
+
+    // Close on Escape
+    if (!document._navEscBound) {
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") setOpen(false);
+      });
+      document._navEscBound = true;
+    }
+
+    // Close after tapping any link/button inside the panel on mobile
+    if (!actions._closeOnClickBound) {
+      actions.addEventListener("click", (e) => {
+        const t = e.target.closest("a,button");
+        if (t && window.matchMedia("(max-width: 960px)").matches)
+          setOpen(false);
+      });
+      actions._closeOnClickBound = true;
+    }
+
+    return true;
+  }
+
+  // Wait for header.site (site-shell may inject it)
+  function whenHeaderReady(cb) {
+    if (cb()) return;
+    const obs = new MutationObserver(() => {
+      if (cb()) obs.disconnect();
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => obs.disconnect(), 10000); // safety
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () =>
+      whenHeaderReady(ensureHamburger)
+    );
+  } else {
+    whenHeaderReady(ensureHamburger);
+  }
+})();
