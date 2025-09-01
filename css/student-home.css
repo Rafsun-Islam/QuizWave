@@ -135,118 +135,29 @@ body > main.container {
   word-break: break-word;
 }
 
-/* ==========================================================
-   STUDENT HOME — FORCE BIG GAPS + ROOMY CARDS (JS-proof)
-   ========================================================== */
+/* =========================================
+   Student Home — Opposite-side action buttons
+   (no new class names; works with .actions)
+   ========================================= */
 
-/* 1) Force the lists to be a responsive grid with large gaps */
-#availableQuizzesList,
-#inProgressList {
-  /* responsive tokens */
-  --gap-x: clamp(28px, 4.2vw, 48px);
-  --gap-y: clamp(28px, 3.6vw, 44px);
-  --card-pad: clamp(18px, 2.2vw, 28px);
-
-  /* enforce layout even if JS sets something else */
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-  column-gap: var(--gap-x) !important;
-  row-gap: var(--gap-y) !important;
-
-  /* space above the grid */
-  margin-top: clamp(16px, 2.4vw, 28px) !important;
+/* Put the first button flush left, the rest flush right */
+#availableQuizzesList .card .actions,
+#inProgressList .card .actions,
+.quiz-card .actions {
+  justify-content: flex-start !important; /* start the row */
 }
 
-/* 2) Make every injected child a proper “card” with roomy padding */
-#availableQuizzesList > *,
-#inProgressList > * {
-  /* blow away any inline spacing JS might add */
-  margin: 0 !important;
-  padding: var(--card-pad) !important;
-
-  /* consistent card styling even if the child lacks .card */
-  background: var(--card-bg) !important;
-  border: 1px solid var(--card-border) !important;
-  border-radius: var(--radius) !important;
-  box-shadow: var(--shadow) !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-  min-height: 200px; /* keep rows visually even */
-  text-align: left !important; /* avoid center text from base card */
-  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+#availableQuizzesList .card .actions .btn:first-child,
+#inProgressList .card .actions .btn:first-child,
+.quiz-card .actions .btn:first-child {
+  margin-right: auto !important; /* pushes the next button(s) to the far right */
 }
 
-#availableQuizzesList > *:hover,
-#inProgressList > *:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 30px rgba(0,0,0,.28);
-}
-
-/* 3) Inside each item: title, meta, actions spacing */
-#availableQuizzesList > * h3,
-#inProgressList > * h3 {
-  margin: 0 0 4px !important;
-  font-size: 1.08rem !important;
-  line-height: 1.2 !important;
-  color: var(--heading) !important;
-  overflow-wrap: anywhere;
-}
-
-#availableQuizzesList > * .muted,
-#inProgressList > * .muted {
-  color: var(--muted) !important;
-  margin: 0 !important;
-}
-
-/* chips row */
-#availableQuizzesList > * .meta-chips,
-#inProgressList > * .meta-chips {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
-  margin-top: 6px !important;
-}
-
-/* action row pinned to bottom so rows align */
-#availableQuizzesList > * .actions,
-#inProgressList > * .actions {
-  margin-top: auto !important;
-  display: flex !important;
-  gap: 10px !important;
-  justify-content: flex-end !important;
-  flex-wrap: wrap !important;
-}
-
-/* buttons: desktop/tablet = auto width, phones = full width */
-#availableQuizzesList > * .actions .btn,
-#inProgressList > * .actions .btn {
-  padding: 8px 12px !important;
-  font-size: .95rem !important;
-  border-radius: 10px !important;
-  min-height: 36px !important;
-}
+/* Keep mobile behavior: stack full-width on narrow screens */
 @media (max-width: 560px) {
-  #availableQuizzesList > * .actions .btn,
-  #inProgressList > * .actions .btn {
-    width: 100% !important;
+  #availableQuizzesList .card .actions .btn:first-child,
+  #inProgressList .card .actions .btn:first-child,
+  .quiz-card .actions .btn:first-child {
+    margin-right: 0 !important; /* stacking, no need to push */
   }
-}
-
-/* 4) Fallback boost if your JS forces a non-grid layout on tiny screens:
-      add vertical spacing between stacked items */
-@media (max-width: 560px) {
-  #availableQuizzesList > * + *,
-  #inProgressList > * + * {
-    margin-top: 16px !important;
-  }
-}
-
-/* 5) Safety: prevent horizontal overflow from long text */
-#availableQuizzesList, #inProgressList,
-#availableQuizzesList *:where(h3, p, .chip, .muted),
-#inProgressList *:where(h3, p, .chip, .muted) {
-  overflow-wrap: anywhere;
-  word-break: break-word;
 }
