@@ -1,0 +1,15 @@
+Login page label/input alignment fix
+.login-card .container {
+  text-align: left !important;           /* undo global center */
+}
+
+
+/* Make sure labels behave like normal text */
+.login-card label {
+  display: block;
+  margin: 0 0 6px;
+  line-height: 1.2;
+  position: static !important;
+  transform: none !important;
+  text-align: left !important;
+}

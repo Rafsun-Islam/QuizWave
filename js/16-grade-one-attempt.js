@@ -53,9 +53,9 @@ async function loadAttemptForGrading(attemptId) {
     <div id="gradeList"></div>
     <div style="margin-top:12px">
       <button class="btn" id="saveGradesBtn">Save Grades</button>
-      <a class="btn" href="teacher-quiz-detail.html?quiz=${
+      <a class="btn ghost" href="teacher-quiz-detail.html?quiz=${
         attempt.quiz_id
-      }" style="background:#6c757d">Back</a>
+      }">Back</a>
     </div>
   `;
 

@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="css/theme-transitions.css" />
     <link rel="stylesheet" href="css/student-home.css" />
+    <link rel="stylesheet" href="css/navbar.css"/>
   </head>
   <body onload="initStudentHome()">
     <div id="site-header"></div>
@@ -17,6 +18,12 @@
       <h2 id="studentGreeting">Hello…</h2>
       <div id="quizList"></div>
     </main>
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 
     <!-- order matters -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

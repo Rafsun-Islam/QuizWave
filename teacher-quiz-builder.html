@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/teacher.css" />
     <link rel="stylesheet" href="css/quiz-builder.css" />
+    <link rel="stylesheet" href="css/navbar.css"/>
 
   </head>
   <body>
@@ -99,6 +100,12 @@
         </p>
       </div>
     </main>
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

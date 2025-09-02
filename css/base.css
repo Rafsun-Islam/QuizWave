@@ -121,8 +121,9 @@ nav.bar {
   --fg: #fff;
   display: inline-flex;
   align-items: center;
+  font-size: 13px;
   gap: 8px;
-  padding: 10px 14px;
+  padding: 10px 12px;
   border-radius: 12px;
   border: 0;
   cursor: pointer;
@@ -162,6 +163,7 @@ nav.bar {
   box-shadow: var(--ring);
 }
 .btn.ghost {
+font-size: 13px;
   --bg: transparent;
   --fg: var(--text);
   border: var(--border);
@@ -333,7 +335,7 @@ label {
 input,
 select,
 textarea {
-  width: 100%;
+  
   padding: 10px 12px;
   border-radius: 12px;
   background: var(--input-bg);

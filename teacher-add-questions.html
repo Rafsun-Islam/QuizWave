@@ -1,74 +1,87 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Add Questions</title>
-  <link rel="icon" type="image/png" href="./image/favicon.png">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/teacher.css">
-</head>
-<body>
-<div id="site-header"></div>
-<header>
-  <nav>
-    <a href="teacher-home.html">Home</a>
-  </nav>
-</header>
-<main>
-  <h2>Add Questions</h2>
-  <div class="card">
-    <!-- replace old inputs -->
-<label>Question Type</label>
-<select id="qType">
-  <option value="mcq">Multiple Choice</option>
-  <option value="tf">True/False</option>
-  <option value="essay">Essay</option>
-</select>
+  <head>
+    <title>Add Questions</title>
+    <link rel="icon" type="image/png" href="./image/favicon.png" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/teacher.css" />
+    <link rel="stylesheet" href="css/navbar.css"/>
+  </head>
+  <body>
+    <div id="site-header"></div>
+    <header>
+      <nav>
+        <a href="teacher-home.html">Home</a>
+      </nav>
+    </header>
+    <main>
+      <h2>Add Questions</h2>
+      <div class="card">
+        <!-- replace old inputs -->
+        <label>Question Type</label>
+        <select id="qType">
+          <option value="mcq">Multiple Choice</option>
+          <option value="tf">True/False</option>
+          <option value="essay">Essay</option>
+        </select>
 
-<label>Question Text</label>
-<textarea id="questionText" rows="3" placeholder="Enter the question text..."></textarea>
+        <label>Question Text</label>
+        <textarea
+          id="questionText"
+          rows="3"
+          placeholder="Enter the question text..."
+        ></textarea>
 
-<label>Correct Answer (for MCQ/TF)</label>
-<input id="correctAnswer" placeholder="e.g., True or the option text">
+        <label>Correct Answer (for MCQ/TF)</label>
+        <input id="correctAnswer" placeholder="e.g., True or the option text" />
 
-<button id="addBtn" type="button">Add Question</button>
+        <button id="addBtn" type="button">Add Question</button>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const quizId = params.get('quiz');
+        <script>
+          const params = new URLSearchParams(window.location.search);
+          const quizId = params.get("quiz");
 
-  document.getElementById('addBtn').addEventListener('click', async () => {
-    const type = document.getElementById('qType').value;
-    const text = document.getElementById('questionText').value;
-    const correct = document.getElementById('correctAnswer').value;
-    console.log('[add] values:', { type, text, correct });
-    await addQuestion(quizId, type, text, correct);
-    // optionally refresh list
-    if (typeof listQuestionsForQuiz === 'function') listQuestionsForQuiz(quizId);
-  });
-</script>
+          document
+            .getElementById("addBtn")
+            .addEventListener("click", async () => {
+              const type = document.getElementById("qType").value;
+              const text = document.getElementById("questionText").value;
+              const correct = document.getElementById("correctAnswer").value;
+              console.log("[add] values:", { type, text, correct });
+              await addQuestion(quizId, type, text, correct);
+              // optionally refresh list
+              if (typeof listQuestionsForQuiz === "function")
+                listQuestionsForQuiz(quizId);
+            });
+        </script>
+      </div>
+    </main>
 
-  </div>
-</main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/01-supabase-connection.js"></script>
-<script src="js/02-utils.js"></script>
-<script src="js/03-timer.js"></script>
-<script src="js/04-auth.js"></script>
-<script src="js/06-teacher-quizzes.js"></script>
-<script src="js/07-teacher-quiz-detail.js"></script>
-<script src="js/08-questions.js"></script>
-<script src="js/09-student-list.js"></script>
-<script src="js/15-needing-grading.js"></script>
-<script src="js/17-logout-guard.js"></script>
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/01-supabase-connection.js"></script>
+    <script src="js/02-utils.js"></script>
+    <script src="js/03-timer.js"></script>
+    <script src="js/04-auth.js"></script>
+    <script src="js/06-teacher-quizzes.js"></script>
+    <script src="js/07-teacher-quiz-detail.js"></script>
+    <script src="js/08-questions.js"></script>
+    <script src="js/09-student-list.js"></script>
+    <script src="js/15-needing-grading.js"></script>
+    <script src="js/17-logout-guard.js"></script>
 
-<script>
-  requireLogin("Teacher").then(() => {
-  initTeacherHome();
-});
+    <script>
+      requireLogin("Teacher").then(() => {
+        initTeacherHome();
+      });
+    </script>
 
-</script>
-
-  <script src="js/site-shell.js"></script>
-</body>
+    <script src="js/site-shell.js"></script>
+  </body>
 </html>

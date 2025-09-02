@@ -50,6 +50,13 @@
       </section>
     </main>
 
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
     <script>
       const params = new URLSearchParams(window.location.search);
       const emailParam = params.get("email");

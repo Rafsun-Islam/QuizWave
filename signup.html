@@ -71,6 +71,12 @@
         </div>
       </section>
     </main>
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 
     <!-- 1) Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

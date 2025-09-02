@@ -1,0 +1,357 @@
+/* =========================================================
+   Teacher — Grade Attempt (CSS-only, theme-aware)
+   Works with: base.css + teacher.css + components.css
+   Targets what js/16-grade-one-attempt.js injects into #gradeContainer
+   ========================================================= */
+
+/* Layout safety */
+main.container.page-gutter {
+  min-width: 0;
+}
+main.container.page-gutter > h2 {
+  margin: 0 0 12px;
+  color: var(--heading);
+}
+
+/* Main grading card */
+#gradeContainer {
+  background: var(--panel);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(14px, 2.2vw, 18px);
+  min-width: 0;
+  text-align: left !important; /* override base .card .container center */
+}
+
+/* Top heading + meta lines the JS typically injects */
+#gradeContainer > h3 {
+  margin: 0 0 6px;
+  color: var(--heading);
+  line-height: 1.2;
+}
+#gradeContainer > p {
+  margin: 0 0 8px;
+  color: var(--muted);
+}
+
+/* Compact “chip”/badge for attempt metadata if present */
+#gradeContainer .chip,
+#gradeContainer .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+/* Questions list — make it a nice stack with internal scroll on desktop */
+#gradeContainer .questions,
+#gradeContainer #gradeList,
+#gradeContainer #gradeQuestions {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+  max-height: min(70vh, 900px);
+  overflow: auto;
+  padding-right: 4px; /* room for scrollbar */
+}
+
+/* Fallback: if no known id/class wrapper, detect many child cards and scroll */
+@supports selector(#gradeContainer:has(> .card + .card)) {
+  #gradeContainer:has(> .card + .card) {
+    display: grid;
+    gap: 12px;
+  }
+  #gradeContainer:has(> .card + .card) {
+    /* keep the **inner** stack scrollable without moving page buttons */
+    max-height: none; /* container itself grows */
+  }
+}
+
+/* Each injected question block (JS uses plain `.card` children) */
+#gradeContainer :is(#gradeList, #gradeQuestions) > .card,
+#gradeContainer > .card {
+  background: var(--bg-elev);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  text-align: left;
+  min-width: 0;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.06s ease;
+}
+#gradeContainer :is(#gradeList, #gradeQuestions) > .card:hover,
+#gradeContainer > .card:hover {
+  background: color-mix(in srgb, var(--bg), transparent 92%);
+  border-color: color-mix(
+    in srgb,
+    var(--border-color, #374151),
+    transparent 0%
+  );
+}
+
+/* Question header (robust even if JS doesn't add special classes) */
+#gradeContainer .card > strong:first-child,
+#gradeContainer .card > h4:first-child {
+  display: block;
+  color: var(--heading);
+  margin-bottom: 6px;
+}
+
+/* Any small helper text inside a question card */
+#gradeContainer .card .small {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+/* Score input: the script uses <input class="input" type="number" data-aaid="..."> */
+#gradeContainer input.input[type="number"][data-aaid],
+#gradeContainer input[type="number"][data-aaid] {
+  width: 100px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+#gradeContainer input.input[type="number"][data-aaid]:focus,
+#gradeContainer input[type="number"][data-aaid]:focus {
+  outline: none;
+  border-color: var(--brand-2);
+  box-shadow: var(--ring);
+  background: var(--panel);
+}
+
+/* Generic answer layout helper (works if JS wraps student/correct answers) */
+#gradeContainer .q-body {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 860px) {
+  #gradeContainer .q-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+#gradeContainer .q-section {
+  background: color-mix(in srgb, var(--bg), transparent 8%);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px;
+}
+#gradeContainer .q-section .label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* Code/long text blocks are readable */
+#gradeContainer pre,
+#gradeContainer code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+#gradeContainer pre {
+  background: color-mix(in srgb, var(--bg), transparent 14%);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 10px;
+  margin: 0;
+}
+
+/* Action buttons (Save, Back) — align right, wrap on small screens */
+#gradeContainer .actions,
+#gradeContainer .grade-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+#gradeContainer .btn {
+  border-radius: 10px;
+  min-height: 38px;
+}
+
+/* Status coloring if JS adds flags on question cards */
+#gradeContainer .correct {
+  border-left: 6px solid var(--success);
+}
+#gradeContainer .wrong {
+  border-left: 6px solid var(--danger);
+}
+#gradeContainer .partial {
+  border-left: 6px solid var(--accent);
+}
+
+/* Optional compact table styles (some attempts include small tables) */
+#gradeContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* prevents overlap, forces wrap */
+  background: transparent;
+}
+#gradeContainer th,
+#gradeContainer td {
+  padding: 10px 12px;
+  border-bottom: var(--border);
+  color: var(--text);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+#gradeContainer thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: color-mix(in srgb, var(--bg), transparent 6%);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+/* Mobile niceties */
+@media (max-width: 640px) {
+  #gradeContainer {
+    padding: 12px;
+  }
+  #gradeContainer .actions .btn {
+    width: 100%;
+  }
+  /* If long question lists, let page scroll naturally on phones */
+  #gradeContainer .questions,
+  #gradeContainer #gradeList,
+  #gradeContainer #gradeQuestions {
+    max-height: none;
+    padding-right: 0;
+  }
+}
+
+/* Prevent sideways scroll anywhere in the grading area */
+#gradeContainer,
+#gradeContainer * {
+  max-width: 100%;
+}
+#gradeContainer,
+#gradeContainer .card,
+#gradeContainer .q-body,
+#gradeContainer .q-section {
+  min-width: 0;
+}
+
+/* ================================
+   Grade Attempt — final polish
+   ================================ */
+
+/* Main card tidy (theme-aware) */
+#gradeContainer {
+  background: var(--panel);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(14px, 2.2vw, 18px);
+  text-align: left !important; /* override any base center */
+}
+
+/* Questions stack (the script creates <div class="card"> rows inside #gradeList) */
+#gradeList {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+  max-height: min(70vh, 900px);
+  overflow: auto;
+  padding-right: 4px;
+}
+#gradeList .card {
+  background: var(--bg-elev);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 8px 18px rgba(0,0,0,.06);
+  text-align: left;
+}
+
+/* Essay answer box (JS inlines a light border—override to theme) */
+#gradeContainer div[style*="white-space:pre-wrap"] {
+  background: color-mix(in srgb, var(--bg), transparent 8%) !important;
+  border-color: var(--card-border) !important;
+  color: var(--text) !important;
+}
+
+/* Points input (matches your tokens) */
+#gradeContainer input.input[type="number"][data-aaid] {
+  width: 120px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+#gradeContainer input.input[type="number"][data-aaid]:focus {
+  outline: none;
+  border-color: var(--brand-2);
+  box-shadow: var(--ring);
+  background: var(--panel);
+}
+
+/* ===== Buttons row (the parent has no class) ===== */
+/* Preferred: browsers that support :has() */
+#gradeContainer > div:has(#saveGradesBtn) {
+  display: flex !important;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;        /* wrap only when very narrow */
+  margin-top: 12px;
+}
+
+/* Fallback for older browsers: the last <div> is the buttons wrapper */
+#gradeContainer > div:last-of-type {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Equal width for Save + Back and prevent teacher.css from forcing 100% */
+#saveGradesBtn,
+#saveGradesBtn + a.btn,
+#gradeContainer a.btn.ghost[href*="teacher-quiz-detail"] {
+  width: auto !important;           /* defeat width:100% from teacher.css */
+  flex: 0 0 172px;                  /* SAME width for both buttons */
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tiny screens: stack full-width for usability */
+@media (max-width: 520px) {
+  #saveGradesBtn,
+  #saveGradesBtn + a.btn,
+  #gradeContainer a.btn.ghost[href*="teacher-quiz-detail"] {
+    flex: 1 1 100%;
+  }
+}

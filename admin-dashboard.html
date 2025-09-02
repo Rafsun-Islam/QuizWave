@@ -1,124 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin Dashboard • QuizWave</title>
-  <link rel="icon" type="image/png" href="./image/favicon.png">
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/admin.css" />
-  
-</head>
-<body>
-  <div id="site-header"></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Dashboard • QuizWave</title>
+    <link rel="icon" type="image/png" href="./image/favicon.png" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/navbar.css"/>
+  </head>
+  <body>
+    <div id="site-header"></div>
 
-  <main class="container" style="padding:16px;">
-    <div class="layout">
-      <aside class="sidebar">
-        <h4>Admin</h4>
-        <nav>
-          <ul class="nav-list">
-            <li><a href="admin-dashboard.html" class="active">Overview</a></li>
-            <li><a href="#admins">Admins</a></li>
-            <li><a href="#users">Users</a></li>
-            <li><a href="#quizzes">Quizzes</a></li>
-            <li><a href="#live">Live Sessions</a></li>
-            <li><a href="#analytics">Analytics</a></li>
-          </ul>
-        </nav>
-      </aside>
+    <main class="container" style="padding: 16px">
+      <div class="layout">
+        <aside class="sidebar">
+          <h4>Admin</h4>
+          <nav>
+            <ul class="nav-list">
+              <li>
+                <a href="admin-dashboard.html" class="active">Overview</a>
+              </li>
+              <li><a href="#admins">Admins</a></li>
+              <li><a href="#users">Users</a></li>
+              <li><a href="#quizzes">Quizzes</a></li>
+              <li><a href="#live">Live Sessions</a></li>
+              <li><a href="#analytics">Analytics</a></li>
+            </ul>
+          </nav>
+        </aside>
 
-      <section>
-        <section class="hero">
-          <h1>Platform Overview</h1>
-          <p class="muted">Global metrics across users, quizzes, attempts, and live sessions.</p>
-        </section>
+        <section>
+          <section class="hero">
+            <h1>Platform Overview</h1>
+            <p class="muted">
+              Global metrics across users, quizzes, attempts, and live sessions.
+            </p>
+          </section>
 
-        <!-- KPIs -->
-        <section class="grid cards section">
-          <div class="card"><div class="container"><div class="kpi"><div class="value" id="kTeachers">–</div><div>Teachers</div></div></div></div>
-          <div class="card"><div class="container"><div class="kpi"><div class="value" id="kStudents">–</div><div>Students</div></div></div></div>
-          <div class="card"><div class="container"><div class="kpi"><div class="value" id="kQuizzes">–</div><div>Total Quizzes</div></div></div></div>
-          <div class="card"><div class="container"><div class="kpi"><div class="value" id="kAttempts">–</div><div>Total Attempts</div></div></div></div>
-          <div class="card"><div class="container"><div class="kpi"><div class="value" id="kLiveAll">–</div><div>Live Sessions (All)</div></div></div></div>
-          <div class="card"><div class="container"><div class="kpi"><div class="value" id="kLiveActive">–</div><div>Live Sessions (Active)</div></div></div></div>
-          <div class="card"><div class="container"><div class="kpi"><div class="value" id="kLiveParticipants">–</div><div>Live Participants (All)</div></div></div></div>
-        </section>
-
-        <!-- Analytics -->
-        <section id="analytics" class="section">
-          <div class="grid-auto">
-            <div class="card"><div class="container" style="height:280px;"><canvas id="userGrowth"></canvas></div></div>
-            <div class="card"><div class="container" style="height:280px;"><canvas id="quizByTeacher"></canvas></div></div>
-            <div class="card"><div class="container" style="height:280px;"><canvas id="attemptsByStudent"></canvas></div></div>
-          </div>
-        </section>
-
-        <!-- Admin Management -->
-        <section id="admins" class="section">
-          <div class="row-soft">
-            <h3>Admins</h3>
-            <div class="two">
-              <form id="addAdminForm" class="actions" onsubmit="return false;">
-                <input id="adminEmail" class="input" type="email" placeholder="user@school.edu" required />
-                <input id="adminName" class="input" type="text" placeholder="Name (optional)" />
-                <button id="addAdminBtn" class="btn btn-sm">Add Admin</button>
-              </form>
-              <div><span class="chip" id="youAre">You: –</span></div>
+          <!-- KPIs -->
+          <section class="grid cards section">
+            <div class="card">
+              <div class="container">
+                <div class="kpi">
+                  <div class="value" id="kTeachers">–</div>
+                  <div>Teachers</div>
+                </div>
+              </div>
             </div>
-            <div style="margin-top:10px;">
-              <table class="table" id="adminsTable">
-                <thead><tr><th>Name</th><th>Email</th><th>Added</th><th>Actions</th></tr></thead>
+            <div class="card">
+              <div class="container">
+                <div class="kpi">
+                  <div class="value" id="kStudents">–</div>
+                  <div>Students</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="container">
+                <div class="kpi">
+                  <div class="value" id="kQuizzes">–</div>
+                  <div>Total Quizzes</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="container">
+                <div class="kpi">
+                  <div class="value" id="kAttempts">–</div>
+                  <div>Total Attempts</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="container">
+                <div class="kpi">
+                  <div class="value" id="kLiveAll">–</div>
+                  <div>Live Sessions (All)</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="container">
+                <div class="kpi">
+                  <div class="value" id="kLiveActive">–</div>
+                  <div>Live Sessions (Active)</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="container">
+                <div class="kpi">
+                  <div class="value" id="kLiveParticipants">–</div>
+                  <div>Live Participants (All)</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Analytics -->
+          <section id="analytics" class="section">
+            <div class="grid-auto">
+              <div class="card">
+                <div class="container" style="height: 280px">
+                  <canvas id="userGrowth"></canvas>
+                </div>
+              </div>
+              <div class="card">
+                <div class="container" style="height: 280px">
+                  <canvas id="quizByTeacher"></canvas>
+                </div>
+              </div>
+              <div class="card">
+                <div class="container" style="height: 280px">
+                  <canvas id="attemptsByStudent"></canvas>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Admin Management -->
+          <section id="admins" class="section">
+            <div class="row-soft">
+              <h3>Admins</h3>
+              <div class="two">
+                <form
+                  id="addAdminForm"
+                  class="actions"
+                  onsubmit="return false;"
+                >
+                  <input
+                    id="adminEmail"
+                    class="input"
+                    type="email"
+                    placeholder="user@school.edu"
+                    required
+                  />
+                  <input
+                    id="adminName"
+                    class="input"
+                    type="text"
+                    placeholder="Name (optional)"
+                  />
+                  <button id="addAdminBtn" class="btn btn-sm">Add Admin</button>
+                </form>
+                <div><span class="chip" id="youAre">You: –</span></div>
+              </div>
+              <div style="margin-top: 10px">
+                <table class="table" id="adminsTable">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Added</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <p class="muted" style="margin-top: 8px">
+                Note: You cannot delete the last remaining admin.
+              </p>
+            </div>
+          </section>
+
+          <!-- Users -->
+          <section id="users" class="card section">
+            <div class="container">
+              <h3>Recent Users</h3>
+              <table class="table" id="usersTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
                 <tbody></tbody>
               </table>
             </div>
-            <p class="muted" style="margin-top:8px;">Note: You cannot delete the last remaining admin.</p>
-          </div>
-        </section>
+          </section>
 
-        <!-- Users -->
-        <section id="users" class="card section">
-          <div class="container">
-            <h3>Recent Users</h3>
-            <table class="table" id="usersTable">
-              <thead><tr><th>Name</th><th>Role</th><th>Email</th><th>Created</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </section>
+          <!-- Quizzes -->
+          <section id="quizzes" class="card section">
+            <div class="container">
+              <h3>Quizzes</h3>
+              <table class="table" id="quizzesTable">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Teacher</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
 
-        <!-- Quizzes -->
-        <section id="quizzes" class="card section">
-          <div class="container">
-            <h3>Quizzes</h3>
-            <table class="table" id="quizzesTable">
-              <thead><tr><th>Title</th><th>Teacher</th><th>Created</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
+          <!-- Live Sessions -->
+          <section id="live" class="card section">
+            <div class="container">
+              <h3>Live Sessions</h3>
+              <table class="table" id="liveTable">
+                <thead>
+                  <tr>
+                    <th>Session</th>
+                    <th>Quiz</th>
+                    <th>Status</th>
+                    <th>Participants</th>
+                    <th>Started</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
         </section>
-
-        <!-- Live Sessions -->
-        <section id="live" class="card section">
-          <div class="container">
-            <h3>Live Sessions</h3>
-            <table class="table" id="liveTable">
-              <thead><tr><th>Session</th><th>Quiz</th><th>Status</th><th>Participants</th><th>Started</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </section>
-      </section>
-    </div>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/01-supabase-connection.js"></script>
-  <script src="js/02-utils.js"></script>
-  <script src="js/04-auth.js"></script>
-  <script src="js/admin-dashboard.js"></script>
-  <script src="js/site-shell.js"></script>
-</body>
+      </div>
+    </main>
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/01-supabase-connection.js"></script>
+    <script src="js/02-utils.js"></script>
+    <script src="js/04-auth.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+    <script src="js/site-shell.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

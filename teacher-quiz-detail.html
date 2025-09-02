@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/components.css" />
     <!-- <link rel="stylesheet" href="css/teacher.css" /> -->
     <link rel="stylesheet" href="css/quiz-detail.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
   </head>
   <body>
     <div id="site-header"></div>
@@ -216,6 +217,13 @@
         </ul>
       </div>
     </main>
+
+    <footer class="container footer-style">
+      © <span id="year"></span> QuizWave
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 
     <!-- Libs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
