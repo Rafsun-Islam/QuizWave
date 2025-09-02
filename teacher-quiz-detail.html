@@ -3,22 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <title>Quiz Detail (Teacher)</title>
+    <link rel="icon" type="image/png" href="./image/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
     <!-- <link rel="stylesheet" href="css/teacher.css" /> -->
     <link rel="stylesheet" href="css/quiz-detail.css" />
-    
   </head>
   <body>
     <div id="site-header"></div>
-    
 
     <main class="detail-wrap">
       <!-- Quiz header / status / controls -->
       <div id="quizHeader" class="card">Loading quiz…</div>
       <a class="btn" id="goLiveBtn">Start Live</a>
-      <button class="btn ghost" id="showResultsBtn" type="button">Results</button>
+      <button class="btn ghost" id="showResultsBtn" type="button">
+        Results
+      </button>
 
       <script>
         (function () {
@@ -26,7 +27,9 @@
           const quizId = p.get("quiz") || p.get("id");
           const btn = document.getElementById("goLiveBtn");
           if (btn && quizId)
-            btn.href = `teacher-live-host.html?quiz=${encodeURIComponent(quizId)}`;
+            btn.href = `teacher-live-host.html?quiz=${encodeURIComponent(
+              quizId
+            )}`;
         })();
       </script>
 
@@ -48,34 +51,83 @@
         </select>
 
         <label>Question Text</label>
-        <textarea id="questionText" class="input" rows="3" placeholder="Enter the question text..."></textarea>
+        <textarea
+          id="questionText"
+          class="input"
+          rows="3"
+          placeholder="Enter the question text..."
+        ></textarea>
 
         <!-- MCQ options (letters only saved as correct: A/B/C/D) -->
-        <div id="mcqBlock" class="hidden" >
+        <div id="mcqBlock" class="hidden">
           <label>Options (pick the correct one)</label>
           <div class="options-grid">
             <div class="option-item">
-              <input type="radio" name="mcqCorrect" value="0" aria-label="Correct option A" />
-              <input type="text" id="opt0" class="input" placeholder="Option A" />
+              <input
+                type="radio"
+                name="mcqCorrect"
+                value="0"
+                aria-label="Correct option A"
+              />
+              <input
+                type="text"
+                id="opt0"
+                class="input"
+                placeholder="Option A"
+              />
             </div>
             <div class="option-item">
-              <input type="radio" name="mcqCorrect" value="1" aria-label="Correct option B" />
-              <input type="text" id="opt1" class="input" placeholder="Option B" />
+              <input
+                type="radio"
+                name="mcqCorrect"
+                value="1"
+                aria-label="Correct option B"
+              />
+              <input
+                type="text"
+                id="opt1"
+                class="input"
+                placeholder="Option B"
+              />
             </div>
             <div class="option-item">
-              <input type="radio" name="mcqCorrect" value="2" aria-label="Correct option C" />
-              <input type="text" id="opt2" class="input" placeholder="Option C" />
+              <input
+                type="radio"
+                name="mcqCorrect"
+                value="2"
+                aria-label="Correct option C"
+              />
+              <input
+                type="text"
+                id="opt2"
+                class="input"
+                placeholder="Option C"
+              />
             </div>
             <div class="option-item">
-              <input type="radio" name="mcqCorrect" value="3" aria-label="Correct option D" />
-              <input type="text" id="opt3" class="input" placeholder="Option D" />
+              <input
+                type="radio"
+                name="mcqCorrect"
+                value="3"
+                aria-label="Correct option D"
+              />
+              <input
+                type="text"
+                id="opt3"
+                class="input"
+                placeholder="Option D"
+              />
             </div>
           </div>
-          <div class="muted" >All four options are required for MCQ.</div>
+          <div class="muted">All four options are required for MCQ.</div>
         </div>
 
         <label>Correct Answer (MCQ/TF)</label>
-        <input id="correctAnswer" class="input" placeholder='For MCQ: A / B / C / D. For TF: "true" or "false"' />
+        <input
+          id="correctAnswer"
+          class="input"
+          placeholder='For MCQ: A / B / C / D. For TF: "true" or "false"'
+        />
 
         <div class="row" style="margin-top: 10px">
           <button class="btn" id="addBtn" type="button">Add Question</button>
@@ -85,42 +137,71 @@
       <!-- Leaderboard (students only) -->
       <div class="card">
         <h3 id="leaderboard">Leaderboard (Students Only)</h3>
-        <ol id="teacherLeaderboard">Loading…</ol>
+        <ol id="teacherLeaderboard">
+          Loading…
+        </ol>
       </div>
 
       <!-- Results Panel -->
       <section id="resultsPanel" class="card hidden">
         <h3>Results</h3>
-        <div class="muted" style="margin-bottom:10px">Top 5 and option distribution</div>
+        <div class="muted" style="margin-bottom: 10px">
+          Top 5 and option distribution
+        </div>
 
-        <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:16px;">
+        <div
+          class="grid"
+          style="
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+          "
+        >
           <div>
             <h4>Top 5 (text)</h4>
-            <ol id="top5List" style="margin-top:8px;"></ol>
+            <ol id="top5List" style="margin-top: 8px"></ol>
           </div>
           <div>
             <h4>Top 5 (chart)</h4>
-            <div style="height:240px"><canvas id="top5Chart"></canvas></div>
+            <div style="height: 240px"><canvas id="top5Chart"></canvas></div>
           </div>
         </div>
 
-        <hr style="margin:14px 0">
+        <hr style="margin: 14px 0" />
 
         <div>
-          <div class="row" style="align-items:center; gap:8px;">
+          <div class="row" style="align-items: center; gap: 8px">
             <label for="questionSelect" class="muted">Question:</label>
-            <select id="questionSelect" class="input" style="max-width:420px"></select>
+            <select
+              id="questionSelect"
+              class="input"
+              style="max-width: 420px"
+            ></select>
           </div>
 
-          <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:10px;">
+          <div
+            class="grid"
+            style="
+              grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+              gap: 16px;
+              margin-top: 10px;
+            "
+          >
             <div>
               <h4>Option Distribution</h4>
-              <div style="height:240px"><canvas id="optDistChart"></canvas></div>
+              <div style="height: 240px">
+                <canvas id="optDistChart"></canvas>
+              </div>
             </div>
             <div>
               <h4>Breakdown</h4>
               <table class="table" id="optDistTable">
-                <thead><tr><th>Option</th><th>Count</th><th>%</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Option</th>
+                    <th>Count</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
                 <tbody></tbody>
               </table>
             </div>
@@ -130,7 +211,9 @@
 
       <div class="card">
         <h3>Needs Grading</h3>
-        <ul id="attemptsNeedingGrading">Loading…</ul>
+        <ul id="attemptsNeedingGrading">
+          Loading…
+        </ul>
       </div>
     </main>
 
@@ -181,28 +264,41 @@
         const qTypeSel = document.getElementById("qType");
         const mcqBlock = document.getElementById("mcqBlock");
         const correctInput = document.getElementById("correctAnswer");
-        const optEls = [0, 1, 2, 3].map((i) => document.getElementById("opt" + i));
-        const radios = Array.from(document.querySelectorAll('input[name="mcqCorrect"]'));
+        const optEls = [0, 1, 2, 3].map((i) =>
+          document.getElementById("opt" + i)
+        );
+        const radios = Array.from(
+          document.querySelectorAll('input[name="mcqCorrect"]')
+        );
         const letters = ["A", "B", "C", "D"];
 
         function toggleBlocks() {
           mcqBlock.classList.toggle("hidden", qTypeSel.value !== "mcq");
-          if (qTypeSel.value !== "mcq" && correctInput.value.match(/^[A-Da-d]$/)) {
+          if (
+            qTypeSel.value !== "mcq" &&
+            correctInput.value.match(/^[A-Da-d]$/)
+          ) {
             correctInput.value = "";
           }
         }
         function updateCorrectFromSelected() {
-          const sel = document.querySelector('input[name="mcqCorrect"]:checked');
+          const sel = document.querySelector(
+            'input[name="mcqCorrect"]:checked'
+          );
           if (!sel) return;
           const idx = Number(sel.value);
           correctInput.value = letters[idx]; // store letter ONLY
         }
         qTypeSel.addEventListener("change", toggleBlocks);
         toggleBlocks();
-        radios.forEach((r) => r.addEventListener("change", updateCorrectFromSelected));
+        radios.forEach((r) =>
+          r.addEventListener("change", updateCorrectFromSelected)
+        );
         optEls.forEach((el, idx) =>
           el.addEventListener("input", () => {
-            const sel = document.querySelector('input[name="mcqCorrect"]:checked');
+            const sel = document.querySelector(
+              'input[name="mcqCorrect"]:checked'
+            );
             if (sel && Number(sel.value) === idx) updateCorrectFromSelected();
           })
         );
@@ -211,8 +307,12 @@
         if (addBtn && typeof addQuestionFromDetail === "function") {
           addBtn.addEventListener("click", async () => {
             const type = document.getElementById("qType").value;
-            const text = (document.getElementById("questionText").value || "").trim();
-            let correct = (document.getElementById("correctAnswer").value || "").trim();
+            const text = (
+              document.getElementById("questionText").value || ""
+            ).trim();
+            let correct = (
+              document.getElementById("correctAnswer").value || ""
+            ).trim();
             let options = null;
             if (type === "mcq") {
               options = [0, 1, 2, 3].map((i) =>
@@ -242,166 +342,208 @@
     <script src="js/site-shell.js"></script>
 
     <script>
-/* Enhance native selects on Quiz Detail to guaranteed-dark custom dropdowns.
+      /* Enhance native selects on Quiz Detail to guaranteed-dark custom dropdowns.
    - Keeps original <select> in DOM (same id/name) for your JS and form submits.
    - Auto-applies to selects inside body > main (skip multi-selects). */
-(function () {
-  const scope = document.querySelector('body > main') || document.body;
-  const selects = scope.querySelectorAll('select:not([multiple]):not([data-enhanced])');
+      (function () {
+        const scope = document.querySelector("body > main") || document.body;
+        const selects = scope.querySelectorAll(
+          "select:not([multiple]):not([data-enhanced])"
+        );
 
-  selects.forEach((sel) => {
-    // Wrap
-    const wrap = document.createElement('div');
-    wrap.className = 'qd-select';
-    sel.parentNode.insertBefore(wrap, sel);
-    wrap.appendChild(sel);
+        selects.forEach((sel) => {
+          // Wrap
+          const wrap = document.createElement("div");
+          wrap.className = "qd-select";
+          sel.parentNode.insertBefore(wrap, sel);
+          wrap.appendChild(sel);
 
-    // Reflect disabled state
-    if (sel.disabled) wrap.classList.add('qd-select--disabled');
+          // Reflect disabled state
+          if (sel.disabled) wrap.classList.add("qd-select--disabled");
 
-    // Trigger
-    const trigger = document.createElement('button');
-    trigger.type = 'button';
-    trigger.className = 'qd-select__trigger';
-    trigger.setAttribute('aria-haspopup', 'listbox');
-    trigger.setAttribute('aria-expanded', 'false');
-    trigger.textContent = sel.options[sel.selectedIndex]?.text || sel.getAttribute('placeholder') || 'Select';
-    wrap.appendChild(trigger);
+          // Trigger
+          const trigger = document.createElement("button");
+          trigger.type = "button";
+          trigger.className = "qd-select__trigger";
+          trigger.setAttribute("aria-haspopup", "listbox");
+          trigger.setAttribute("aria-expanded", "false");
+          trigger.textContent =
+            sel.options[sel.selectedIndex]?.text ||
+            sel.getAttribute("placeholder") ||
+            "Select";
+          wrap.appendChild(trigger);
 
-    // List
-    const list = document.createElement('ul');
-    list.className = 'qd-select__list';
-    list.setAttribute('role', 'listbox');
-    list.setAttribute('aria-hidden', 'true');
-    wrap.appendChild(list);
+          // List
+          const list = document.createElement("ul");
+          list.className = "qd-select__list";
+          list.setAttribute("role", "listbox");
+          list.setAttribute("aria-hidden", "true");
+          wrap.appendChild(list);
 
-    // Options
-    Array.from(sel.options).forEach((opt, i) => {
-      const li = document.createElement('li');
-      li.className = 'qd-select__option';
-      li.setAttribute('role', 'option');
-      li.dataset.value = opt.value;
-      li.textContent = opt.text;
-      if (opt.selected) li.setAttribute('aria-selected', 'true');
-      if (opt.disabled) { li.style.opacity = .6; li.style.cursor = 'not-allowed'; }
-      list.appendChild(li);
-    });
+          // Options
+          Array.from(sel.options).forEach((opt, i) => {
+            const li = document.createElement("li");
+            li.className = "qd-select__option";
+            li.setAttribute("role", "option");
+            li.dataset.value = opt.value;
+            li.textContent = opt.text;
+            if (opt.selected) li.setAttribute("aria-selected", "true");
+            if (opt.disabled) {
+              li.style.opacity = 0.6;
+              li.style.cursor = "not-allowed";
+            }
+            list.appendChild(li);
+          });
 
-    sel.dataset.enhanced = '1';
+          sel.dataset.enhanced = "1";
 
-    let activeIndex = sel.selectedIndex;
+          let activeIndex = sel.selectedIndex;
 
-    function openList() {
-      if (sel.disabled) return;
-      trigger.setAttribute('aria-expanded', 'true');
-      list.setAttribute('aria-hidden', 'false');
-      setActive(activeIndex >= 0 ? activeIndex : 0);
-      list.focus({ preventScroll: true });
-      document.addEventListener('click', onDocClick, true);
-    }
-    function closeList() {
-      trigger.setAttribute('aria-expanded', 'false');
-      list.setAttribute('aria-hidden', 'true');
-      clearActive();
-      document.removeEventListener('click', onDocClick, true);
-      trigger.focus({ preventScroll: true });
-    }
-    function onDocClick(e) { if (!wrap.contains(e.target)) closeList(); }
+          function openList() {
+            if (sel.disabled) return;
+            trigger.setAttribute("aria-expanded", "true");
+            list.setAttribute("aria-hidden", "false");
+            setActive(activeIndex >= 0 ? activeIndex : 0);
+            list.focus({ preventScroll: true });
+            document.addEventListener("click", onDocClick, true);
+          }
+          function closeList() {
+            trigger.setAttribute("aria-expanded", "false");
+            list.setAttribute("aria-hidden", "true");
+            clearActive();
+            document.removeEventListener("click", onDocClick, true);
+            trigger.focus({ preventScroll: true });
+          }
+          function onDocClick(e) {
+            if (!wrap.contains(e.target)) closeList();
+          }
 
-    function setActive(idx) {
-      const items = list.querySelectorAll('.qd-select__option');
-      items.forEach((el, i) => el.toggleAttribute('data-active', i === idx));
-      activeIndex = idx;
-      ensureVisible(items[idx]);
-    }
-    function clearActive() {
-      list.querySelectorAll('.qd-select__option').forEach(el => el.removeAttribute('data-active'));
-    }
-    function ensureVisible(el) {
-      if (!el) return;
-      const eb = el.getBoundingClientRect();
-      const lb = list.getBoundingClientRect();
-      if (eb.top < lb.top || eb.bottom > lb.bottom) el.scrollIntoView({ block: 'nearest' });
-    }
+          function setActive(idx) {
+            const items = list.querySelectorAll(".qd-select__option");
+            items.forEach((el, i) =>
+              el.toggleAttribute("data-active", i === idx)
+            );
+            activeIndex = idx;
+            ensureVisible(items[idx]);
+          }
+          function clearActive() {
+            list
+              .querySelectorAll(".qd-select__option")
+              .forEach((el) => el.removeAttribute("data-active"));
+          }
+          function ensureVisible(el) {
+            if (!el) return;
+            const eb = el.getBoundingClientRect();
+            const lb = list.getBoundingClientRect();
+            if (eb.top < lb.top || eb.bottom > lb.bottom)
+              el.scrollIntoView({ block: "nearest" });
+          }
 
-    function selectIndex(idx, dispatch = true) {
-      const items = list.querySelectorAll('.qd-select__option');
-      const target = items[idx];
-      if (!target || target.style.cursor === 'not-allowed') return;
+          function selectIndex(idx, dispatch = true) {
+            const items = list.querySelectorAll(".qd-select__option");
+            const target = items[idx];
+            if (!target || target.style.cursor === "not-allowed") return;
 
-      items.forEach(el => el.removeAttribute('aria-selected'));
-      target.setAttribute('aria-selected', 'true');
-      const value = target.dataset.value;
+            items.forEach((el) => el.removeAttribute("aria-selected"));
+            target.setAttribute("aria-selected", "true");
+            const value = target.dataset.value;
 
-      // Update native select (keeps your JS and form submit happy)
-      sel.value = value;
-      trigger.textContent = target.textContent;
+            // Update native select (keeps your JS and form submit happy)
+            sel.value = value;
+            trigger.textContent = target.textContent;
 
-      if (dispatch) {
-        sel.dispatchEvent(new Event('input', { bubbles: true }));
-        sel.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    }
+            if (dispatch) {
+              sel.dispatchEvent(new Event("input", { bubbles: true }));
+              sel.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+          }
 
-    // Mouse
-    trigger.addEventListener('click', () => {
-      const expanded = trigger.getAttribute('aria-expanded') === 'true';
-      expanded ? closeList() : openList();
-    });
-    list.addEventListener('click', (e) => {
-      const li = e.target.closest('.qd-select__option');
-      if (!li) return;
-      const idx = Array.from(list.children).indexOf(li);
-      selectIndex(idx);
-      closeList();
-    });
+          // Mouse
+          trigger.addEventListener("click", () => {
+            const expanded = trigger.getAttribute("aria-expanded") === "true";
+            expanded ? closeList() : openList();
+          });
+          list.addEventListener("click", (e) => {
+            const li = e.target.closest(".qd-select__option");
+            if (!li) return;
+            const idx = Array.from(list.children).indexOf(li);
+            selectIndex(idx);
+            closeList();
+          });
 
-    // Keyboard (accessible)
-    trigger.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault(); openList();
-      }
-    });
-    list.addEventListener('keydown', (e) => {
-      const count = list.children.length;
-      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(Math.min(activeIndex + 1, count - 1)); }
-      if (e.key === 'ArrowUp')   { e.preventDefault(); setActive(Math.max(activeIndex - 1, 0)); }
-      if (e.key === 'Home')      { e.preventDefault(); setActive(0); }
-      if (e.key === 'End')       { e.preventDefault(); setActive(count - 1); }
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectIndex(activeIndex); closeList(); }
-      if (e.key === 'Escape') { e.preventDefault(); closeList(); }
-    });
+          // Keyboard (accessible)
+          trigger.addEventListener("keydown", (e) => {
+            if (
+              e.key === "ArrowDown" ||
+              e.key === "ArrowUp" ||
+              e.key === " " ||
+              e.key === "Enter"
+            ) {
+              e.preventDefault();
+              openList();
+            }
+          });
+          list.addEventListener("keydown", (e) => {
+            const count = list.children.length;
+            if (e.key === "ArrowDown") {
+              e.preventDefault();
+              setActive(Math.min(activeIndex + 1, count - 1));
+            }
+            if (e.key === "ArrowUp") {
+              e.preventDefault();
+              setActive(Math.max(activeIndex - 1, 0));
+            }
+            if (e.key === "Home") {
+              e.preventDefault();
+              setActive(0);
+            }
+            if (e.key === "End") {
+              e.preventDefault();
+              setActive(count - 1);
+            }
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              selectIndex(activeIndex);
+              closeList();
+            }
+            if (e.key === "Escape") {
+              e.preventDefault();
+              closeList();
+            }
+          });
 
-    // Reflect external changes to the native select (if your JS updates it)
-    sel.addEventListener('change', () => {
-      const idx = sel.selectedIndex;
-      if (idx >= 0) {
-        activeIndex = idx;
-        selectIndex(idx, false);
-      }
-    });
+          // Reflect external changes to the native select (if your JS updates it)
+          sel.addEventListener("change", () => {
+            const idx = sel.selectedIndex;
+            if (idx >= 0) {
+              activeIndex = idx;
+              selectIndex(idx, false);
+            }
+          });
 
-    // If options are added/removed dynamically later, refresh list
-    const mo = new MutationObserver(() => {
-      list.innerHTML = '';
-      Array.from(sel.options).forEach((opt) => {
-        const li = document.createElement('li');
-        li.className = 'qd-select__option';
-        li.setAttribute('role', 'option');
-        li.dataset.value = opt.value;
-        li.textContent = opt.text;
-        if (opt.selected) li.setAttribute('aria-selected', 'true');
-        if (opt.disabled) { li.style.opacity = .6; li.style.cursor = 'not-allowed'; }
-        list.appendChild(li);
-      });
-      activeIndex = sel.selectedIndex;
-      trigger.textContent = sel.options[activeIndex]?.text || trigger.textContent;
-    });
-    mo.observe(sel, { childList: true, subtree: true, attributes: true });
-
-  });
-})();
-</script>
-
+          // If options are added/removed dynamically later, refresh list
+          const mo = new MutationObserver(() => {
+            list.innerHTML = "";
+            Array.from(sel.options).forEach((opt) => {
+              const li = document.createElement("li");
+              li.className = "qd-select__option";
+              li.setAttribute("role", "option");
+              li.dataset.value = opt.value;
+              li.textContent = opt.text;
+              if (opt.selected) li.setAttribute("aria-selected", "true");
+              if (opt.disabled) {
+                li.style.opacity = 0.6;
+                li.style.cursor = "not-allowed";
+              }
+              list.appendChild(li);
+            });
+            activeIndex = sel.selectedIndex;
+            trigger.textContent =
+              sel.options[activeIndex]?.text || trigger.textContent;
+          });
+          mo.observe(sel, { childList: true, subtree: true, attributes: true });
+        });
+      })();
+    </script>
   </body>
 </html>

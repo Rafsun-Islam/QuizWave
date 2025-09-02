@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Student Home</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/components.css">
-  
-  <link rel="stylesheet" href="css/theme-transitions.css">
-  <link rel="stylesheet" href="css/student-home.css">
-</head>
-<body onload="initStudentHome()">
-<div id="site-header"></div>
+  <head>
+    <title>Student Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="./image/favicon.png" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
 
-<main class="container">
-  <h2 id="studentGreeting">Hello…</h2>
-  <div id="quizList"></div>
-</main>
+    <link rel="stylesheet" href="css/theme-transitions.css" />
+    <link rel="stylesheet" href="css/student-home.css" />
+  </head>
+  <body onload="initStudentHome()">
+    <div id="site-header"></div>
 
-<!-- order matters -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/01-supabase-connection.js"></script>
-<script src="js/02-utils.js"></script>
-<script src="js/03-timer.js"></script>
-<script src="js/04-auth.js"></script>
-<script src="js/06-teacher-quizzes.js"></script>
-<script src="js/07-teacher-quiz-detail.js"></script>
-<script src="js/08-questions.js"></script>
-<script src="js/09-student-list.js"></script>
-<script src="js/15-needing-grading.js"></script>
-<script src="js/17-logout-guard.js"></script>
+    <main class="container">
+      <h2 id="studentGreeting">Hello…</h2>
+      <div id="quizList"></div>
+    </main>
 
-<script>
-  requireLogin("Student").then(() => {
-  initStudentHome();
-});
+    <!-- order matters -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/01-supabase-connection.js"></script>
+    <script src="js/02-utils.js"></script>
+    <script src="js/03-timer.js"></script>
+    <script src="js/04-auth.js"></script>
+    <script src="js/06-teacher-quizzes.js"></script>
+    <script src="js/07-teacher-quiz-detail.js"></script>
+    <script src="js/08-questions.js"></script>
+    <script src="js/09-student-list.js"></script>
+    <script src="js/15-needing-grading.js"></script>
+    <script src="js/17-logout-guard.js"></script>
 
-</script>
+    <script>
+      requireLogin("Student").then(() => {
+        initStudentHome();
+      });
+    </script>
 
-  <script src="js/site-shell.js"></script>
-</body>
+    <script src="js/site-shell.js"></script>
+  </body>
 </html>
