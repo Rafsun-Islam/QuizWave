@@ -99,7 +99,7 @@
       `Live <span class="badge" id="navLiveCount" style="margin-left:6px;display:inline-block;min-width:18px;padding:1px 6px;border-radius:999px;border:1px solid var(--border);font-size:12px;line-height:18px;text-align:center;">–</span>`,
     ],
     ["admin-dashboard.html#analytics", "Reports"],
-    ["admin-dashboard.html#settings", "Settings"],
+    
   ];
 
   const teacherLinks = () => [
