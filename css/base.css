@@ -163,10 +163,11 @@ nav.bar {
   box-shadow: var(--ring);
 }
 .btn.ghost {
-font-size: 13px;
   --bg: transparent;
   --fg: var(--text);
   border: var(--border);
+  font-size: 13px;
+  text-align: center;
   box-shadow: none;
   backdrop-filter: blur(10px);
 }
