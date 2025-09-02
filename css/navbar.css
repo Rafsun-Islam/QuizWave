@@ -10,24 +10,33 @@ header.site {
   backdrop-filter: saturate(1.2) blur(18px);
   background: var(--header-bg);
   border-bottom: var(--border);
-  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 header.site nav.bar {
-  display: flex; align-items: center; gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
   padding: 10px 0;
 }
 
 /* Brand: tiny glow on hover */
 header.site .brand {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-weight: 800; letter-spacing: .3px; font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  font-size: 18px;
   background: linear-gradient(135deg, var(--brand), var(--brand-2));
-  -webkit-background-clip: text; background-clip: text;
+  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  transition: transform .18s ease;
+  transition: transform 0.18s ease;
 }
-header.site .brand:hover { transform: translateY(-1px); }
+header.site .brand:hover {
+  transform: translateY(-1px);
+}
 
 /* Main links (works if your links have data-navlink; falls back to any <a>) */
 header.site .nav-actions a[data-navlink],
@@ -43,7 +52,8 @@ header.site .nav-actions a:not(.btn):not(.theme-toggle):not([href^="#"]) {
   color: var(--link-fg);
   background: var(--link-bg);
   position: relative;
-  transition: background .15s ease, border-color .15s ease, transform .06s ease, color .15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.06s ease, color 0.15s ease;
   text-decoration: none;
   line-height: 1.2;
 }
@@ -63,18 +73,28 @@ header.site .nav-actions a:not(.btn):not(.theme-toggle)[aria-current="page"] {
   background: color-mix(in srgb, var(--brand-2), transparent 90%);
   border-color: color-mix(in srgb, var(--brand-2), #fff 70%);
   color: var(--heading);
-  box-shadow: 0 10px 24px rgba(0,0,0,.10);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
 }
 header.site .nav-actions a[data-navlink][aria-current="page"]::after,
-header.site .nav-actions a:not(.btn):not(.theme-toggle)[aria-current="page"]::after {
-  content:"";
-  position:absolute; left:12px; right:12px; bottom:6px; height:2px;
+header.site
+  .nav-actions
+  a:not(.btn):not(.theme-toggle)[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 6px;
+  height: 2px;
   background: var(--brand-2);
   border-radius: 2px;
 }
 
 /* Optional small icon in links */
-header.site .nav-actions a[data-navlink] .icon { width: 18px; height: 18px; display:inline-block; }
+header.site .nav-actions a[data-navlink] .icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+}
 
 /* Theme toggle + buttons blend in */
 header.site .theme-toggle,
@@ -84,79 +104,184 @@ header.site .nav-actions .btn {
 }
 
 /* Profile dropdown polish (works with your existing markup) */
-header.site .profile { position: relative; }
+header.site .profile {
+  position: relative;
+}
 header.site .profile .dropdown {
-  position: absolute; top: calc(100% + 8px); right: 0;
-  min-width: 220px; background: var(--panel);
-  border: var(--border); border-radius: 12px;
-  box-shadow: var(--shadow); padding: 8px;
-  display: none; z-index: 1000; backdrop-filter: blur(18px);
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: var(--panel);
+  border: var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 8px;
+  display: none;
+  z-index: 1000;
+  backdrop-filter: blur(18px);
 }
-header.site .profile.open .dropdown { display: block; }
-@media (hover:hover) { header.site .profile:hover .dropdown { display: block; } }
+header.site .profile.open .dropdown {
+  display: block;
+}
+@media (hover: hover) {
+  header.site .profile:hover .dropdown {
+    display: block;
+  }
+}
 header.site .profile .dropdown a {
-  display:flex; align-items:center; gap:10px;
-  padding: 10px; border-radius: 10px; color: var(--text); text-decoration:none;
-  transition: background .15s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.15s ease;
 }
-header.site .profile .dropdown a:hover { background: rgba(96,165,250,.12); }
+header.site .profile .dropdown a:hover {
+  background: rgba(96, 165, 250, 0.12);
+}
 
 /* Avatar */
 header.site .avatar {
-  width:32px; height:32px; border-radius:50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   background: linear-gradient(45deg, var(--brand), var(--brand-2));
-  display:inline-flex; align-items:center; justify-content:center; color:#fff; font-weight:700;
-  box-shadow: 0 4px 14px rgba(96,165,250,.3);
-  transition: transform .15s ease, box-shadow .15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(96, 165, 250, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-header.site .avatar:hover { transform: scale(1.05); box-shadow: 0 8px 24px rgba(96,165,250,.35); }
+header.site .avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(96, 165, 250, 0.35);
+}
 
 /* ===== Responsive behavior (uses your existing mobile-open class) ===== */
 
 /* Desktop: show menu inline */
 @media (min-width: 961px) {
-  header.site nav.bar { flex-wrap: nowrap; }
-  header.site .nav-actions {
-    display:flex !important; flex-direction:row !important; align-items:center !important; gap:10px !important;
-    max-height:none !important; opacity:1 !important; visibility:visible !important;
-    border:0 !important; padding:0 !important; background:transparent !important;
+  header.site nav.bar {
+    flex-wrap: nowrap;
   }
-  header.site .nav-toggle { display:none !important; }
+  header.site .nav-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    max-height: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    border: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  header.site .nav-toggle {
+    display: none !important;
+  }
 }
 
 /* Mobile: collapsible panel */
 @media (max-width: 960px) {
-  header.site nav.bar { flex-wrap: wrap; gap: 12px; }
-  header.site nav.bar .spacer { display:none; }
+  header.site nav.bar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header.site nav.bar .spacer {
+    display: none;
+  }
 
   header.site .nav-toggle {
-    display:inline-flex; margin-left:auto; order:2;
-    width:40px; height:40px; border-radius:10px; border: var(--border);
-    background: var(--bg-elev); color: var(--text); align-items:center; justify-content:center;
-    transition: background .15s ease, color .15s ease;
+    display: inline-flex;
+    margin-left: auto;
+    order: 2;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
   }
-  header.site .nav-toggle:hover { background: var(--brand-2); color:#fff; }
+  header.site .nav-toggle:hover {
+    background: var(--brand-2);
+    color: #fff;
+  }
 
   header.site .nav-actions {
-    flex-basis: 100%; order:3;
-    display:flex; flex-direction:column; align-items:stretch; gap:6px;
-    background: var(--bg-elev); border: var(--border); border-radius:12px; padding: 8px;
+    flex-basis: 100%;
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    background: var(--bg-elev);
+    border: var(--border);
+    border-radius: 12px;
+    padding: 8px;
     backdrop-filter: blur(18px);
-    max-height:0; opacity:0; visibility:hidden; overflow:hidden;
-    transition: max-height .25s ease, opacity .2s ease, visibility 0s linear .25s;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: max-height 0.25s ease, opacity 0.2s ease,
+      visibility 0s linear 0.25s;
   }
   header.site.mobile-open .nav-actions {
-    max-height: 640px; opacity: 1; visibility: visible; transition-delay: 0s;
+    max-height: 640px;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
   }
 
   /* Full-width tappable items */
   header.site .nav-actions a[data-navlink],
   header.site .nav-actions a:not(.btn):not(.theme-toggle) {
-    padding: 12px; border-radius: 10px;
+    padding: 12px;
+    border-radius: 10px;
   }
 }
 
 /* Hamburger -> X animation if you use <span class="hamb">*3 */
-header.site.mobile-open .nav-toggle .hamb:nth-child(1){ transform: translateY(6px) rotate(45deg); }
-header.site.mobile-open .nav-toggle .hamb:nth-child(2){ opacity:0; }
-header.site.mobile-open .nav-toggle .hamb:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
+header.site.mobile-open .nav-toggle .hamb:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+header.site.mobile-open .nav-toggle .hamb:nth-child(2) {
+  opacity: 0;
+}
+header.site.mobile-open .nav-toggle .hamb:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Hide "mobile-only" clones everywhere by default */
+header.site .nav-mobile-only {
+  display: none !important;
+}
+
+/* Show ONLY inside the mobile panel, and ONLY when it is open */
+@media (max-width: 960px) {
+  header.site.mobile-open .nav-actions .nav-mobile-only {
+    display: block !important;
+  }
+
+  /* If JS accidentally inserted it next to the brand/top row, keep it hidden */
+  header.site nav.bar > .nav-mobile-only {
+    display: none !important;
+  }
+}
+
+/* Desktop safety: never show it in the top row */
+@media (min-width: 961px) {
+  header.site .nav-actions .nav-mobile-only,
+  header.site nav.bar > .nav-mobile-only {
+    display: none !important;
+  }
+}
+
