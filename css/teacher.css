@@ -455,3 +455,68 @@ body > main .break-anywhere,
 
 /* Safety: neutralize any generic white text utility on light theme (if present) */
 :root[data-theme="light"] .text-white { color: var(--heading) !important; }
+
+/* ================================
+   Teacher Dashboard — Recent Attempts
+   Force scroll after 5 rows (CSS-only)
+   ================================ */
+
+/* Tunables */
+:root {
+  --recentAttempts-rows: 5;      /* show this many rows before scrolling */
+  --recentAttempts-row-h: 56px;  /* approximate row height incl. padding */
+}
+
+/* Make sure our table can show its internal scrollbar */
+#recentAttempts.table,
+#recentAttempts {
+  table-layout: fixed !important;          /* stable column widths */
+  border-collapse: collapse !important;
+  overflow: visible !important;            /* defeat .table { overflow:hidden } */
+  width: 100%;
+}
+
+/* Keep header laid out like a table */
+#recentAttempts thead {
+  display: table !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+/* BODY becomes the scrollable block */
+#recentAttempts tbody {
+  display: block !important;               /* isolate body so it can scroll */
+  max-height: calc(var(--recentAttempts-rows) * var(--recentAttempts-row-h)) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Each body row still behaves like a table row */
+#recentAttempts tbody tr {
+  display: table !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+/* Cell safety: wrap long text so nothing overlaps */
+#recentAttempts th,
+#recentAttempts td {
+  padding: 10px 12px;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Nice, theme-aware header while body scrolls */
+#recentAttempts thead th {
+  background: color-mix(in srgb, var(--bg), transparent 6%);
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+/* Optional: slimmer scrollbar inside the table body */
+#recentAttempts tbody::-webkit-scrollbar { width: 6px; }
+#recentAttempts tbody::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+#recentAttempts tbody::-webkit-scrollbar-thumb:hover { background: var(--brand-2); }
